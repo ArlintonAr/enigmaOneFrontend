@@ -1,0 +1,250 @@
+<div class="content p-4 min-h-[30%] overflow-auto grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+  @if(orderList()){
+
+    @for (order of orderList(); track $index) {
+      <div
+      [class]="'card shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 border ' +
+        (getCurrentStep(order) === 0 ? 'bg-gradient-to-br from-sky-500/20 to-blue-600/20 border-sky-400/40 backdrop-blur-sm' : '') +
+        (getCurrentStep(order) === 1 ? 'bg-gradient-to-br from-orange-500/20 to-amber-600/20 border-orange-400/40 backdrop-blur-sm' : '') +
+        (getCurrentStep(order) === 2 ? 'bg-gradient-to-br from-emerald-500/20 to-green-600/20 border-emerald-400/40 backdrop-blur-sm' : '') +
+        (getCurrentStep(order) !== 0 && getCurrentStep(order) !== 1 && getCurrentStep(order) !== 2 ? 'bg-gradient-to-br from-slate-500/20 to-gray-600/20 border-slate-400/40 backdrop-blur-sm' : '')">
+
+        <div class="card-body p-4">
+
+          <!-- Header con ID y badges -->
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="avatar placeholder">
+                <div
+                  [class]="'rounded-xl w-11 h-11 shadow-md ' +
+                    (getCurrentStep(order) === 0 ? 'bg-sky-500 text-white' : '') +
+                    (getCurrentStep(order) === 1 ? 'bg-orange-500 text-white' : '') +
+                    (getCurrentStep(order) === 2 ? 'bg-emerald-500 text-white' : '') +
+                    (getCurrentStep(order) !== 0 && getCurrentStep(order) !== 1 && getCurrentStep(order) !== 2 ? 'bg-slate-500 text-white' : '')">
+                  <i
+                    [class]="'fas text-lg ' +
+                      (order.type === 'MATERIAL' ? 'fa-box' : '') +
+                      (order.type === 'SERVICIO' ? 'fa-wrench' : '') +
+                      (getCurrentStep(order) === 1 ? 'fa-truck-moving' : '') +
+                      (getCurrentStep(order) === 2 ? 'fa-warehouse' : '') +
+                      (!order.type && getCurrentStep(order) !== 1 && getCurrentStep(order) !== 2 ? 'fa-question' : '')"></i>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <h3 class="text-xs font-medium text-base-content/70">ID Orden</h3>
+                  <div
+                    [class]="'badge badge-sm ' +
+                      (order.type === 'MATERIAL' ? 'badge-info' : '') +
+                      (order.type === 'SERVICIO' ? 'badge-warning' : '') +
+                      (!order.type ? 'badge-ghost' : '')">
+                    {{ order.type || 'Desconocido' }}
+                  </div>
+                </div>
+                <p
+                  [class]="'text-2xl font-bold ' +
+                    (getCurrentStep(order) === 0 ? 'text-sky-400' : '') +
+                    (getCurrentStep(order) === 1 ? 'text-orange-400' : '') +
+                    (getCurrentStep(order) === 2 ? 'text-emerald-400' : '') +
+                    (getCurrentStep(order) !== 0 && getCurrentStep(order) !== 1 && getCurrentStep(order) !== 2 ? 'text-slate-400' : '')">
+                  #{{ order.id }}
+                </p>
+              </div>
+            </div>
+
+            <div class="dropdown dropdown-end">
+              <label tabindex="0" class="btn btn-ghost btn-sm btn-circle text-base-content/60 hover:bg-base-content/10">
+                <i class="fas fa-ellipsis-v"></i>
+              </label>
+              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52">
+                @if(order.materialOrders.length > 0) {
+                  <li><a (click)="openModal(order.materialOrders)"><i class="fas fa-eye mr-2"></i> Ver detalles</a></li>
+                }
+                @if(order.serviceOrders.length > 0) {
+                  <li><a (click)="openModalServices(order.serviceOrders)"><i class="fas fa-eye mr-2"></i> Ver detalles</a></li>
+                }
+                <li><a class="text-error"><i class="fas fa-times mr-2"></i> Cancelar solicitud</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Fechas en cards pequeñas -->
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <div
+              [class]="'rounded-lg p-2.5 shadow-sm border backdrop-blur-sm ' +
+                (getCurrentStep(order) === 0 ? 'bg-sky-500/10 border-sky-400/30' : '') +
+                (getCurrentStep(order) === 1 ? 'bg-orange-500/10 border-orange-400/30' : '') +
+                (getCurrentStep(order) === 2 ? 'bg-emerald-500/10 border-emerald-400/30' : '') +
+                (getCurrentStep(order) !== 0 && getCurrentStep(order) !== 1 && getCurrentStep(order) !== 2 ? 'bg-slate-500/10 border-slate-400/30' : '')">
+              <div class="flex items-center gap-1.5 mb-1">
+                <i class="fas fa-calendar-alt text-accent text-xs"></i>
+                <p class="text-xs font-medium text-base-content/80">Fecha de Pedido</p>
+              </div>
+              <p class="text-sm font-bold text-accent">{{ order.created_at | date }}</p>
+            </div>
+
+            <div
+              [class]="'rounded-lg p-2.5 shadow-sm border backdrop-blur-sm ' +
+                (order.estimatedDateStock ? 'bg-emerald-500/10 border-emerald-400/30' : 'bg-slate-500/10 border-slate-400/30')">
+              <div class="flex items-center gap-1.5 mb-1">
+                <i [class]="'fas text-xs ' + (order.estimatedDateStock ? 'fa-clock text-success' : 'fa-clock text-base-content/50')"></i>
+                <p class="text-xs font-medium text-base-content/80">
+                  {{ getCurrentStep(order) === 2 ? 'Fecha Llegada' : 'Fecha Estimada' }}
+                </p>
+              </div>
+              <p [class]="'text-sm font-bold ' + (order.estimatedDateStock ? 'text-success' : 'text-base-content/50')">
+                {{ order.estimatedDateStock ? (order.estimatedDateStock | date) : 'Sin definir' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Steps Progress -->
+          <div
+            [class]="'rounded-lg p-3 shadow-sm border backdrop-blur-sm mb-3 ' +
+              (getCurrentStep(order) === 0 ? 'bg-sky-500/10 border-sky-400/30' : '') +
+              (getCurrentStep(order) === 1 ? 'bg-orange-500/10 border-orange-400/30' : '') +
+              (getCurrentStep(order) === 2 ? 'bg-emerald-500/10 border-emerald-400/30' : '') +
+              (getCurrentStep(order) !== 0 && getCurrentStep(order) !== 1 && getCurrentStep(order) !== 2 ? 'bg-slate-500/10 border-slate-400/30' : '')">
+            <ul class="steps steps-horizontal w-full text-base-content">
+              @switch (getCurrentStep(order)) {
+                @case (0) {
+                  <li class="step step-primary">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-shopping-cart text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Pedido</span>
+                    </div>
+                  </li>
+                  <li class="step">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-truck text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">En ruta</span>
+                    </div>
+                  </li>
+                  <li class="step">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-warehouse text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Almacén</span>
+                    </div>
+                  </li>
+                }
+                @case (1) {
+                  <li class="step step-warning">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-shopping-cart text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Pedido</span>
+                    </div>
+                  </li>
+                  <li class="step step-warning">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-truck text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">En ruta</span>
+                    </div>
+                  </li>
+                  <li class="step">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-warehouse text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Almacén</span>
+                    </div>
+                  </li>
+                }
+                @case (2) {
+                  <li class="step step-success">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-shopping-cart text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Pedido</span>
+                    </div>
+                  </li>
+                  <li class="step step-success">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-truck text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">En ruta</span>
+                    </div>
+                  </li>
+                  <li class="step step-success">
+                    <div class="flex flex-col items-center">
+                      <i class="fas fa-warehouse text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Almacén</span>
+                    </div>
+                  </li>
+                }
+                @default {
+                  <li class="step step-neutral">
+                    <div class="flex flex-col items-center opacity-50">
+                      <i class="fas fa-shopping-cart text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Pedido</span>
+                    </div>
+                  </li>
+                  <li class="step">
+                    <div class="flex flex-col items-center opacity-50">
+                      <i class="fas fa-truck text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">En ruta</span>
+                    </div>
+                  </li>
+                  <li class="step">
+                    <div class="flex flex-col items-center opacity-50">
+                      <i class="fas fa-warehouse text-base mb-1"></i>
+                      <span class="text-[10px] font-medium">Almacén</span>
+                    </div>
+                  </li>
+                }
+              }
+            </ul>
+          </div>
+
+          <!-- Acciones y estado -->
+          <div class="flex items-center justify-between gap-2.5 flex-wrap">
+            <div class="flex gap-1.5 flex-wrap">
+              @if( order.materialOrders &&  order.materialOrders.length > 0) {
+                <button class="btn btn-xs btn-outline btn-success gap-1.5" (click)="openModal(order.materialOrders)">
+                  Detalles
+                </button>
+              }
+              @if(order.serviceOrders && order.serviceOrders.length > 0) {
+                <button class="btn btn-xs btn-outline btn-success gap-1.5" (click)="openModalServices(order.serviceOrders)">
+                  Detalles
+                </button>
+              }
+              <button class="btn btn-xs btn-outline btn-accent gap-1.5">
+                Cancelar
+              </button>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              @if (authorizedOrder()) {
+                <form [formGroup]="updateTrackingForm">
+                  <select class="select select-success select-xs" formControlName="trackingState">
+                    @for (state of trackingState; track $index) {
+                      <option [value]="state.name">{{ state.name }}</option>
+                    }
+                  </select>
+                </form>
+                <button class="btn btn-success btn-xs btn-circle"
+                        (click)="updateOrderTracking(order.trackings[0].id)">
+                  <i class="fa-solid fa-check text-xs"></i>
+                </button>
+              }
+
+              @if (updatedTracking()) {
+                <form [formGroup]="updateTrackingForStepsForm">
+                  <select class="select select-success select-xs" formControlName="trackingState">
+                    @for (step of steps; track $index) {
+                      <option [value]="step.name">{{ step.name }}</option>
+                    }
+                  </select>
+                </form>
+                <button class="btn btn-success btn-xs btn-circle"
+                        (click)="updateOrderTrackingForSteps(order.trackings[0].id)">
+                  <i class="fa-solid fa-check text-xs"></i>
+                </button>
+              }
+            </div>
+          </div>
+
+        </div>
+      </div>
+    }
+  }
+
+  <details-of-order [orderMaterialsList]="selectedMaterials()" />
+  <detail-of-service-order [orderServiceList]="selectedServices()" />
+</div>

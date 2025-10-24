@@ -1,0 +1,47 @@
+<!-- Dialog de Confirmación de Eliminación -->
+<dialog #modalDeleteConfirm class="modal">
+  <div class="modal-box max-w-md">
+
+    <!-- Icono y Header -->
+    <div class="flex flex-col items-center text-center mb-6">
+      <div class="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center mb-4">
+        <i class="fas fa-exclamation-triangle text-error text-4xl"></i>
+      </div>
+
+      <h3 class="text-2xl font-bold text-base-content mb-2">
+        ¿Eliminar Producto?
+      </h3>
+      <p class="text-sm text-base-content/60">
+        Esta acción no se puede deshacer
+      </p>
+    </div>
+    <!-- Advertencia -->
+    <div class="flex items-start gap-2 bg-error/5 border border-error/20 rounded-lg p-3 mb-6">
+      <i class="fas fa-shield-alt text-error mt-0.5"></i>
+      <div class="text-xs text-base-content/70">
+        <p class="font-semibold text-error mb-1">Advertencia</p>
+        <p>Se eliminarán todos los registros asociados a este producto <span class="text-xl text-bold"> ID: {{idStock()}}</span> del sistema.</p>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex gap-3">
+      <button class="btn btn-ghost flex-1 gap-2" (click)="closeModalConfirmDelete()">
+        <i class="fas fa-times"></i>
+        Cancelar
+      </button>
+      <button class="btn btn-error flex-1 gap-2" (click)="deleteStock()">
+        <i class="fas fa-trash-alt"></i>
+        Sí, Eliminar
+      </button>
+    </div>
+
+  </div>
+</dialog>
+
+@if (hasError()) {
+  <error-alert [messageError]="errorMessage()" (close)="hasError.set(false)" />
+}
+@if(hasSuccess()){
+  <success-alert [messageSuccess]="successMessage()" (close)="hasSuccess.set(false)" />
+}

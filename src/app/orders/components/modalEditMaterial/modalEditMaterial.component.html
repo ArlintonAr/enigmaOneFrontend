@@ -1,0 +1,62 @@
+<dialog #modalEditMaterial class="modal">
+
+  <div class="modal-box h-[50%]  flex flex-col gap-4">
+    <h1 class="text-lg font-bold">Editar Material</h1>
+
+    <div class="content-form flex flex-col gap-4 h-full justify-between">
+
+      <form [formGroup]="editMaterialForm">
+
+        <div class="content-label grid grid-cols-2 gap-4">
+
+          <div class="sm:col-span-1 ">
+            <label class="floating-label"></label>
+            <input type="text" [placeholder]="material()?.characteristics" formControlName="characteristics" class="input input-sm" />
+          </div>
+
+          <div class="sm:col-span-1">
+            <label class="floating-label">
+              <input type="text" [placeholder]="material()?.observations" formControlName="observations" class="input input-sm" />
+            </label>
+          </div>
+
+          <div class="sm:col-span-1">
+            <label class="floating-label">
+              <input type="text" [placeholder]="material()?.quantity" formControlName="quantity" class="input input-sm" />
+            </label>
+          </div>
+          <div class="sm:col-span-1">
+            <label class="floating-label">
+              <input type="text" [placeholder]="material()?.unitOfMeasure" formControlName="unitOfMeasure" class="input input-sm" />
+            </label>
+          </div>
+
+          <div class="sm:col-span-1">
+            <input type="date" class="input input-sm" formControlName="estimatedDateStock" [value]="material()?.estimatedDateStock | date:'yyyy-MM-dd' " />
+          </div>
+
+          <div class="sm:col-span-1">
+            <select class="select select-sm" formControlName="typeMaterial">
+              @for (item of typeMaterialOrder; track $index) {
+                <option [selected]="material()?.typeMaterial === item.value" [value]="item.value">{{item.value}}</option>
+              }
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+      </form>
+
+      <div class="buttons flex justify-between gap-2">
+        <button class="btn btn-error btn-sm" (click)="modalEditMaterial.close()">Cancelar</button>
+        <button class="btn btn-success btn-sm" (click)="updateMaterial()">Guardar</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</dialog>

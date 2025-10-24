@@ -1,0 +1,417 @@
+<dialog #createOrder closedby="none" id="my_modal_4" class="modal ">
+  <div class="modal-box w-screen max-w-7xl h-screen flex flex-col gap-4 bg-base-100 shadow-2xl border border-base-content/10 p-6">
+
+    <!-- Header con gradiente -->
+    <div class="flex items-center justify-between pb-4 border-b border-base-content/10">
+      <div class="flex items-center gap-4">
+        <div class="avatar placeholder">
+          <div class="bg-gradient-to-br from-primary to-secondary rounded-xl w-14 h-14 shadow-lg">
+            <i class="fas fa-file-invoice text-2xl text-white"></i>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Crear Solicitud de Pedido
+          </h3>
+          <p class="text-sm text-base-content/60 mt-1">Complete los datos para generar una nueva orden</p>
+        </div>
+      </div>
+
+      <div class="badge badge-primary badge-lg gap-2 shadow-lg">
+        <i class="fas fa-clipboard-list"></i>
+        Nueva Orden
+      </div>
+    </div>
+
+    <!-- Form Principal - MEJORADO -->
+    <form [formGroup]="formCreateOrder" class="bg-gradient-to-br from-base-200/30 to-base-300/20 rounded-xl p-4 border border-base-content/5 shadow-md">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-12">
+
+        <!-- ID Empleado -->
+        <div class="sm:col-span-2">
+          <label class="label py-1">
+            <span class="label-text text-xs font-medium flex items-center gap-1.5">
+              <i class="fas fa-user text-primary text-sm"></i>
+              ID Empleado
+            </span>
+          </label>
+          <div class="bg-primary/10 rounded-lg p-2.5 border border-primary/20">
+            <h1 class="text-xl font-bold text-primary">{{idEmployee()}}</h1>
+          </div>
+        </div>
+
+        <!-- Fecha Estimada -->
+        <div class="sm:col-span-3">
+          <label class="label py-1">
+            <span class="label-text text-xs font-medium flex items-center gap-1.5">
+              <i class="fas fa-calendar-alt text-secondary text-sm"></i>
+              Fecha Estimada *
+            </span>
+          </label>
+          <input type="date" formControlName="estimatedDateStock"
+            class="input input-sm input-bordered w-full bg-base-100 focus:input-primary transition-all" />
+        </div>
+
+        <!-- Tipo -->
+        <div class="sm:col-span-3">
+          <label class="label py-1">
+            <span class="label-text text-xs font-medium flex items-center gap-1.5">
+              <i class="fas fa-tag text-accent text-sm"></i>
+              Tipo *
+            </span>
+          </label>
+          <select formControlName="type"
+            class="select select-sm select-bordered w-full bg-base-100 focus:select-primary transition-all">
+            @for (type of typeOrderArr; track $index) {
+              <option [value]="type.value">{{type.value}}</option>
+            }
+          </select>
+        </div>
+
+        <!-- ID Orden -->
+        <div class="sm:col-span-2">
+          <label class="label py-1">
+            <span class="label-text text-xs font-medium flex items-center gap-1.5">
+              <i class="fas fa-hashtag text-info text-sm"></i>
+              ID Orden
+            </span>
+          </label>
+          <div class="bg-info/10 rounded-lg p-2.5 border border-info/20">
+            <h1 class="text-xl font-bold text-info">{{idNewOrder() ? idNewOrder() : 0}}</h1>
+          </div>
+        </div>
+
+        <!-- Botón Generar -->
+        <div class="sm:col-span-2 flex items-end">
+          <button type="button" class="btn btn-success btn-sm gap-2 shadow-md hover:shadow-lg transition-all w-full" (click)="createNewOrder()">
+            <i class="fas fa-check-circle"></i>
+            Generar
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Content Material y Servicio -->
+    <div class="content-material-service flex-1 overflow-y-auto space-y-6">
+
+      <!-- Sección Material -->
+      <form [formGroup]="formCreateMaterial" class="card bg-gradient-to-br from-info/5 to-info/10 shadow-xl border border-info/20">
+        <div class="card-body">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-info to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+              <i class="fas fa-box text-2xl text-white"></i>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-info">Generar Pedido de Material</h2>
+              <p class="text-sm text-base-content/60">Complete la información del material solicitado</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-12 mb-6">
+            <!-- Cantidad -->
+            <div class="sm:col-span-2">
+              <label class="label">
+                <span class="label-text font-semibold text-xs">Cantidad</span>
+              </label>
+              <input type="number" formControlName="quantity"
+                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+            </div>
+
+            <!-- Unidad de medida -->
+            <div class="sm:col-span-2">
+              <label class="label">
+                <span class="label-text font-semibold text-xs">Unidad de Medida</span>
+              </label>
+              <input type="text" formControlName="unitOfMeasure"
+                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+            </div>
+
+            <!-- Tipo Material -->
+            <div class="sm:col-span-2">
+              <label class="label">
+                <span class="label-text font-semibold text-xs">Tipo *</span>
+              </label>
+              <select formControlName="typeMaterial"
+                class="select select-bordered select-sm w-full bg-base-100 focus:select-info transition-all">
+                @for (typeMaterial of typeMaterialOrderArr; track $index) {
+                  <option [value]="typeMaterial.value">{{typeMaterial.value}}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Características -->
+            <div class="sm:col-span-3">
+              <label class="label">
+                <span class="label-text font-semibold text-xs">Características</span>
+              </label>
+              <input type="text" formControlName="characteristics"
+                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+            </div>
+
+            <!-- Observaciones -->
+            <div class="sm:col-span-3">
+              <label class="label">
+                <span class="label-text font-semibold text-xs">Observaciones</span>
+              </label>
+              <input type="text" formControlName="observations"
+                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+            </div>
+
+            <!-- Foto -->
+            <div class="sm:col-span-4">
+              <label class="label">
+                <span class="label-text font-semibold text-xs flex items-center gap-2">
+                  <i class="fas fa-camera"></i>
+                  Foto <span class="text-xs font-light opacity-60">(opcional)</span>
+                </span>
+              </label>
+              <input #photoInput type="file" (change)="selectedphotoMaterial($event)"
+                class="file-input file-input-bordered file-input-sm w-full bg-base-100 focus:file-input-info transition-all" />
+            </div>
+
+            <!-- Botón Generar Material -->
+            <div class="sm:col-span-2 flex items-end">
+              <button type="button" class="btn btn-info btn-sm w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListMaterials()">
+                <i class="fas fa-plus-circle"></i>
+                Agregar
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabla de Materiales -->
+          <div class="flex gap-4 items-start">
+            <div class="flex-1 card bg-base-100 shadow-lg border border-base-content/10">
+              <div class="card-body p-4">
+                <h3 class="font-bold text-lg mb-3 flex items-center gap-2">
+                  <i class="fas fa-list text-info"></i>
+                  Lista de Materiales Solicitados
+                </h3>
+                <div class="overflow-x-auto max-h-64 overflow-y-auto">
+                  <table class="table table-zebra table-sm">
+                    <thead class="sticky top-0 bg-base-200 z-10">
+                      <tr>
+                        <th class="bg-base-200">Orden</th>
+                        <th class="bg-base-200">Características</th>
+                        <th class="bg-base-200">Observaciones</th>
+                        <th class="bg-base-200">Cantidad</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (material of materialsList(); track $index) {
+                        <tr class="hover">
+                          <th>
+                            <div class="badge badge-info badge-sm">{{$index + 1}}</div>
+                          </th>
+                          <td>{{material.characteristics}}</td>
+                          <td>{{material.observations}}</td>
+                          <td>
+                            <span class="font-bold text-info">{{material.quantity}}</span>
+                          </td>
+                        </tr>
+                      }
+                      @if(materialsList().length === 0) {
+                        <tr>
+                          <td colspan="4" class="text-center py-8 text-base-content/50">
+                            <i class="fas fa-inbox text-3xl mb-2"></i>
+                            <p>No hay materiales agregados</p>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón Guardar Material -->
+            <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all" (click)="createNewMaterialOrder()">
+              <i class="fas fa-save"></i>
+              Guardar Orden de Material
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Sección Servicio -->
+      <form [formGroup]="formCreateService" class="card bg-gradient-to-br from-secondary/5 to-secondary/10 shadow-xl border border-secondary/20">
+        <div class="card-body">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-secondary to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+              <i class="fas fa-tools text-2xl text-white"></i>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-secondary">Generar Pedido de Servicio</h2>
+              <p class="text-sm text-base-content/60">Complete la información del servicio solicitado</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-12 mb-6">
+            <!-- Características -->
+            <div class="sm:col-span-10">
+              <label class="label">
+                <span class="label-text font-semibold text-xs">Características</span>
+              </label>
+              <input type="text" formControlName="characteristics"
+                class="input input-bordered input-sm w-full bg-base-100 focus:input-secondary transition-all" />
+            </div>
+
+            <!-- Botón Generar Servicio -->
+            <div class="sm:col-span-2 flex items-end">
+              <button type="button" class="btn btn-secondary btn-sm w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListServices()">
+                <i class="fas fa-plus-circle"></i>
+                Agregar
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabla de Servicios -->
+          <div class="flex gap-4 items-start">
+            <div class="flex-1 card bg-base-100 shadow-lg border border-base-content/10">
+              <div class="card-body p-4">
+                <h3 class="font-bold text-lg mb-3 flex items-center gap-2">
+                  <i class="fas fa-list text-secondary"></i>
+                  Lista de Servicios Solicitados
+                </h3>
+                <div class="overflow-x-auto max-h-64 overflow-y-auto">
+                  <table class="table table-zebra table-sm">
+                    <thead class="sticky top-0 bg-base-200 z-10">
+                      <tr>
+                        <th class="bg-base-200">Orden</th>
+                        <th class="bg-base-200">Características</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (service of servicesList(); track $index) {
+                        <tr class="hover">
+                          <th>
+                            <div class="badge badge-secondary badge-sm">{{$index + 1}}</div>
+                          </th>
+                          <td>{{service.characteristics}}</td>
+                        </tr>
+                      }
+                      @if(servicesList().length === 0) {
+                        <tr>
+                          <td colspan="2" class="text-center py-8 text-base-content/50">
+                            <i class="fas fa-inbox text-3xl mb-2"></i>
+                            <p>No hay servicios agregados</p>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón Guardar Servicio -->
+            <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all" (click)="createNewServiceOrder()">
+              <i class="fas fa-save"></i>
+              Guardar Orden de Servicio
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer con botones -->
+    <div class="content-buttons flex justify-between pt-4 border-t border-base-content/10">
+      <button type="button" class="btn btn-warning gap-2 shadow-lg hover:shadow-xl transition-all" (click)="clouseModal()">
+        <i class="fas fa-times-circle"></i>
+        Cerrar
+      </button>
+      <button type="button" class="btn btn-error gap-2 shadow-lg hover:shadow-xl transition-all" (click)="cancelCreateOrderAndMaterialOrder()">
+        <i class="fas fa-ban"></i>
+        Cancelar Todo
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Alerts -->
+  @if(hasErrorMaterialOrder()) {
+    <div class="toast toast-top toast-end z-50">
+      <error-alert (close)="hasErrorMaterialOrder.set(false)" [messageError]="errorNameMaterialOrder()" />
+    </div>
+  }
+  @if(hasErrorOrder()) {
+    <div class="toast toast-top toast-end z-50">
+      <error-alert (close)="hasErrorOrder.set(false)" [messageError]="errorNameOrder()" />
+    </div>
+  }
+</dialog>
+
+<style>
+  /* Animaciones personalizadas */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .modal-box {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  /* Mejorar scrollbar */
+  .overflow-y-auto::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-track {
+    background: hsl(var(--b2));
+    border-radius: 10px;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: hsl(var(--p));
+    border-radius: 10px;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--s));
+  }
+
+  /* Efecto hover en inputs */
+  .input:focus, .select:focus, .file-input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Transiciones suaves */
+  .input, .select, .file-input, .btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Tabla hover effect */
+  .table tbody tr:hover {
+    transform: translateX(2px);
+    background: hsl(var(--b2));
+  }
+
+  /* Card hover effect */
+  .card {
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Badge pulse animation */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px currentColor;
+    }
+    50% {
+      box-shadow: 0 0 15px currentColor;
+    }
+  }
+
+  .badge:hover {
+    animation: pulse-glow 1.5s infinite;
+  }
+</style>

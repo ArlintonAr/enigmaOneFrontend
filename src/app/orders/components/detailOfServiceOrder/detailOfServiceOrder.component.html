@@ -1,0 +1,61 @@
+<dialog #detailsOfOrderModal class="modal">
+
+  <div class="modal-box w-11/12 max-w-5xl h-[90%] flex flex-col justify-between">
+    <div class="content flex flex-col gap-2 ">
+      <h1 class="text-2xl font-bold">Detalles de Servicios</h1>
+      <table class="table h-[95%] overflow-y-scroll">
+        <thead>
+          <tr>
+            <th>Características</th>
+            <th>Código</th>
+            <th>Id Orden</th>
+            <th>Creacion de Servicio</th>
+            <th>Fecha de entrega</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          @for (service of orderServiceList(); track $index) {
+          <tr class="">
+            <td>
+              <div class="content-photo-characteristics">
+
+                <div>
+                  <div class="text-xs uppercase font-semibold opacity-60">{{service.characteristics}}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="badge badge-outline badge-sm">{{service.code}}</div>
+            </td>
+            <td>
+              <div class="badge badge-outline badge-sm">{{service.orderId}}</div>
+            </td>
+            <td>
+              <div class="badge badge-outline badge-sm">{{service.created_at| date}}</div>
+            </td>
+            <td>
+              <div class="badge badge-outline badge-sm">{{service.deliveryDate|date}}</div>
+            </td>
+            <td>
+                <button class="btn btn-primary btn-xs" (click)="openModalEditService(service)" >Editar</button>
+              </td>
+              <td>
+                <button class="btn btn-error btn-xs" (click)="deleteService(service.id)" >Eliminar</button>
+              </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-warning" (click)="clouseModal()">Cerrar</button>
+    </div>
+  </div>
+
+</dialog>
+
+<modal-edit-service [service]="selectedService()" />

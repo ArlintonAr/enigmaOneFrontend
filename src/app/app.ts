@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -10,3 +11,4 @@ import { RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = signal('enigmaOne-front');
 }
+

@@ -1,0 +1,268 @@
+<div class="min-h-screen bg-base-200 p-4 sm:p-6 lg:p-8">
+
+  <!-- Header Section -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-base-content">
+          📋 Movimientos de Inventario
+        </h1>
+        <p class="text-sm text-base-content/60 mt-2">Gestión de préstamos y devoluciones de materiales</p>
+      </div>
+
+      <!-- Stats Card -->
+      <div class="stats shadow-lg bg-base-100">
+        <div class="stat">
+          <div class="stat-figure text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+            </svg>
+          </div>
+          <div class="stat-title">Total</div>
+          <div class="stat-value text-primary">{{movements()!.length}}</div>
+          <div class="stat-desc">Movimientos registrados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      @for (movement of movements(); track $index) {
+        <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-300">
+          <div class="card-body p-6">
+
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center gap-3">
+                <div class="avatar avatar-placeholder">
+                  <div class="bg-primary text-primary-content rounded-full w-12 h-12">
+                    <span class="text-lg font-bold">
+                      {{movement.materialRequesterFirstName.charAt(0)}}{{movement.materialRequesterLastName.charAt(0)}}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-bold text-base text-base-content">
+                    {{movement.materialRequesterFirstName}} {{movement.materialRequesterLastName}}
+                  </h3>
+                  <p class="text-xs text-base-content/60">{{requestMovementName()}} del material</p>
+                </div>
+              </div>
+
+              <!-- Status Indicator -->
+              <div class="badge badge-success badge-sm gap-1">
+                <div class="w-2 h-2 rounded-full bg-success-content animate-pulse"></div>
+                Activo
+              </div>
+            </div>
+
+            <div class="divider my-2"></div>
+
+            <!-- Info Grid -->
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div class="bg-base-200 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  </svg>
+                  <span class="text-xs text-base-content/60">Código</span>
+                </div>
+                <p class="font-bold text-sm text-base-content truncate">{{movement.transactionCode}}</p>
+              </div>
+
+              <div class="bg-base-200 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  <span class="text-xs text-base-content/60">Stock ID</span>
+                </div>
+
+              </div>
+
+              <div class="bg-base-200 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span class="text-xs text-base-content/60">Creación</span>
+                </div>
+                <p class="font-bold text-sm text-base-content">{{movement.created_at | date:'dd/MM/yy'}}</p>
+              </div>
+
+              <div class="bg-base-200 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                  </svg>
+                  <span class="text-xs text-base-content/60">Retorno</span>
+                </div>
+                <p class="font-bold text-sm text-base-content">{{movement.returnDate | date:'dd/MM/yy'}}</p>
+              </div>
+            </div>
+
+            <!-- Badges -->
+            <div class="flex flex-wrap gap-2 mb-4">
+              <div class="badge badge-primary badge-lg gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                </svg>
+                {{movement.returnable.toLocaleUpperCase()}}
+              </div>
+
+              <div class="badge badge-secondary badge-lg">
+                {{movement.type | removeHyphen | toUpperCaseFirstLetter}}
+              </div>
+            </div>
+
+            <!-- Collapsible Details -->
+            <div class="collapse collapse-arrow bg-base-200 rounded-lg">
+              <input type="checkbox" />
+              <div class="collapse-title text-sm font-semibold">
+                Ver más detalles
+              </div>
+              <div class="collapse-content">
+                <div class="space-y-3 pt-2">
+                  <!-- Cantidad -->
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-base-content/70">Cantidad:</span>
+                    <span class="font-bold text-base-content">{{movement.quantity || 'N/A'}}</span>
+                  </div>
+
+                  <!-- Autorizante -->
+                  @if(movement.employeeFirstName) {
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm text-base-content/70">Autorizante:</span>
+                      <span class="font-bold text-base-content text-sm">
+                        {{movement.employeeFirstName}} {{movement.employeeLastName}}
+                      </span>
+                    </div>
+                  }
+
+                  <!-- Observaciones -->
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-base-content/70">Observaciones:</span>
+                    <span class="font-bold text-base-content">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card-actions justify-end mt-4 pt-4 border-t border-base-300">
+              <button class="btn btn-sm btn-ghost gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                Ver
+              </button>
+              <button class="btn btn-sm btn-ghost gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Imprimir
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  @if(movements()!.length === 0) {
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col items-center justify-center py-20 px-6">
+        <div class="w-32 h-32 bg-base-300 rounded-full flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+          </svg>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-2 text-base-content">
+          No hay movimientos registrados
+        </h3>
+        <p class="text-center text-base-content/60 max-w-md mb-6">
+          No se encontraron movimientos de inventario. Comienza registrando préstamos o devoluciones de materiales.
+        </p>
+
+        <div class="flex gap-3">
+          <button class="btn btn-primary gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Nuevo Movimiento
+          </button>
+          <button class="btn btn-outline gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+            Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<style>
+  /* Transiciones suaves */
+  .card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+  }
+
+  .badge, .btn {
+    transition: all 0.2s ease;
+  }
+
+  /* Animación de entrada */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .card {
+    animation: fadeInUp 0.5s ease-out;
+    animation-fill-mode: both;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+
+  /* Avatar hover */
+  .avatar {
+    transition: transform 0.3s ease;
+  }
+
+  .avatar:hover {
+    transform: scale(1.05);
+  }
+
+  /* Collapse hover */
+  .collapse {
+    transition: all 0.2s ease;
+  }
+
+  .collapse:hover {
+    background-color: hsl(var(--b3));
+  }
+</style>

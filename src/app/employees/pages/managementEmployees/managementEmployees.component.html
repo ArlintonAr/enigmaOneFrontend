@@ -1,0 +1,75 @@
+<div class="content-employees flex flex-col h-screen bg-base-200 p-6 gap-6">
+
+  <!-- Header con buscador y botón -->
+  <div class="card bg-base-100 shadow-xl border border-base-300">
+    <div class="card-body p-4">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+
+        <!-- Título y estadísticas -->
+        <div class="flex  items-center gap-4 w-full sm:w-auto ">
+          <div class="avatar avatar-placeholder">
+            <div class="bg-primary text-primary-content rounded-xl w-14 ">
+              <i class="fas fa-users text-2xl"></i>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold">Gestión de Empleados</h2>
+            <p class="text-sm opacity-60">Administra tu equipo de trabajo</p>
+          </div>
+        </div>
+
+        <!-- Buscador y botón -->
+        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto sm:flex-1 sm:max-w-2xl">
+          <app-search placeholder='Buscar empleado por nombre...' (onValue)="searchEmployeeForName($event)"
+            class="flex-1 w-full" />
+          <button class="btn btn-success gap-2 shadow-md hover:shadow-lg transition-all whitespace-nowrap"
+            (click)="openModal()">
+            <i class="fas fa-user-plus"></i>
+            Registrar Nuevo
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de empleados con altura completa -->
+  <div class="flex-1 overflow-hidden">
+    @if (employeesList().length > 0) {
+    <!-- Contenedor con altura completa -->
+    <div class="h-full">
+      <list-employees [employeesList]="employeesList()" />
+    </div>
+    } @else {
+    <!-- Estado vacío mejorado -->
+    <div class="card bg-base-100 shadow-xl border border-base-300 h-full">
+      <div class="card-body flex flex-col justify-center items-center gap-6">
+        <div class="avatar avatar-placeholder">
+          <div class="bg-warning/20 text-warning rounded-full w-32">
+            <i class="fas fa-search text-6xl"></i>
+          </div>
+        </div>
+        <div class="text-center max-w-md">
+          <h3 class="text-2xl font-bold mb-2">No se encontraron empleados</h3>
+          <p class="opacity-60 mb-4">
+            No hay empleados que coincidan con tu búsqueda. Intenta con otro nombre o verifica los filtros.
+          </p>
+          <div class="flex gap-3 justify-center flex-wrap">
+            <button class="btn btn-ghost gap-2" onclick="window.location.reload()">
+              <i class="fas fa-redo"></i>
+              Recargar
+            </button>
+            <button class="btn btn-primary gap-2" (click)="openModal()">
+              <i class="fas fa-user-plus"></i>
+              Agregar Empleado
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+</div>
+
+<modal-create-employee />

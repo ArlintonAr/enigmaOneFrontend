@@ -1,0 +1,22 @@
+<div class="content min-h-screen bg-base-200">
+
+  <!-- Header Section -->
+  <div class="content-title bg-base-100 border-b border-base-300 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <h1 class="text-3xl font-bold text-base-content mb-4">
+        📋 SOLICITUD DE PEDIDOS
+      </h1>
+      <div class="flex justify-center items-center">
+        <sub-menu-for-modules [subMenu]="subMenu"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-router-outlet">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <router-outlet/>
+    </div>
+  </div>
+
+</div>

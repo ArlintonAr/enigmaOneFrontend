@@ -1,0 +1,219 @@
+<button
+  class="btn btn-xs gap-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 border-0 text-white shadow-md hover:shadow-violet-400/50 transition-all duration-300 hover:scale-105 rounded-full px-2"
+  (click)="openModal()"
+>
+  <i class="fas fa-eye text-[10px]"></i>
+  <span class="text-xs font-medium">Detalles</span>
+</button>
+
+<dialog #detailMovementModal class="modal">
+  <div class="modal-box w-11/12 max-w-7xl p-0 bg-base-100">
+
+    <!-- Header elegante -->
+    <div class="sticky top-0 z-10 bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+            <i class="fas fa-clipboard-list text-white text-xl"></i>
+          </div>
+          <div class="text-white">
+            <h3 class="text-2xl font-bold">Detalles del Movimiento</h3>
+            <p class="text-sm text-white/80 mt-0.5">Información completa del registro</p>
+          </div>
+        </div>
+        <button
+          class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-0 text-white"
+          (click)="closeModal()">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats rápidas -->
+    <div class="bg-base-200 px-6 py-4 border-b border-base-300">
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-boxes text-indigo-500 text-lg"></i>
+          <div>
+            <p class="text-xs text-base-content/60">Total Registros</p>
+            <p class="text-lg font-bold text-indigo-500">{{ detailMaterials()!.length }}</p>
+          </div>
+        </div>
+        <div class="divider divider-horizontal m-0"></div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-calculator text-teal-500 text-lg"></i>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="p-6 max-h-[60vh] overflow-y-auto">
+
+      @if(detailMaterials()!.length === 0) {
+        <!-- Estado vacío -->
+        <div class="flex flex-col items-center justify-center py-16 text-center">
+          <div class="w-20 h-20 bg-base-300 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-inbox text-4xl text-base-content/30"></i>
+          </div>
+          <p class="text-lg font-semibold text-base-content/70">No hay detalles disponibles</p>
+          <p class="text-sm text-base-content/50 mt-1">No se encontraron registros para este movimiento</p>
+        </div>
+      } @else {
+        <!-- Grid de cards -->
+        <div class="grid gap-4">
+          @for (detail of detailMaterials(); track $index) {
+            <div class="card bg-base-200/50 border border-base-300 hover:border-indigo-400/50 hover:shadow-lg transition-all duration-200">
+              <div class="card-body p-5">
+
+                <!-- Header del card -->
+                <div class="flex items-start justify-between mb-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-box text-indigo-500 text-lg"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs text-base-content/60 font-medium">Registro #{{ detail.id }}</p>
+                      <p class="text-sm font-bold text-base-content">{{ detail.created_at | date:'medium' }}</p>
+                    </div>
+                  </div>
+
+                  <div class="badge badge-lg badge-primary gap-2">
+                    <i class="fas fa-cubes"></i>
+                    <span class="text-xl font-black">{{ detail.quantity }}</span>
+                  </div>
+                </div>
+
+                <!-- Grid de información -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+
+                  <!-- Destino -->
+                  <div class="rounded-lg bg-base-100 border border-base-300 p-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <i class="fas fa-map-marker-alt text-rose-500 text-xs"></i>
+                      <p class="text-xs font-semibold text-base-content/70">Ubicación Destino</p>
+                    </div>
+                    <p class="text-sm font-bold text-rose-500">{{ detail.destinationMaterial || 'No especificado' }}</p>
+                  </div>
+
+                  <!-- Autorizado por -->
+                  <div class="rounded-lg bg-base-100 border border-base-300 p-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <i class="fas fa-user-check text-teal-500 text-xs"></i>
+                      <p class="text-xs font-semibold text-base-content/70">Autorizado por</p>
+                    </div>
+                    <p class="text-sm font-bold text-teal-500">{{ detail.employeeNameAuthorized || 'Sin autorización' }}</p>
+                  </div>
+
+                  <!-- Solicitante -->
+                  <div class="rounded-lg bg-base-100 border border-base-300 p-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <i class="fas fa-user text-indigo-500 text-xs"></i>
+                      <p class="text-xs font-semibold text-base-content/70">Solicitante</p>
+                    </div>
+                    <p class="text-sm font-bold text-indigo-500">{{ detail.employeeNameRequerter || 'No especificado' }}</p>
+                  </div>
+
+                  <!-- Stock ID -->
+                  <div class="rounded-lg bg-base-100 border border-base-300 p-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <i class="fas fa-barcode text-purple-500 text-xs"></i>
+                      <p class="text-xs font-semibold text-base-content/70">ID de Stock</p>
+                    </div>
+                    <p class="text-sm font-bold text-purple-500">{{ detail.stockId }}</p>
+                  </div>
+
+                  <!-- Movement ID -->
+                  <div class="rounded-lg bg-base-100 border border-base-300 p-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <i class="fas fa-exchange-alt text-amber-500 text-xs"></i>
+                      <p class="text-xs font-semibold text-base-content/70">ID de Movimiento</p>
+                    </div>
+                    <p class="text-sm font-bold text-amber-500">{{ detail.movementId }}</p>
+                  </div>
+
+                  <!-- Transaction Code -->
+                  <div class="rounded-lg bg-base-100 border border-base-300 p-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <i class="fas fa-receipt text-cyan-500 text-xs"></i>
+                      <p class="text-xs font-semibold text-base-content/70">Código de Transacción</p>
+                    </div>
+                    <p class="text-sm font-bold text-cyan-500">{{ detail.transactionCode || 'N/A' }}</p>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer con acciones -->
+    <div class="sticky bottom-0 bg-base-200 border-t border-base-300 px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="text-sm text-base-content/60">
+          <i class="fas fa-info-circle mr-1"></i>
+          Visualizando {{ detailMaterials()!.length }} registro(s)
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm gap-2">
+            <i class="fas fa-download"></i>
+            Exportar
+          </button>
+          <button
+            class="btn btn-error btn-sm gap-2"
+            (click)="closeModal()">
+            <i class="fas fa-times"></i>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Backdrop mejorado -->
+  <form method="dialog" class="modal-backdrop bg-black/60 backdrop-blur-xs">
+    <button (click)="closeModal()">close</button>
+  </form>
+</dialog>
+
+<style>
+  /* Scrollbar personalizado */
+  .modal-box > div::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .modal-box > div::-webkit-scrollbar-track {
+    background: hsl(var(--b2));
+    border-radius: 10px;
+  }
+
+  .modal-box > div::-webkit-scrollbar-thumb {
+    background: hsl(var(--bc) / 0.2);
+    border-radius: 10px;
+  }
+
+  .modal-box > div::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--bc) / 0.3);
+  }
+
+  /* Animación de entrada */
+  .modal.modal-open .modal-box {
+    animation: slideInUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+</style>

@@ -1,0 +1,22 @@
+<div class="content flex flex-col h-full gap-2 p-2  ">
+
+
+  <div class="content-buttons-search flex justify-between items-center gap-4">
+    <div class="buttons ">
+      <button class="btn btn-success" (click)="openModal()">Solicitar nuevo pedido</button>
+      <create-order  />
+    </div>
+    <div class="search flex-1">
+      <app-search (onValue)="findOrderById($event)" />
+    </div>
+
+  </div>
+
+
+  <div class="content-list-orders ">
+    <list-orders [orderList]="orders()" />
+  </div>
+
+
+
+</div>

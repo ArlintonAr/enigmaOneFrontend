@@ -1,0 +1,47 @@
+<div class="  w-auto  h-screen ">
+  <div class="flex flex-col lg:flex-row justify-between w-[100%] ">
+
+    <div class="hero  h-screen max-width-lg lg:w-[50%] "
+      style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);">
+      <div class="hero-overlay"></div>
+      <div class="hero-content text-neutral-content text-center">
+        <div class="max-w">
+          <h1 class="mb-5 text-5xl font-bold">Somos Enigma</h1>
+          <p class="mb-5">
+            "Enigma One: el software inteligente que transforma la logística, contabilidad y gestión empresarial en una
+            sola solución hecha a tu medida."
+          </p>
+          <button class="btn btn-success" [routerLink]="['/inicio']">Volver</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card flex justify-center items-center w-[100%] lg:w-[50%] h-screen">
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()"
+        class="card  w-[100%]  flex flex-col justify-center items-center">
+        <div class="card-body w-[50%] mx-auto grow-0  shadow-md">
+          <div class="text-center mb-4">
+            <div class="flex justify-center"><img src="/logoLetras.png" width="250px" height="250px" alt=""></div>
+            <p class="text-center">Bienvenido puedes iniciar sesión para acceder y trabajar en nuestra plataforma.</p>
+          </div>
+          <fieldset class="fieldset">
+            <input type="email" class="input" placeholder="Email" formControlName="email" />
+            <input type="password" class="input" placeholder="Contraseña" formControlName="password" />
+            <div><a class="link link-hover">Olvidaste tu contraseña?</a></div>
+
+
+            <button class="btn btn-warning mt-6" (click)="login()">Ingresar</button>
+          </fieldset>
+        </div>
+      </form>
+
+      @if(hasError()){
+          <error-alert messageError="{{ hasNameError() }}" (close)="closeAlert()"/>
+      }
+
+
+    </div>
+
+  </div>
+</div>

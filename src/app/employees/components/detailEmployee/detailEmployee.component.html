@@ -1,0 +1,458 @@
+<button class="btn btn-xs gap-1.5 bg-gradient-to-r
+from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700
+border-0 text-white shadow-md hover:shadow-violet-400/50 transition-all duration-300
+hover:scale-105 rounded-full px-2" (click)="openModal()">
+  <i class="fas fa-eye text-[10px]"></i>
+  <span class="text-xs font-medium">Detalles</span>
+</button>
+
+<dialog #modalEmployee id="my_modal_4" class="modal">
+  <div class="modal-box w-11/12 max-w-7xl h-[95vh] p-0 flex flex-col">
+
+    <!-- Header con gradiente y foto de perfil -->
+    <div
+      class="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 px-6 py-8 rounded-t-2xl shadow-xl relative overflow-hidden">
+      <!-- Decoración de fondo -->
+      <div class="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
+
+      <div class="relative z-10 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <!-- Avatar grande -->
+          <div class="avatar">
+            <div class="w-28 h-28 rounded-2xl ring ring-white ring-offset-base-100 ring-offset-4 shadow-2xl">
+              <img [src]="employee()?.photo | noPhoto" alt="Employee" />
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-4xl font-bold text-white mb-2">
+              {{ employee()?.firstName?.toLocaleUpperCase() }} {{ employee()?.lastName?.toLocaleUpperCase() }}
+            </h3>
+            <div class="flex items-center gap-4 mt-2 flex-wrap">
+              <div class="badge badge-lg bg-white/20 backdrop-blur-sm text-white border-none gap-2">
+                <i class="fas fa-briefcase"></i>
+                {{ employee()?.positionName | removeHyphen }}
+              </div>
+              <div class="badge badge-lg bg-white/20 backdrop-blur-sm text-white border-none gap-2">
+                <i class="fas fa-building"></i>
+                {{ employee()?.departmentName }}
+              </div>
+              <div
+                [class]="'badge badge-lg gap-2 border-none ' + (employee()?.active ? 'bg-success/80 text-white' : 'bg-error/80 text-white')">
+                <i [class]="employee()?.active ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+                {{ employee()?.active ? 'Activo' : 'Inactivo' }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón cerrar -->
+        <button class="btn btn-ghost btn-circle text-white hover:bg-white/20" (click)="clouseModal()">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenido principal con scroll -->
+    <div class="flex-1 overflow-y-auto bg-base-200 p-6">
+
+      <form [formGroup]="updateEmployeeForm">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <!-- Columna izquierda: Info básica y foto -->
+          <div class="lg:col-span-1">
+            <div class="card bg-base-100 shadow-xl border border-base-300">
+              <div class="card-body">
+                <h2 class="card-title text-lg mb-4">
+                  <i class="fas fa-id-card text-primary"></i>
+                  Información Básica
+                </h2>
+
+                <!-- Foto del empleado -->
+                <div class="form-control mb-4">
+                  <label class="label">
+                    <span class="label-text font-semibold">
+                      <i class="fas fa-camera text-primary mr-2"></i>
+                      Foto del Empleado
+                    </span>
+                  </label>
+                  <div class="flex flex-col items-center gap-3">
+                    <div class="avatar">
+                      <div class="w-32 h-32 rounded-2xl ring ring-primary ring-offset-2 ring-offset-base-100">
+                        <img [src]="employee()?.photo | noPhoto" alt="Employee" />
+                      </div>
+                    </div>
+                    <label class="btn btn-primary btn-sm gap-2 shadow-lg hover:shadow-xl transition-all w-full">
+                      <i class="fas fa-upload"></i>
+                      Cambiar Foto
+                      <input type="file" accept="image/*" (change)="onFileSelected($event)" class="hidden" />
+                    </label>
+                    @if(namedSelectPhoto()) {
+                    <div class="alert alert-success py-2 w-full">
+                      <i class="fas fa-check-circle text-sm"></i>
+                      <span class="text-xs truncate">{{ namedSelectPhoto() }}</span>
+                    </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- ID (No editable pero seleccionable) -->
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text font-semibold">
+                      <i class="fas fa-hashtag text-primary mr-2"></i>
+                      ID
+                    </span>
+                    <span class="label-text-alt badge badge-ghost badge-xs">No editable</span>
+                  </label>
+                  <div class="input input-bordered input-sm bg-base-200 cursor-not-allowed select-text">
+                    {{ employee()?.id }}
+                  </div>
+                </div>
+
+                <!-- DNI (Editable) -->
+                <div class="form-control mt-3">
+                  <label class="label">
+                    <span class="label-text font-semibold">
+                      <i class="fas fa-id-card-alt text-info mr-2"></i>
+                      DNI
+                    </span>
+                  </label>
+                  <input type="text" formControlName="dni" class="input input-bordered input-sm focus:input-info"
+                    [placeholder]="employee()?.dni" />
+                </div>
+
+                <!-- Cargo (Editable con select) -->
+                <div class="form-control mt-3">
+                  <label class="label">
+                    <span class="label-text font-semibold">
+                      <i class="fas fa-briefcase text-accent mr-2"></i>
+                      Cargo: <span class="text-success" >{{employee()?.positionName |removeHyphen}}</span>
+                    </span>
+                  </label>
+                  <select formControlName="positionId" class="select select-bordered select-sm focus:select-accent">
+                    @for(position of positions; track $index; ) {
+                    <option [value]="position.id" [defaultSelected]="employee()?.positionName">
+                      {{ position.name | removeHyphen }}</option>
+                    }
+                  </select>
+                </div>
+
+                <!-- Departamento (Editable con select) -->
+                <div class="form-control mt-3">
+                  <label class="label">
+                    <span class="label-text font-semibold">
+                      <i class="fas fa-building text-warning mr-2"></i>
+                      Departamento: <span class="text-success">{{employee()?.departmentName |removeHyphen}}</span>
+                    </span>
+                  </label>
+                  <select formControlName="departmentId" class="select select-bordered select-sm focus:select-warning">
+                    <option value="" disabled>Seleccionar departamento</option>
+                    @for(department of departments; track $index) {
+                    <option [value]="department.id" [defaultSelected]="employee()?.departmentName">{{ department.name }}
+                    </option>
+                    }
+                  </select>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Cambiar contraseña -->
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text font-semibold">
+                      <i class="fas fa-key text-error mr-2"></i>
+                      Modificar Contraseña
+                    </span>
+                    <span class="label-text-alt badge badge-info badge-xs">Opcional</span>
+                  </label>
+                  <input type="password" formControlName="password"
+                    class="input input-bordered input-sm focus:input-error" placeholder="Dejar vacío para no cambiar" />
+                  <label class="label">
+                    <span class="label-text-alt text-xs opacity-60">
+                      <i class="fas fa-info-circle"></i>
+                      Solo completa si deseas cambiar la contraseña
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna derecha: Info detallada editable -->
+          <div class="lg:col-span-2">
+            <div class="card bg-base-100 shadow-xl border border-base-300">
+              <div class="card-body">
+                <h2 class="card-title text-lg mb-4">
+                  <i class="fas fa-user-edit text-success"></i>
+                  Información del Empleado
+                  <span class="badge badge-success badge-sm">Editable</span>
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                  <!-- Nombres -->
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-user text-primary mr-2"></i>
+                        Nombres
+                      </span>
+                    </label>
+                    <input type="text" formControlName="firstName"
+                      class="input input-bordered input-sm focus:input-primary" [placeholder]="employee()?.firstName" />
+                  </div>
+
+                  <!-- Apellidos -->
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-user text-primary mr-2"></i>
+                        Apellidos
+                      </span>
+                    </label>
+                    <input type="text" formControlName="lastName"
+                      class="input input-bordered input-sm focus:input-primary" [placeholder]="employee()?.lastName" />
+                  </div>
+
+                  <!-- Email -->
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-envelope text-info mr-2"></i>
+                        Email
+                      </span>
+                    </label>
+                    <input type="email" formControlName="email" class="input input-bordered input-sm focus:input-info"
+                      [placeholder]="employee()?.email" />
+                  </div>
+
+                  <!-- Celular -->
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-phone text-success mr-2"></i>
+                        Celular
+                      </span>
+                    </label>
+                    <input type="tel" formControlName="cellphone"
+                      class="input input-bordered input-sm focus:input-success" [placeholder]="employee()?.cellphone" />
+                  </div>
+
+                  <!-- Salario -->
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-dollar-sign text-warning mr-2"></i>
+                        Salario
+                      </span>
+                    </label>
+                    <div class="input-group input-group-sm">
+                      <span class="bg-warning/20">S/.</span>
+                      <input type="number" formControlName="salary"
+                        class="input input-bordered input-sm focus:input-warning flex-1"
+                        [placeholder]="employee()?.salary" step="0.01" />
+                    </div>
+                  </div>
+
+                  <!-- Cumpleaños -->
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-birthday-cake text-error mr-2"></i>
+                        Cumpleaños: <span class="text-success"> {{employee()?.birthday | date:'mediumDate'}}</span>
+                      </span>
+                    </label>
+                    <input type="date" formControlName="birthday"
+                      class="input input-bordered input-sm focus:input-error"
+                      [value]="(employee()?.birthday | date:'yyyy-MM-dd')" />
+                  </div>
+
+                  <!-- Cuenta CCI -->
+                  <div class="form-control md:col-span-2 flex gap-2 ">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-university text-accent mr-2"></i>
+                        Cuenta CCI
+                      </span>
+                    </label>
+                    <input type="text" formControlName="bankAccountCciNumber"
+                      class="input input-bordered input-sm focus:input-accent font-mono"
+                      [placeholder]="employee()?.bankAccountCciNumber" maxlength="20" />
+                  </div>
+
+                  <!-- Número de Cuenta -->
+                  <div class="form-control md:col-span-2 flex gap-2">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-credit-card text-secondary mr-2"></i>
+                        Número de Cuenta
+                      </span>
+                    </label>
+                    <input type="text" formControlName="bankAccountNumber"
+                      class="input input-bordered input-sm focus:input-secondary font-mono"
+                      [placeholder]="employee()?.bankAccountNumber" />
+                  </div>
+
+                  <!-- Dirección -->
+                  <div class="form-control md:col-span-2 flex gap-2">
+                    <label class="label">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-map-marker-alt text-error mr-2"></i>
+                        Dirección
+                      </span>
+                    </label>
+                    <textarea formControlName="address"
+                      class="textarea textarea-bordered textarea-sm focus:textarea-error"
+                      [placeholder]="employee()?.address" rows="2"></textarea>
+                  </div>
+
+                  <!-- Estado Activo/Inactivo -->
+                  <div class="form-control md:col-span-2">
+                    <label class="label cursor-pointer justify-start gap-4">
+                      <span class="label-text font-semibold">
+                        <i class="fas fa-toggle-on text-success mr-2"></i>
+                        Estado del Empleado
+                      </span>
+                      <input type="checkbox" formControlName="active" class="toggle toggle-success"
+                        [value]="employee()?.active" />
+                      <span class="label-text-alt opacity-70">
+                        {{ employee()?.active ? 'Activo' : 'Inactivo' }}
+                      </span>
+                    </label>
+                  </div>
+
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Botón guardar cambios -->
+                <div class="flex justify-end gap-3">
+                  @if (updateEmployeeForm.dirty) {
+                  <button type="button" class="btn btn-warning btn-sm gap-2" (click)="resetForm()">
+                    <i class="fas fa-undo"></i>
+                    Restaurar
+                  </button>
+                  }
+                  <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all"
+                    [disabled]="(updateEmployeeForm.pristine && selectedPhotoFile() == null) || updateEmployeeForm.invalid"
+                    (click)="updateEmployee(employee()!.id)">
+                    <i class="fas fa-save"></i>
+                    Guardar Cambios
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+
+    <!-- Footer con botones de acción -->
+    <div class="px-6 py-4 bg-base-200 border-t border-base-300 rounded-b-2xl">
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <div class="flex items-center gap-4">
+          <div class="text-sm opacity-60 flex items-center gap-2">
+            <i class="fas fa-info-circle"></i>
+            <span>Formulario: <strong [class.text-warning]="updateEmployeeForm.dirty">{{ updateEmployeeForm.dirty ?
+                'Modificado' : 'Sin cambios' }}</strong></span>
+          </div>
+
+          @if (updateEmployeeForm.dirty) {
+          <div class="badge badge-warning gap-1">
+            <i class="fas fa-exclamation-triangle text-xs"></i>
+            Cambios pendientes
+          </div>
+          }
+        </div>
+
+        <div class="flex gap-3">
+          <button class="btn btn-ghost gap-2 hover:bg-base-300" (click)="clouseModal()">
+            <i class="fas fa-times"></i>
+            Cerrar
+          </button>
+
+          <button class="btn btn-error gap-2 shadow-md hover:shadow-lg transition-all" (click)="openModalForDelete()">
+            <i class="fas fa-trash-alt"></i>
+            Eliminar Empleado
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  @if(isActiveModalDelete()){
+  <dialog #modalConfirmDelete class="modal modal-open" role="dialog">
+    <div class="modal-box">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="avatar placeholder">
+          <div class="bg-error/20 text-error rounded-full w-16">
+            <i class="fas fa-exclamation-triangle text-3xl"></i>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Confirmar Eliminación</h3>
+          <p class="text-sm opacity-60">Esta acción no se puede deshacer</p>
+        </div>
+      </div>
+
+      <div class="alert alert-warning">
+        <i class="fas fa-exclamation-circle text-xl"></i>
+        <div>
+          <h4 class="font-bold">¿Estás seguro?</h4>
+          <p class="text-sm">Se eliminará permanentemente el empleado <strong>{{ employee()?.firstName }} {{
+              employee()?.lastName }}</strong></p>
+        </div>
+      </div>
+
+      <div class="modal-action">
+        <button class="btn btn-ghost gap-2" (click)="clouseModalForDelete()">
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
+        <button class="btn btn-error gap-2" (click)="deleteEmployee()">
+          <i class="fas fa-trash-alt"></i>
+          Confirmar Eliminación
+        </button>
+      </div>
+    </div>
+  </dialog>
+  }
+
+  <!-- Alertas de éxito y error -->
+
+  @if(hasSuccess()){
+  <success-alert (close)="closeHasSuccess(true)" [messageSuccess]=" hasNameSuccess() " />
+  }
+  @if (hasError()) {
+  <error-alert (close)="closeHasError(true)" [messageError]=" hasNameError() " />
+  }
+
+
+
+</dialog>
+
+<style>
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.3s ease-out;
+  }
+</style>

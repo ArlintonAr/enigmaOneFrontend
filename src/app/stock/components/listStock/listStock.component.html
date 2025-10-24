@@ -1,0 +1,290 @@
+<div class="list-employees min-h-screen bg-base-200 p-4 sm:p-6">
+
+  <!-- Header Section -->
+  <div class="mb-6">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-primary">
+          Inventario de Stock
+        </h2>
+        <p class="text-sm text-base-content/60 mt-1">Control y gestión de productos en almacén</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="flex flex-wrap gap-3">
+        <div class="stats shadow bg-base-100">
+          <div class="stat py-2 px-4">
+            <div class="stat-figure text-info">
+              <i class="fas fa-boxes text-xl"></i>
+            </div>
+            <div class="stat-title text-xs">Total Productos</div>
+            <div class="stat-value text-xl text-info">{{listStock().length}}</div>
+          </div>
+        </div>
+
+        <div class="stats shadow bg-base-100">
+          <div class="stat py-2 px-4">
+            <div class="stat-figure text-success">
+              <i class="fas fa-check-double text-xl"></i>
+            </div>
+            <div class="stat-title text-xs">Conformes</div>
+            <div class="stat-value text-xl text-success">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Table Card con altura fija -->
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body p-0">
+      <!-- Contenedor con scroll y altura fija -->
+      <div class="overflow-auto max-h-screen">
+        <table class="table table-pin-rows table-pin-cols table-sm">
+          <!-- Header compacto -->
+          <thead class="bg-primary  text-success">
+            <tr>
+              <th class="text-xs font-semibold py-3">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-hashtag"></i>
+                  <span>ID</span>
+                </div>
+              </th>
+              <th class="text-xs font-semibold py-3">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-barcode"></i>
+                  <span>Producto</span>
+                </div>
+              </th>
+              <th class="text-xs font-semibold py-3">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-calendar-check"></i>
+                  <span>Fecha Entrada</span>
+                </div>
+              </th>
+              <th class="text-xs font-semibold py-3">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-info-circle"></i>
+                  <span>Características</span>
+                </div>
+              </th>
+              <th class="text-xs font-semibold py-3 text-center">
+                <div class="flex items-center justify-center gap-2">
+                  <i class="fas fa-layer-group"></i>
+                  <span>Cantidad</span>
+                </div>
+              </th>
+              <th class="text-xs font-semibold py-3 text-center">
+                <div class="flex items-center justify-center gap-2">
+                  <i class="fas fa-clipboard-check"></i>
+                  <span>Conformidad</span>
+                </div>
+              </th>
+              <th class="text-xs font-semibold py-3 text-center">
+                <div class="flex items-center justify-center gap-2">
+                  <i class="fas fa-cog"></i>
+                  <span>Acciones</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (product of listStock(); track $index) {
+            <tr class="hover">
+
+              <!-- ID compacto -->
+              <td class="py-2">
+                <div class="font-bold text-lg text-primary">
+                  #{{product.id}}
+                </div>
+              </td>
+
+              <!-- Producto con imagen compacta -->
+              <td class="py-2">
+                <div class="flex items-center gap-3">
+                  <div class="avatar">
+                    <div class="w-10 h-10 rounded-lg">
+                      <img [src]="product.photo | noPhoto" alt="Producto" class="object-cover" />
+                    </div>
+                  </div>
+                  <div class="flex flex-col">
+                    <div class="font-semibold text-sm">{{product.code}}</div>
+                    <div class="text-xs text-base-content/60 line-clamp-1">
+                      {{product.description | toUpperCaseFirstLetter}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Fecha compacta -->
+              <td class="py-2">
+                <div class="flex flex-col gap-0.5">
+                  <div class="text-sm font-medium">
+                    {{product.created_at | date:'dd/MM/yyyy'}}
+                  </div>
+                  <div class="text-xs text-base-content/50">
+                    {{product.created_at | date:'shortTime'}}
+                  </div>
+                </div>
+              </td>
+
+              <!-- Características truncadas -->
+              <td class="py-2">
+                <div class="max-w-xs">
+                  @if(product.characteristics) {
+                  <div class="text-xs text-base-content/70 line-clamp-2">
+                    {{product.characteristics}}
+                  </div>
+                  } @else {
+                  <span class="text-xs text-base-content/40 italic">Sin características</span>
+                  }
+                </div>
+              </td>
+
+              <!-- Cantidad centrada -->
+              <td class="py-2 text-center">
+                <div class="badge badge-info badge-lg gap-1">
+                  <span class="font-bold">{{product.quantity}}</span>
+                  <span class="text-xs">uds</span>
+                </div>
+              </td>
+
+              <!-- Conformidad compacta -->
+              <td class="py-2 text-center">
+                @if(product.accordingType === 'SI') {
+                <div class="badge badge-success badge-sm gap-1">
+                  <i class="fas fa-check text-xs"></i>
+                  CONFORME
+                </div>
+                } @else {
+                <div class="badge badge-error badge-sm gap-1">
+                  <i class="fas fa-times text-xs"></i>
+                  NO CONFORME
+                </div>
+                }
+              </td>
+
+              <!-- Acciones compactas -->
+              <td class="py-2">
+                <div class="flex justify-center gap-1">
+
+                  <button class="btn btn-xs btn-warning btn-circle" title="Ver detalles"
+                    (click)="openModalDetailStock(product)">
+                    <i class="fas fa-eye text-xs"></i>
+                  </button>
+                  <detail-stock />
+                  <button class="btn btn-xs btn-error btn-circle" (click)="openModalConfirmDelete(product.id)"
+                    title="Eliminar">
+                    <i class="fas fa-trash text-xs"></i>
+                  </button>
+                  <confirm-delete-stock />
+
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+
+
+        </table>
+      </div>
+
+      <!-- Footer compacto -->
+      <div class="bg-base-200 border-t px-4 py-3">
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <div class="flex items-center gap-2 text-sm">
+            <i class="fas fa-cubes text-info"></i>
+            <span class="font-semibold">Total:</span>
+            <span class="badge badge-info">{{listStock().length}}</span>
+          </div>
+
+          <div class="divider divider-horizontal mx-0 hidden sm:flex"></div>
+
+          <div class="flex items-center gap-2 text-sm">
+            <i class="fas fa-check-circle text-success"></i>
+            <span class="font-semibold">Conformes:</span>
+            <span class="badge badge-success">-</span>
+          </div>
+
+          <div class="flex items-center gap-2 text-sm">
+            <i class="fas fa-times-circle text-error"></i>
+            <span class="font-semibold">No Conformes:</span>
+            <span class="badge badge-error">-</span>
+          </div>
+
+          <div class="flex items-center gap-2 text-sm">
+            <i class="fas fa-layer-group text-warning"></i>
+            <span class="font-semibold">Stock Total:</span>
+            <span class="badge badge-warning">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado vacío -->
+      @if(listStock().length === 0) {
+      <div class="flex flex-col items-center justify-center py-16 px-6">
+        <div class="w-24 h-24 bg-base-300 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-box-open text-4xl text-base-content/40"></i>
+        </div>
+
+        <h3 class="text-xl font-bold mb-2">
+          No hay productos en stock
+        </h3>
+        <p class="text-center text-base-content/60 max-w-md mb-6 text-sm">
+          El inventario está vacío. Comienza agregando productos al almacén para gestionar tu stock.
+        </p>
+
+        <div class="flex gap-3">
+          <button class="btn btn-info btn-sm gap-2">
+            <i class="fas fa-plus-circle"></i>
+            Agregar Producto
+          </button>
+          <button class="btn btn-outline btn-info btn-sm gap-2">
+            <i class="fas fa-file-import"></i>
+            Importar Stock
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+
+
+
+<style>
+  /* Mejoras de scrollbar sin afectar rendimiento */
+  .overflow-auto::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .overflow-auto::-webkit-scrollbar-track {
+    background: hsl(var(--b2));
+  }
+
+  .overflow-auto::-webkit-scrollbar-thumb {
+    background: hsl(var(--p));
+    border-radius: 4px;
+  }
+
+  .overflow-auto::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--pf));
+  }
+
+  /* Line clamp para textos largos */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

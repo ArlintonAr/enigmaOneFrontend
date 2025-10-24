@@ -1,0 +1,17 @@
+
+<div class="content flex flex-col h-full gap-2 p-2  ">
+
+  <div class="searchAndButtonsflex flex-1 flex justify-between items-center gap-4 ">
+    <app-search  (onValue)="searchMovementForRequerteFirstName($event)" />
+  </div>
+
+  <div class="content-movement">
+
+    <div class="create-movement">
+      <list-movements [movements]="movementsExit()"/>
+    </div>
+
+  </div>
+
+
+</div>

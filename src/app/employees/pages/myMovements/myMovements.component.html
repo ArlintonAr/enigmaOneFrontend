@@ -1,0 +1,219 @@
+<div class="content-employees min-h-screen bg-base-200 p-4 sm:p-6 lg:p-8">
+
+  <!-- Header Principal -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div class="text-center mb-6">
+      <h1 class="text-4xl font-bold text-base-content mb-2">
+        Gestión de Movimientos
+      </h1>
+      <p class="text-base-content/60">
+        Visualiza y administra los movimientos autorizados y solicitados
+      </p>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="stats stats-vertical lg:stats-horizontal shadow-lg w-full bg-base-100">
+      <div class="stat place-items-center">
+        <div class="stat-figure text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+          </svg>
+        </div>
+        <div class="stat-title">Autorizados</div>
+        <div class="stat-value text-primary">{{ movements().length }}</div>
+        <div class="stat-desc">Movimientos aprobados</div>
+      </div>
+
+      <div class="stat place-items-center">
+        <div class="stat-figure text-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="stat-title">Solicitados</div>
+        <div class="stat-value text-secondary">{{ movements().length }}</div>
+        <div class="stat-desc">Pendientes de autorización</div>
+      </div>
+
+      <div class="stat place-items-center">
+        <div class="stat-figure text-accent">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <div class="stat-title">Total</div>
+        <div class="stat-value text-accent">{{ movements().length * 2 }}</div>
+        <div class="stat-desc">Movimientos totales</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="max-w-7xl mx-auto mb-6">
+    <div role="tablist" class="tabs tabs-boxed bg-base-100 shadow-lg p-2">
+      <a role="tab" class="tab tab-active gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+        </svg>
+        Vista Completa
+      </a>
+      <a role="tab" class="tab gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+        </svg>
+        Filtros
+      </a>
+    </div>
+  </div>
+
+  <!-- Content Sections -->
+  <div class="max-w-7xl mx-auto space-y-8">
+
+    <!-- Movimientos Autorizados -->
+    <div class="list bg-base-100 rounded-2xl shadow-xl p-6 border border-base-300">
+      <div class="flex items-center justify-between mb-6 pb-4 border-b border-base-300">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-base-content">
+              Movimientos Autorizados
+            </h2>
+            <p class="text-sm text-base-content/60">
+              Movimientos ya aprobados y en proceso
+            </p>
+          </div>
+        </div>
+        <div class="badge badge-primary badge-lg gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+          {{ movements().length }} Items
+        </div>
+      </div>
+
+      <list-movements
+        [movements]="movements()"
+        typeMovementName="Salida"
+        requestMovementName="Solicitante"
+      />
+    </div>
+
+    <!-- Movimientos Solicitados -->
+    <div class="list bg-base-100 rounded-2xl shadow-xl p-6 border border-base-300">
+      <div class="flex items-center justify-between mb-6 pb-4 border-b border-base-300">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-base-content">
+              Movimientos Solicitados
+            </h2>
+            <p class="text-sm text-base-content/60">
+              Pendientes de revisión y autorización
+            </p>
+          </div>
+        </div>
+        <div class="badge badge-secondary badge-lg gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          {{ movements().length }} Items
+        </div>
+      </div>
+
+      <list-movements
+        [movements]="movements()"
+        requestMovementName="Autorizante de salida"
+      />
+    </div>
+
+  </div>
+
+  <!-- Quick Actions Floating Button -->
+  <div class="fixed bottom-8 right-8 z-50">
+    <div class="dropdown dropdown-top dropdown-end">
+      <label tabindex="0" class="btn btn-circle btn-primary btn-lg shadow-2xl hover:shadow-primary/50 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+      </label>
+      <ul tabindex="0" class="dropdown-content menu p-2 shadow-xl bg-base-100 rounded-box w-52 mb-2 border border-base-300">
+        <li>
+          <a class="gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Nuevo Movimiento
+          </a>
+        </li>
+        <li>
+          <a class="gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Exportar Reporte
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  /* Animaciones suaves */
+  .list {
+    animation: fadeInUp 0.5s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .list:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .list:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  /* Hover effects */
+  .list {
+    transition: all 0.3s ease;
+  }
+
+  .list:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Floating button animation */
+  .fixed .btn-circle {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .8;
+    }
+  }
+</style>

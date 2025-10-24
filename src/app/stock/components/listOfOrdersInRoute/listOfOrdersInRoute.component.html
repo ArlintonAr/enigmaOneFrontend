@@ -1,0 +1,87 @@
+<dialog #modalListOrders class="modal">
+  <div class="modal-box w-11/12 max-w-6xl h-[90vh] flex flex-col p-0">
+
+    <!-- Header mejorado pero manteniendo estilo DaisyUI -->
+    <div class="bg-base-200 px-6 py-4 border-b border-base-300">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="avatar placeholder">
+            <div class="bg-primary text-primary-content rounded-lg w-12">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold">Lista de órdenes en ruta</h3>
+            <p class="text-sm opacity-60">Visualiza y gestiona las órdenes activas</p>
+          </div>
+        </div>
+
+        <!-- Badge contador con DaisyUI -->
+        <div class="badge badge-primary badge-lg gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          {{ orderListInRoute().length }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content-list flex-1 overflow-y-auto p-6 bg-base-100">
+
+      @if (orderListInRoute().length > 0) {
+        <div class="card bg-base-100 shadow-sm border border-base-300">
+          <div class="card-body p-4">
+            <list-orders
+              [orderList]="orderListInRoute()"
+              [updatedTracking]="true"
+            />
+          </div>
+        </div>
+      } @else {
+        <!-- Estado vacío con DaisyUI -->
+        <div class="flex flex-col items-center justify-center h-full py-12">
+          <div class="avatar avatar-placeholder mb-4">
+            <div class="bg-base-300 text-base-content rounded-full w-24">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+              </svg>
+            </div>
+          </div>
+          <h4 class="text-xl font-semibold mb-2">No hay órdenes disponibles</h4>
+          <p class="text-center opacity-60 max-w-md">
+            Las órdenes en ruta aparecerán aquí cuando estén disponibles
+          </p>
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer con acciones -->
+    <div class="modal-action m-0 px-6 py-4 bg-base-200 border-t border-base-300">
+      <form method="dialog" class="w-full">
+        <div class="flex items-center justify-end gap-3">
+
+          <button
+            class="btn btn-ghost gap-2"
+            (click)="closeModal()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Cerrar
+          </button>
+
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Backdrop de DaisyUI -->
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="closeModal()">close</button>
+  </form>
+</dialog>

@@ -1,0 +1,174 @@
+<div class="h-full bg-base-200 rounded-xl p-4">
+  <div class="card bg-base-100 shadow-xl border border-base-300 h-full flex flex-col">
+    <div class="flex-1 overflow-auto">
+      <table class="table table-zebra">
+        <!-- head -->
+        <thead class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white sticky top-0 z-10">
+          <tr>
+            <th class="text-xs font-semibold uppercase">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-hashtag"></i>
+                ID
+              </div>
+            </th>
+            <th class="text-xs font-semibold uppercase">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-user"></i>
+                Empleado
+              </div>
+            </th>
+            <th class="text-xs font-semibold uppercase">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-briefcase"></i>
+                Cargo
+              </div>
+            </th>
+            <th class="text-xs font-semibold uppercase">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-envelope"></i>
+                Correo
+              </div>
+            </th>
+            <th class="text-xs font-semibold uppercase">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-phone"></i>
+                Celular
+              </div>
+            </th>
+            <th class="text-xs font-semibold uppercase">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-toggle-on"></i>
+                Estado
+              </div>
+            </th>
+            <th class="text-xs font-semibold uppercase text-center">
+              <div class="flex items-center justify-center gap-2">
+                <i class="fas fa-cog"></i>
+                Acciones
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (employee of employeesList(); track $index) {
+            <tr class="hover:bg-base-200 transition-colors duration-200">
+              <!-- ID con diseño grande -->
+              <td>
+                <div class="flex items-center gap-3">
+                  <div class="text-3xl font-thin opacity-40 tabular-nums text-primary">
+                    #{{employee.id}}
+                  </div>
+                </div>
+              </td>
+
+              <!-- Empleado con foto y nombre -->
+              <td>
+                <div class="flex items-center gap-3">
+                  <div class="avatar">
+                    <div class="mask mask-squircle w-14 h-14 ring ring-primary ring-offset-base-100 ring-offset-2">
+                      <img [src]="employee.photo | noPhoto" alt="Foto empleado" />
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold text-base">
+                      {{employee.firstName | toUpperCaseFirstLetter}} {{employee.lastName | toUpperCaseFirstLetter}}
+                    </div>
+                    <div class="text-xs opacity-60 flex items-center gap-1 mt-1">
+                      <i class="fas fa-id-card text-info"></i>
+                      DNI: {{employee.dni}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Cargo con badge mejorado -->
+              <td>
+                <div class="flex flex-col gap-1 min-w-[140px]">
+                  <div class="badge badge-primary badge-md gap-2 whitespace-normal text-left text-xs">
+                    <i class="fas fa-briefcase text-xs flex-shrink-0"></i>
+                    <span class="break-words">{{employee.positionName | removeHyphen }}</span>
+                  </div>
+                  @if(employee.departmentName) {
+                    <div class="badge badge-ghost badge-sm gap-1 whitespace-normal text-left">
+                      <i class="fas fa-building text-xs flex-shrink-0"></i>
+                      <span class="break-words">{{employee.departmentName|removeHyphen }}</span>
+                    </div>
+                  }
+                </div>
+              </td>
+
+              <!-- Email con icono -->
+              <td>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-envelope text-info text-sm"></i>
+                  <span class="text-sm">{{employee.email}}</span>
+                </div>
+              </td>
+
+              <!-- Celular -->
+              <td>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-phone text-success text-sm"></i>
+                  <span class="text-sm font-mono">{{employee.cellphone}}</span>
+                </div>
+              </td>
+
+              <!-- Estado activo/inactivo -->
+              <td>
+                <div [class]="'badge gap-2 ' + (employee.active ? 'badge-success' : 'badge-error')">
+                  <i [class]="employee.active ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+                  {{employee.active ? 'Activo' : 'Inactivo'}}
+                </div>
+              </td>
+
+              <!-- Acciones -->
+              <td>
+                <div class="flex justify-center">
+                  <detail-employee [employee]="employee" />
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+
+        <!-- Footer con resumen -->
+        <tfoot class="bg-base-200 sticky bottom-0">
+          <tr>
+            <td colspan="7" class="text-center py-3">
+              <div class="flex items-center justify-center gap-4 text-sm opacity-70 flex-wrap">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-users"></i>
+                  <span>Total: <strong>{{employeesList().length}}</strong></span>
+                </div>
+                <div class="divider divider-horizontal hidden sm:flex"></div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-check-circle text-success"></i>
+                 <!--  <span>Activos: <strong>{{getActiveEmployees()}}</strong></span> -->
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-times-circle text-error"></i>
+                  <!-- <span>Inactivos: <strong>{{getInactiveEmployees()}}</strong></span> -->
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Estado vacío dentro de la tabla -->
+    @if(employeesList().length === 0) {
+      <div class="flex-1 flex flex-col items-center justify-center py-16">
+        <div class="avatar avatar-placeholder mb-4 flex justify-center items-center" >
+          <div class="bg-base-300 text-base-content rounded-full w-24">
+            <i class="fas fa-users-slash text-5xl opacity-40"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">No hay empleados registrados</h3>
+        <p class="text-center opacity-60 max-w-md">
+          Comienza agregando empleados a tu organización
+        </p>
+      </div>
+    }
+  </div>
+</div>

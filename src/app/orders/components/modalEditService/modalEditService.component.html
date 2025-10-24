@@ -1,0 +1,39 @@
+<dialog #modalEditService class="modal">
+
+  <div class="modal-box h-[50%]  flex flex-col gap-4">
+    <h1 class="text-lg font-bold">Editar Servicio</h1>
+
+    <div class="content-form flex flex-col gap-4 h-full justify-between">
+
+      <form [formGroup]="editServiceForm">
+
+        <div class="content-label grid grid-cols-2 gap-4">
+
+          <div class="sm:col-span-1 ">
+            <label class="floating-label"></label>
+            <input type="text" [placeholder]="service()?.characteristics" formControlName="characteristics" class="input input-sm" />
+          </div>
+
+
+
+          <div class="sm:col-span-1">
+            <input type="date" class="input input-sm" formControlName="deliveryDate" [value]="service()?.deliveryDate| date:'yyyy-MM-dd'" />
+          </div>
+
+
+
+        </div>
+
+
+      </form>
+
+      <div class="buttons flex justify-between gap-2">
+        <button class="btn btn-error btn-sm" (click)="closeModal()">Cancelar</button>
+        <button class="btn btn-success btn-sm" (click)="updateService()">Guardar</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</dialog>

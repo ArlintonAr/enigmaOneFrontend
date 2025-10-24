@@ -1,0 +1,145 @@
+<div class="content min-h-screen bg-base-200 flex flex-col">
+
+
+  <!-- Main Content -->
+  <div class="content-movement flex-1 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Info Alert -->
+      <div class="alert shadow-lg mb-6 bg-info/10 border-info/20">
+        <div class="flex items-start gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div>
+            <h3 class="font-bold">Instrucciones para crear un movimiento</h3>
+            <div class="text-xs mt-1">
+              1. Selecciona el tipo de movimiento (Entrada/Salida)<br>
+              2. Indica si es retornable o no<br>
+              3. Selecciona el solicitante del material<br>
+              4. Agrega los items desde la tabla de stock<br>
+              5. Revisa y guarda el movimiento
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Create Movement Component -->
+      <div class="create-movement bg-base-100 rounded-2xl shadow-xl border border-base-300 overflow-hidden">
+        <create-movement/>
+      </div>
+
+      <!-- Help Section -->
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="card bg-base-100 shadow border border-base-300 hover:shadow-lg transition-all">
+          <div class="card-body p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm mb-1">¿Necesitas ayuda?</h4>
+                <p class="text-xs text-base-content/60">
+                  Consulta nuestra guía rápida para crear movimientos
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow border border-base-300 hover:shadow-lg transition-all">
+          <div class="card-body p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm mb-1">Borradores guardados</h4>
+                <p class="text-xs text-base-content/60">
+                  Tienes 0 borradores sin completar
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow border border-base-300 hover:shadow-lg transition-all">
+          <div class="card-body p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm mb-1">Acceso rápido</h4>
+                <p class="text-xs text-base-content/60">
+                  Ver historial de movimientos recientes
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<style>
+  /* Animaciones suaves */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .searchAndButtons {
+    animation: fadeInDown 0.5s ease-out;
+  }
+
+  .create-movement {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .card {
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Sticky header smooth shadow */
+  .sticky {
+    transition: box-shadow 0.3s ease;
+  }
+
+  /* Steps animation */
+  .steps .step {
+    transition: all 0.3s ease;
+  }
+</style>

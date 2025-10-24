@@ -1,0 +1,193 @@
+<div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6">
+    <div class="max-w-4xl mx-auto">
+
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-white mb-2">
+                <i class="fas fa-route text-violet-500 mr-3"></i>
+                Historial de Seguimiento
+            </h1>
+            <p class="text-slate-400 text-sm">Revisa el estado de tus pedidos en tiempo real</p>
+        </div>
+
+
+
+
+        <div class="space-y-4">
+
+
+        @for( tracking of listTrackings(); track $index ) {
+
+          @switch( tracking.trackingState ) {
+
+            @case('PEDIDO') {
+              <!-- Tracking Item - En Almacén -->
+              <div class="card bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-xl hover:shadow-2xl hover:border-violet-500/30 transition-all duration-300">
+                  <div class="card-body p-5">
+                      <div class="flex items-start gap-4">
+                          <!-- Status Icon -->
+                          <div class="flex-shrink-0">
+                              <div class="w-14 h-14 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                                  <i class="fas fa-warehouse text-white text-xl"></i>
+                              </div>
+                          </div>
+
+                          <!-- Content -->
+                          <div class="flex-1 min-w-0">
+                              <div class="flex items-center justify-between mb-2">
+                                  <h3 class="text-lg font-semibold text-white">Pedido</h3>
+                                  <span class="badge badge-warning badge-sm gap-1">
+                                      <i class="fas fa-clock text-[10px]"></i>
+                                      Solicitado
+                                  </span>
+                              </div>
+
+                              <div class="space-y-2">
+                                  <!-- Order ID -->
+                                  <div class="flex items-center gap-2 text-sm">
+                                      <i class="fas fa-box text-violet-400"></i>
+                                      <span class="text-slate-400">Orden Id:</span>
+                                      <span class="text-white font-medium">#{{tracking.orderId}}</span>
+                                  </div>
+
+                                  <!-- Dates -->
+                                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                      <div class="flex items-center gap-2 text-slate-400">
+                                          <i class="fas fa-calendar-plus text-green-400"></i>
+                                          <span>Creado:</span>
+                                          <span class="text-slate-300">{{tracking.created_at | date:'medium'}}</span>
+                                      </div>
+                                      <div class="flex items-center gap-2 text-slate-400">
+                                          <i class="fas fa-calendar-check text-blue-400"></i>
+                                          <span>Actualizado:</span>
+                                          <span class="text-slate-300">{{tracking.updated_at | date:'medium'}}</span>
+                                      </div>
+                                  </div>
+
+                                  <!-- ID Badge -->
+                                  <div class="flex items-center gap-2 pt-2">
+                                      <span class="text-xs text-slate-500">ID:</span>
+                                      <span class="badge badge-outline badge-xs text-slate-400">#{{tracking.id}}</span>
+                                  </div>
+                              </div>
+                          </div>
+
+
+                      </div>
+                  </div>
+              </div>
+            }
+            @case('RUTA'){
+
+            <!-- Tracking Item 2 - En Tránsito -->
+            <div class="card bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-xl hover:shadow-2xl hover:border-violet-500/30 transition-all duration-300">
+                <div class="card-body p-5">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-blue-500/30 animate-pulse">
+                                <i class="fas fa-truck text-white text-xl"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-lg font-semibold text-white">En Tránsito</h3>
+                                <span class="badge badge-info badge-sm gap-1">
+                                    <i class="fas fa-shipping-fast text-[10px]"></i>
+                                    Activo
+                                </span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i class="fas fa-box text-violet-400"></i>
+                                    <span class="text-slate-400">Orden Id:</span>
+                                    <span class="text-white font-medium">{{tracking.orderId}}</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <i class="fas fa-calendar-plus text-green-400"></i>
+                                        <span>Creado:</span>
+                                        <span class="text-slate-300">{{tracking.created_at | date:'medium'}}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <i class="fas fa-calendar-check text-blue-400"></i>
+                                        <span>Actualizado:</span>
+                                        <span class="text-slate-300">{{tracking.updated_at | date:'medium'}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 pt-2">
+                                    <span class="text-xs text-slate-500">ID:</span>
+                                    <span class="badge badge-outline badge-xs text-slate-400">{{tracking.id}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            }
+            @case('ALMACEN'){
+                  <!-- Tracking Item 3 - Entregado -->
+            <div class="card bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-xl hover:shadow-2xl hover:border-violet-500/30 transition-all duration-300">
+                <div class="card-body p-5">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                                <i class="fas fa-check-circle text-white text-xl"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-lg font-semibold text-white">Entregado</h3>
+                                <span class="badge badge-success badge-sm gap-1">
+                                    <i class="fas fa-check text-[10px]"></i>
+                                    Completado
+                                </span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm">
+                                    <i class="fas fa-box text-violet-400"></i>
+                                    <span class="text-slate-400">Orden Id:</span>
+                                    <span class="text-white font-medium">{{tracking.orderId}}</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <i class="fas fa-calendar-plus text-green-400"></i>
+                                        <span>Creado:</span>
+                                        <span class="text-slate-300">{{tracking.created_at | date:'medium'}}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <i class="fas fa-calendar-check text-blue-400"></i>
+                                        <span>Actualizado:</span>
+                                        <span class="text-slate-300">{{tracking.updated_at | date: 'medium'}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 pt-2">
+                                    <span class="text-xs text-slate-500">ID:</span>
+                                    <span class="badge badge-outline badge-xs text-slate-400">{{tracking.id}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            }
+          }
+
+        }
+
+
+        </div>
+    </div>
+</div>
+

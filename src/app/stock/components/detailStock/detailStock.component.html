@@ -1,0 +1,395 @@
+ <dialog #modalDetailStock class="modal">
+      <div class="modal-box max-w-5xl p-0 h-[90vh] flex flex-col">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-info via-primary to-purple-600 px-6 py-5 relative flex-shrink-0">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="avatar">
+                <div class="w-20 h-20 rounded-xl ring ring-white ring-offset-2 ring-offset-transparent shadow-lg">
+                  <img [src]="product()?.photo | noPhoto"
+                       alt="Producto"
+                       class="object-cover" />
+                </div>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-white">
+                  Detalle del Producto
+                </h3>
+                <p class="text-white/80 text-sm mt-1 flex items-center gap-2">
+                  <i class="fas fa-barcode"></i>
+                  Código: <span class="font-semibold">{{ product()?.code }}</span>
+                </p>
+              </div>
+            </div>
+            <button class="btn btn-ghost btn-circle text-white hover:bg-white/20"
+                    (click)="closeModal()">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Contenido con scroll -->
+        <div class="flex-1 overflow-y-auto bg-base-200 p-6">
+          <form [formGroup]="stockForm">
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+              <!-- Columna izquierda: Info no editable y foto -->
+              <div class="lg:col-span-1 space-y-4">
+
+                <!-- Card de información básica -->
+                <div class="card bg-base-100 shadow-xl">
+                  <div class="card-body p-4">
+                    <h4 class="font-bold flex items-center gap-2 mb-3">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-info to-primary flex items-center justify-center">
+                        <i class="fas fa-info-circle text-white text-sm"></i>
+                      </div>
+                      Información Básica
+                    </h4>
+
+                    <div class="space-y-3">
+                      <!-- ID -->
+                      <div>
+                        <label class="label py-1">
+                          <span class="label-text text-xs font-semibold opacity-60">ID</span>
+                          <span class="badge badge-ghost badge-xs">No editable</span>
+                        </label>
+                        <div class="bg-base-200 rounded-lg px-3 py-2 select-text">
+                          <span class="font-bold text-primary text-lg">#{{ product()?.id }}</span>
+                        </div>
+                      </div>
+
+                      <!-- Código -->
+                      <div>
+                        <label class="label py-1">
+                          <span class="label-text text-xs font-semibold opacity-60">Código SKU</span>
+                          <span class="badge badge-ghost badge-xs">No editable</span>
+                        </label>
+                        <div class="bg-base-200 rounded-lg px-3 py-2 select-text font-mono">
+                          {{ product()?.code }}
+                        </div>
+                      </div>
+
+                      <!-- Fecha de creación -->
+                      <div>
+                        <label class="label py-1">
+                          <span class="label-text text-xs font-semibold opacity-60">Fecha de Creación</span>
+                          <span class="badge badge-ghost badge-xs">No editable</span>
+                        </label>
+                        <div class="bg-base-200 rounded-lg px-3 py-2">
+                          <div class="text-sm">{{ product()?.created_at | date:'dd/MM/yyyy' }}</div>
+                          <div class="text-xs opacity-60">{{ product()?.created_at | date:'shortTime' }}</div>
+                        </div>
+                      </div>
+
+                      <!-- Última actualización -->
+                      <div>
+                        <label class="label py-1">
+                          <span class="label-text text-xs font-semibold opacity-60">Última Actualización</span>
+                          <span class="badge badge-ghost badge-xs">No editable</span>
+                        </label>
+                        <div class="bg-base-200 rounded-lg px-3 py-2">
+                          <div class="text-sm">{{ product()?.updated_at | date:'dd/MM/yyyy' }}</div>
+                          <div class="text-xs opacity-60">{{ product()?.updated_at | date:'shortTime' }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card de foto -->
+                <div class="card bg-base-100 shadow-xl">
+                  <div class="card-body p-4">
+                    <h4 class="font-bold flex items-center gap-2 mb-3">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+                        <i class="fas fa-camera text-white text-sm"></i>
+                      </div>
+                      Imagen del Producto
+                    </h4>
+
+                    <div class="flex flex-col items-center gap-3">
+                      <div class="avatar">
+                        <div class="w-40 h-40 rounded-xl ring ring-primary ring-offset-2 ring-offset-base-100 shadow-lg">
+                          <img [src]="photoPreview() || product()?.photo | noPhoto"
+                               alt="Producto"
+                               class="object-cover" />
+                        </div>
+                      </div>
+
+                      <label class="btn btn-primary btn-sm gap-2 w-full">
+                        <i class="fas fa-upload"></i>
+                        Cambiar Foto
+                        <input type="file"
+                               accept="image/*"
+                               (change)="onFileSelected($event)"
+                               class="hidden" />
+                      </label>
+
+                      @if (selectedFile()) {
+                        <div class="alert alert-success py-2 w-full">
+                          <i class="fas fa-check-circle text-sm"></i>
+                          <span class="text-xs truncate">{{ selectedFile()?.name }}</span>
+                        </div>
+                      }
+
+                      @if (photoPreview()) {
+                        <button type="button"
+                                class="btn btn-ghost btn-xs gap-2 w-full"
+                                (click)="clearPhoto()">
+                          <i class="fas fa-times"></i>
+                          Cancelar cambio
+                        </button>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Columna derecha: Campos editables -->
+              <div class="lg:col-span-2 space-y-4">
+
+                <!-- Card de Stock -->
+                <div class="card bg-base-100 shadow-xl">
+                  <div class="card-body p-4">
+                    <h4 class="font-bold flex items-center gap-2 mb-4">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-success to-warning flex items-center justify-center">
+                        <i class="fas fa-boxes text-white text-sm"></i>
+                      </div>
+                      Información de Stock
+                      <span class="badge badge-success badge-sm">Editable</span>
+                    </h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                      <!-- Cantidad -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold flex items-center gap-2">
+                            <i class="fas fa-layer-group text-info"></i>
+                            Cantidad
+                          </span>
+                        </label>
+                        <input type="number"
+                               formControlName="quantity"
+                               class="input input-bordered focus:input-info"
+                               [placeholder]="product()?.quantity"
+                               min="0" />
+                      </div>
+
+                      <!-- Unidad de Medida -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold flex items-center gap-2">
+                            <i class="fas fa-ruler text-warning"></i>
+                            Unidad de Medida
+                          </span>
+                        </label>
+                        <select formControlName="unitOfMeasure"
+                                class="select select-bordered focus:select-warning">
+                          <option value="" disabled>Seleccionar unidad</option>
+                          <option value="unidad">Unidad</option>
+                          <option value="kilogramo">Kilogramo (kg)</option>
+                          <option value="gramo">Gramo (g)</option>
+                          <option value="litro">Litro (L)</option>
+                          <option value="mililitro">Mililitro (ml)</option>
+                          <option value="metro">Metro (m)</option>
+                          <option value="centimetro">Centímetro (cm)</option>
+                          <option value="caja">Caja</option>
+                          <option value="paquete">Paquete</option>
+                        </select>
+                      </div>
+
+                      <!-- Fecha de Entrada -->
+                      <div class="form-control md:col-span-2">
+                        <label class="label">
+                          <span class="label-text font-semibold flex items-center gap-2">
+                            <i class="fas fa-calendar-alt text-primary"></i>
+                            Fecha de Entrada
+                          </span>
+                        </label>
+                        <input type="date"
+                               formControlName="entryDate"
+                               class="input input-bordered focus:input-primary" />
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card de Descripción -->
+                <div class="card bg-base-100 shadow-xl">
+                  <div class="card-body p-4">
+                    <h4 class="font-bold flex items-center gap-2 mb-4">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                        <i class="fas fa-align-left text-white text-sm"></i>
+                      </div>
+                      Descripción y Características
+                      <span class="badge badge-success badge-sm">Editable</span>
+                    </h4>
+
+                    <div class="space-y-4">
+
+                      <!-- Descripción -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold flex items-center gap-2">
+                            <i class="fas fa-file-alt text-secondary"></i>
+                            Descripción del Producto
+                          </span>
+                        </label>
+                        <textarea formControlName="description"
+                                  class="textarea textarea-bordered focus:textarea-secondary"
+                                  rows="3"
+                                  placeholder="Describe el producto..."></textarea>
+                      </div>
+
+                      <!-- Características -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold flex items-center gap-2">
+                            <i class="fas fa-list-ul text-accent"></i>
+                            Características Técnicas
+                          </span>
+                        </label>
+                        <textarea formControlName="characteristics"
+                                  class="textarea textarea-bordered focus:textarea-accent"
+                                  rows="3"
+                                  placeholder="Especifica características técnicas, dimensiones, materiales, etc."></textarea>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card de Conformidad -->
+                <div class="card bg-base-100 shadow-xl">
+                  <div class="card-body p-4">
+                    <h4 class="font-bold flex items-center gap-2 mb-4">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                        <i class="fas fa-clipboard-check text-white text-sm"></i>
+                      </div>
+                      Estado de Conformidad
+                      <span class="badge badge-success badge-sm">Editable</span>
+                    </h4>
+
+                    <div class="grid grid-cols-1 gap-4">
+
+                      <!-- Tipo de Conformidad -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold flex items-center gap-2">
+                            <i class="fas fa-tasks text-success"></i>
+                            Estado de Conformidad
+                          </span>
+                        </label>
+                        <div class="flex gap-3">
+                          <label class="label cursor-pointer flex-1 bg-success/10 rounded-lg px-4 py-3 border-2 border-transparent has-[:checked]:border-success has-[:checked]:bg-success/20">
+                            <span class="label-text font-semibold flex items-center gap-2">
+                              <i class="fas fa-check-circle text-success"></i>
+                              Conforme
+                            </span>
+                            <input type="radio"
+                                   formControlName="accordingType"
+                                   value="SI"
+                                   class="radio radio-success" />
+                          </label>
+
+                          <label class="label cursor-pointer flex-1 bg-error/10 rounded-lg px-4 py-3 border-2 border-transparent has-[:checked]:border-error has-[:checked]:bg-error/20">
+                            <span class="label-text font-semibold flex items-center gap-2">
+                              <i class="fas fa-times-circle text-error"></i>
+                              No Conforme
+                            </span>
+                            <input type="radio"
+                                   formControlName="accordingType"
+                                   value="NO"
+                                   class="radio radio-error" />
+                          </label>
+                        </div>
+                      </div>
+
+                      <!-- Mensaje de Conformidad -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold flex items-center gap-2">
+                            <i class="fas fa-comment-alt text-info"></i>
+                            Observaciones / Mensaje
+                          </span>
+                        </label>
+                        <textarea formControlName="messageAccordingType"
+                                  class="textarea textarea-bordered focus:textarea-info"
+                                  rows="3"
+                                  placeholder="Agrega observaciones sobre el estado de conformidad..."></textarea>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-4 bg-base-100 border-t flex justify-between items-center flex-shrink-0">
+          <div class="flex items-center gap-3">
+            <div class="text-sm text-base-content/60">
+              Estado del formulario:
+            </div>
+            @if (stockForm.dirty) {
+              <div class="badge badge-warning gap-2">
+                <i class="fas fa-exclamation-circle"></i>
+                Cambios pendientes
+              </div>
+            } @else {
+              <div class="badge badge-ghost gap-2">
+                <i class="fas fa-check"></i>
+                Sin cambios
+              </div>
+            }
+          </div>
+
+          <div class="flex gap-2">
+            <button type="button"
+                    class="btn btn-ghost btn-sm gap-2"
+                    (click)="closeModal()">
+              <i class="fas fa-times"></i>
+              Cancelar
+            </button>
+
+            @if (stockForm.dirty) {
+              <button type="button"
+                      class="btn btn-warning btn-sm gap-2"
+                      (click)="resetForm()">
+                <i class="fas fa-undo"></i>
+                Restaurar
+              </button>
+            }
+
+            <button type="button"
+                    class="btn btn-primary btn-sm gap-2"
+                    [disabled]=" stockForm.pristine && selectedFile()==null || stockForm.invalid"
+                    (click)="saveChanges()">
+              <i class="fas fa-save"></i>
+              Guardar Cambios
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <form method="dialog" class="modal-backdrop">
+        <button (click)="closeModal()">close</button>
+      </form>
+    </dialog>
+
+    @if(hasError()){
+      <error-alert  [messageError]="errorMessage()" (close)="hasError.set(false)" />
+    }
+    @if(hasSuccess()){
+      <success-alert  [messageSuccess]="successMessage()" (close)="hasSuccess.set(false)" />
+    }

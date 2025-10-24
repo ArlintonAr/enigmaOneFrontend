@@ -1,0 +1,480 @@
+<div
+  class="list-movements min-h-screen bg-gradient-to-br from-base-200 via-base-100 to-base-200 p-4 sm:p-6"
+>
+  <!-- Header Section -->
+  <div class="mb-6">
+    <div
+      class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4"
+    >
+      <div>
+        <h2
+          class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent"
+        >
+          Movimientos de Salida
+        </h2>
+        <p class="text-sm text-base-content/60 mt-1">
+          Historial de transacciones y salidas de inventario
+        </p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="flex flex-wrap gap-3">
+        <div class="stats shadow-lg bg-base-100 border border-base-content/10">
+          <div class="stat py-3 px-4">
+            <div class="stat-figure text-error">
+              <i class="fas fa-arrow-circle-down text-2xl"></i>
+            </div>
+            <div class="stat-title text-xs">Total Salidas</div>
+            <div class="stat-value text-2xl text-error">
+              {{ movements().length }}
+            </div>
+          </div>
+        </div>
+
+        <div class="stats shadow-lg bg-base-100 border border-base-content/10">
+          <div class="stat py-3 px-4">
+            <div class="stat-figure text-warning">
+              <i class="fas fa-boxes text-2xl"></i>
+            </div>
+            <div class="stat-title text-xs">Items Total</div>
+            <div class="stat-value text-2xl text-warning">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Table Card -->
+  <div
+    class="card bg-base-100 shadow-2xl border border-base-content/10 overflow-hidden"
+  >
+    <div class="card-body p-0">
+      <div class="overflow-x-auto">
+        <table class="table table-sm">
+          <!-- Enhanced Header -->
+          <thead
+            class="bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 text-white sticky top-0 z-20 shadow-xl"
+          >
+            <tr>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-hashtag text-xs"></i>
+                  </div>
+                  <span>ID</span>
+                </div>
+              </th>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-barcode text-xs"></i>
+                  </div>
+                  <span>Código</span>
+                </div>
+              </th>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-calendar-alt text-xs"></i>
+                  </div>
+                  <span>Retorno</span>
+                </div>
+              </th>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-user-check text-xs"></i>
+                  </div>
+                  <span>Autorizante</span>
+                </div>
+              </th>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-user-tie text-xs"></i>
+                  </div>
+                  <span>Solicitante</span>
+                </div>
+              </th>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-sort-amount-down text-xs"></i>
+                  </div>
+                  <span>Cant.</span>
+                </div>
+              </th>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-tag text-xs"></i>
+                  </div>
+                  <span>Tipo</span>
+                </div>
+              </th>
+              <th class="text-xs font-bold uppercase tracking-wider py-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="fas fa-tag text-xs"></i>
+                  </div>
+                  <span>Ver</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (mov of movements(); track $index) {
+            <tr
+              class="hover:bg-gradient-to-r hover:from-orange-50/10 hover:to-pink-50/10 transition-all duration-300 border-b border-base-content/5 group"
+            >
+              <!-- ID compacto -->
+              <td class="py-2">
+                <div
+                  class="text-xl font-black tabular-nums bg-gradient-to-br from-error to-warning bg-clip-text text-transparent opacity-80 group-hover:opacity-100 transition-opacity"
+                >
+                  #{{ mov.id }}
+                </div>
+              </td>
+
+              <!-- Código de transacción compacto -->
+              <td class="py-2">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-error/20 to-warning/20 rounded-lg flex items-center justify-center ring-1 ring-error/20"
+                  >
+                    <i class="fas fa-barcode text-error text-sm"></i>
+                  </div>
+                  <div>
+                    <div class="font-bold text-sm font-mono">
+                      {{ mov.transactionCode }}
+                    </div>
+                    <div class="text-xs text-base-content/50">Código</div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Fecha compacta -->
+              <td class="py-2">
+                <div class="flex flex-col gap-0.5">
+                  <div
+                    class="badge badge-sm bg-gradient-to-r from-orange-500 to-red-500 text-white border-0 gap-1"
+                  >
+                    <i class="fas fa-calendar-day text-xs"></i>
+                    <span class="font-semibold text-xs">{{
+                      mov.returnDate | date : "dd/MM/yyyy"
+                    }}</span>
+                  </div>
+                  <div
+                    class="text-xs text-base-content/50 flex items-center gap-1"
+                  >
+                    <i class="fas fa-clock text-xs"></i>
+                    {{ mov.returnDate | date : "shortTime" }}
+                  </div>
+                </div>
+              </td>
+
+              <!-- Autorizante compacto -->
+              <td class="py-2">
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-placeholder">
+                    <div
+                      class="bg-gradient-to-br from-success to-emerald-600 text-white rounded-full w-8 h-8 ring-1 ring-success/30"
+                    >
+                      <span class="text-xs font-bold">
+                        {{
+                          (mov.employeeFirstName
+                            | toUpperCaseFirstLetter)!.charAt(0)
+                        }}{{
+                          (mov.employeeLastName
+                            | toUpperCaseFirstLetter)!.charAt(0)
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold text-sm">
+                      {{ mov.employeeFirstName | toUpperCaseFirstLetter }}
+                      {{ mov.employeeLastName | toUpperCaseFirstLetter }}
+                    </div>
+                    <div
+                      class="text-xs text-base-content/50 flex items-center gap-1"
+                    >
+                      <i class="fas fa-shield-alt text-success text-xs"></i>
+                      <span>Autoriza</span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Solicitante compacto -->
+              <td class="py-2">
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-placeholder">
+                    <div
+                      class="bg-gradient-to-br from-info to-blue-600 text-white rounded-full w-8 h-8 ring-1 ring-info/30"
+                    >
+                      <span class="text-xs font-bold">
+                        {{
+                          (mov.materialRequesterFirstName
+                            | toUpperCaseFirstLetter)!.charAt(0)
+                        }}{{
+                          (mov.materialRequesterLastName
+                            | toUpperCaseFirstLetter)!.charAt(0)
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold text-sm">
+                      {{
+                        mov.materialRequesterFirstName
+                          | toUpperCaseFirstLetter
+                      }}
+                      {{
+                        mov.materialRequesterLastName
+                          | toUpperCaseFirstLetter
+                      }}
+                    </div>
+                    <div
+                      class="text-xs text-base-content/50 flex items-center gap-1"
+                    >
+                      <i class="fas fa-hand-paper text-info text-xs"></i>
+                      <span>Solicita</span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Cantidad compacta -->
+              <td class="py-2">
+                <div class="flex flex-col items-center">
+                  <div class="text-2xl font-black text-warning">
+                    {{ mov.quantity }}
+                  </div>
+                  <div
+                    class="text-xs text-base-content/50 font-semibold uppercase"
+                  >
+                    unid.
+                  </div>
+                </div>
+              </td>
+
+              <!-- Stock ID compacto -->
+
+              <!-- Tipo compacto -->
+              <td class="py-2">
+                <div
+                  class="badge badge-lg badge-outline gap-1 hover:badge-ghost transition-all"
+                >
+                  <i class="fas fa-tag text-xs"></i>
+                  <span class="font-semibold text-xs">{{
+                    mov.type | removeHyphen
+                  }}</span>
+                </div>
+              </td>
+              <!-- Ver detalles  -->
+              <td class="py-2">
+
+                @if (mov.detailExitMaterials.length > 0) {
+                  <details-movements [detailMaterials]="mov.detailExitMaterials" />
+                }
+                @if(mov.detailEntryMaterials.length > 0) {
+                  <details-movements [detailMaterials]="mov.detailEntryMaterials" />
+                }
+              </td>
+            </tr>
+            }
+          </tbody>
+
+          <!-- Footer con estadísticas -->
+          <tfoot
+            class="bg-gradient-to-r from-base-200 to-base-300 sticky bottom-0 z-10 border-t-2 border-error/20"
+          >
+            <tr>
+              <td colspan="8" class="py-3">
+                <div class="flex items-center justify-center gap-4 flex-wrap">
+                  <div
+                    class="stats stats-horizontal shadow-lg bg-base-100 border border-base-content/10"
+                  >
+                    <div class="stat py-2 px-3">
+                      <div class="stat-figure text-error">
+                        <i class="fas fa-clipboard-list text-lg"></i>
+                      </div>
+                      <div class="stat-title text-xs">Total Movimientos</div>
+                      <div class="stat-value text-lg text-error">
+                        {{ movements().length }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="divider divider-horizontal hidden sm:flex opacity-50"
+                  ></div>
+
+                  <div class="flex gap-3 flex-wrap">
+                    <div
+                      class="flex items-center gap-2 bg-warning/10 px-3 py-1.5 rounded-lg"
+                    >
+                      <i class="fas fa-boxes text-warning text-lg"></i>
+                      <div>
+                        <div class="text-xs font-semibold text-warning/70">
+                          Items
+                        </div>
+                        <div class="text-base font-bold text-warning">-</div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="flex items-center gap-2 bg-error/10 px-3 py-1.5 rounded-lg"
+                    >
+                      <i
+                        class="fas fa-arrow-circle-down text-error text-lg"
+                      ></i>
+                      <div>
+                        <div class="text-xs font-semibold text-error/70">
+                          Hoy
+                        </div>
+                        <div class="text-base font-bold text-error">-</div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="flex items-center gap-2 bg-success/10 px-3 py-1.5 rounded-lg"
+                    >
+                      <i class="fas fa-user-check text-success text-lg"></i>
+                      <div>
+                        <div class="text-xs font-semibold text-success/70">
+                          Autorizadas
+                        </div>
+                        <div class="text-base font-bold text-success">
+                          {{ movements().length }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Estado vacío -->
+      @if(movements().length === 0) {
+      <div class="flex flex-col items-center justify-center py-20 px-6">
+        <div class="relative mb-6">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-error to-warning rounded-full blur-2xl opacity-20 animate-pulse"
+          ></div>
+          <div
+            class="relative w-32 h-32 bg-gradient-to-br from-error/20 to-warning/20 rounded-full flex items-center justify-center backdrop-blur-sm border-4 border-base-content/10"
+          >
+            <i
+              class="fas fa-box-open text-6xl opacity-40 bg-gradient-to-r from-error to-warning bg-clip-text text-transparent"
+            ></i>
+          </div>
+        </div>
+
+        <h3
+          class="text-2xl font-bold mb-2 bg-gradient-to-r from-error to-warning bg-clip-text text-transparent"
+        >
+          No hay movimientos registrados
+        </h3>
+        <p class="text-center text-base-content/60 max-w-md mb-6">
+          No se encontraron salidas de inventario. Los movimientos aparecerán
+          aquí una vez que se registren transacciones.
+        </p>
+
+        <div class="flex gap-3">
+          <button
+            class="btn btn-error gap-2 shadow-lg hover:shadow-xl transition-all"
+          >
+            <i class="fas fa-arrow-circle-down"></i>
+            Registrar Salida
+          </button>
+          <button class="btn btn-outline btn-error gap-2">
+            <i class="fas fa-filter"></i>
+            Filtros
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+
+
+<style>
+  /* Animaciones personalizadas */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .group:hover {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(251, 146, 60, 0.03),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Mejorar scrollbar */
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: hsl(var(--b2));
+    border-radius: 10px;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, hsl(var(--er)), hsl(var(--wa)));
+    border-radius: 10px;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, hsl(var(--wa)), hsl(var(--er)));
+  }
+
+  /* Smooth transitions */
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Avatar hover effect */
+  .avatar:hover {
+    transform: scale(1.1) rotate(5deg);
+    transition: transform 0.3s ease;
+  }
+
+  /* Badge hover glow */
+  .badge:hover {
+    filter: brightness(1.1);
+  }
+</style>

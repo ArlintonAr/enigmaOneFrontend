@@ -1,0 +1,152 @@
+<div
+  class="flex bg-base-200 w-full h-screen antialiased text-slate-300 selection:bg-blue-600 selection:text-white overflow-hidden"
+>
+  <!-- Mobile overlay (only when sidebar is open on small/tablet screens) -->
+  @if (sidebarOpen()) {
+  <div
+    class="fixed inset-0 bg-black/50 z-30 lg:hidden"
+    (click)="closeSidebar()"
+    aria-hidden="true"
+  ></div>
+  }
+
+  <!-- Sidebar wrapper: no width on small screens (w-0) so it doesn't push content; fixed width on lg -->
+  <div class="flex flex-col relative w-0 lg:w-72 flex-shrink-0">
+    <!-- Sidebar: on lg and up it's fixed as before. On small screens it's off-canvas and controlled by sidebarOpen -->
+    <div
+      id="menu"
+      class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 min-h-screen w-75 z-50 text-slate-300 h-screen overflow-y-auto border-r border-slate-700/50 shadow-2xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:shadow-2xl top-0 fixed lg:static lg:z-10"
+      [class.translate-x-0]="sidebarOpen()"
+    >
+      <!-- Mobile: hamburger close button (hidden from md and up) -->
+      <div
+        class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-slate-700/30"
+      >
+        <div class="flex items-center gap-3"></div>
+        <button
+          aria-label="Cerrar menú"
+          class="btn btn-ghost text-slate-300"
+          (click)="closeSidebar()"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Logo -->
+      <div id="logo" class="my-6 px-6 border-b border-slate-700/30 pb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center ring ring-primary/30 ring-offset-2 ring-offset-slate-900"
+          >
+            <p class="font-bold text-md">
+              E<span class="text-fuchsia-600">O</span>
+            </p>
+          </div>
+          <img
+            src="/logoLetras.png"
+            width="140px"
+            alt=""
+            class="brightness-110"
+          />
+        </div>
+        <p class="text-slate-400 text-xs font-medium">
+          Gestiona tus actividades
+        </p>
+      </div>
+
+      <!-- Profile -->
+      <div id="profile" class="px-6 py-5 border-b border-slate-700/30">
+        <p
+          class="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-3"
+        >
+          Bienvenid@
+        </p>
+        <div class="content-avatar"  >
+          <a class="flex  items-center cursor-pointer gap-3 p-3 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 border border-slate-700/30 hover:border-primary/40 group">
+          <span class="avatar online">
+            <div class="w-20">
+              <img
+                class="rounded-xl w-6 h-6 ring ring-primary/50 ring-offset-2 ring-offset-slate-900 object-cover"
+                [src]="user.photo | noPhoto"
+                alt=""
+              />
+            </div>
+          </span>
+          <div class="user">
+            <div class="info flex items-center">
+              <span
+                class="text-sm md:text-base font-bold group-hover:text-primary transition-colors"
+              >
+                {{ user.firstName | uppercase }}
+              </span>
+              <i
+                class="fas fa-chevron-right ml-auto text-xs text-slate-500 group-hover:text-primary group-hover:translate-x-1 transition-all"
+              ></i>
+            </div>
+            <detail-employee  [employee]="employee()" ></detail-employee>
+          </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu items -->
+      <div class="px-3 py-4">
+        <item-dashboard />
+      </div>
+
+      <!-- Footer del sidebar -->
+      <div
+        class="mt-auto px-6 py-4 border-t border-slate-700/30 bg-slate-900/50"
+      >
+        <div class="flex items-center justify-between text-xs text-slate-500">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+            <span>Sistema activo</span>
+          </div>
+          <span class="opacity-60">v2.0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content flex-1 h-screen overflow-y-auto bg-base-200">
+    <!-- Hamburger (visible on tablet and smaller: md and below) -->
+    <div class="p-3 lg:hidden fixed top-3 left-3 z-40">
+      <button
+        aria-label="Abrir menú"
+        class="btn btn-ghost text-slate-300"
+        (click)="toggleSidebar()"
+      >
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <router-outlet class="" />
+  </div>
+</div>
+
+
+
+
+<!-- Scrollbar personalizada -->
+<style>
+  #menu::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+
+  #menu::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.4);
+    border-radius: 10px;
+  }
+
+  #menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.6);
+  }
+</style>
+

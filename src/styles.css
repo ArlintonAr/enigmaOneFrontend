@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+@import "tailwindcss";
+@plugin "daisyui" {
+    themes: light --default, night --prefersdark,cupcake;
+
+}
+
+body{
+  font-family: 'Quicksand', sans-serif;
+}
+
+.steps.steps-sm .step::before {
+  /* Reduce el tamaño del círculo */
+
+  height: .2rem;
+}
+
+.steps.steps-sm .step::after {
+  /* Reduce el tamaño de la línea que conecta los círculos */
+  height: 1.2rem;
+  width: 1.2rem;
+
+}
