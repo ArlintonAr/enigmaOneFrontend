@@ -14,6 +14,8 @@ export interface Order {
   serviceOrders:      ServiceOrder[];
   materialOrders:     MaterialOrder[];
   trackings:          Tracking[];
+  approvalStatus:      string;
+  currentTrackingState:    string;
 }
 
 export enum TypeOrder {

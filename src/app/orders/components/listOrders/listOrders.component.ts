@@ -35,6 +35,8 @@ const stepsForModify = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListOrdersComponent {
+  @ViewChild(DetailsOfOrderComponent) detailsOfOrderComponent!: DetailsOfOrderComponent
+  @ViewChild(DetailOfServiceOrderComponent) detailOfServiceOrderComponent!: DetailOfServiceOrderComponent
 
   //Servicios
   private fb = inject(FormBuilder)
@@ -64,8 +66,7 @@ export class ListOrdersComponent {
   })
 
 
-  @ViewChild(DetailsOfOrderComponent) detailsOfOrderComponent!: DetailsOfOrderComponent
-  @ViewChild(DetailOfServiceOrderComponent) detailOfServiceOrderComponent!: DetailOfServiceOrderComponent
+
 
   selectedMaterials = signal<MaterialOrder[] | null>(null)
   selectedServices = signal<ServiceOrder[] | null>(null)

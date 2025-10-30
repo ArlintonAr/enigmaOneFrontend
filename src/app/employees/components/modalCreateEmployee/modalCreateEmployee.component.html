@@ -461,11 +461,11 @@
 
   </div>
 
-  @if (hasError()) {
-    <error-alert (close)="hasError.set(false)" [messageError]="errorName()" />
-  }
 
 </dialog>
+@if (hasError()) {
+  <error-alert [messageError]="errorName()" (close)="hasError.set(false)"  />
+}
 
 @if (success()) {
   <success-alert [messageSuccess]="successMessage()" (close)="success.set(false)" />

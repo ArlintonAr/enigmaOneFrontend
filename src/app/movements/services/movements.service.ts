@@ -39,6 +39,20 @@ export class MovementService {
     )
 
   }
+  getMovementById(code:number):Observable<APIResponseMovements>{
+    const token = localStorage.getItem('token');
+
+    return this.http.get<APIResponseMovements>(`${this.apiUrl}/movements/${code}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  }
+
+  getMovementByTransactionCode(code:string):Observable<APIResponseMovements>{
+    const token = localStorage.getItem('token');
+    return this.http.get<APIResponseMovements>(`${this.apiUrl}/movements/searchForTransactionCode/${code}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  }
 
   getMovementByRequerter(firstName:string):Observable<APIResponseMovements> {
     const token = localStorage.getItem('token');

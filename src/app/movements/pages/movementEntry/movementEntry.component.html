@@ -2,7 +2,31 @@
 <div class="content flex flex-col h-full gap-2 p-2  ">
 
   <div class="searchAndButtonsflex flex-1 flex justify-between items-center gap-4 ">
-    <app-search (onValue)="searchMovementForRequerteFirstName($event)" />
+    <app-search (onValue)="searchStockForTerm($event)" />
+      <form class="join join-horizontal shadow-lg" [formGroup]="formValueOfFiler">
+            <button type="reset" class="btn btn-square btn-ghost join-item hover:btn-error transition-colors" title="Limpiar filtros">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+
+            <input
+              class="btn join-item btn-sm sm:btn-md hover:btn-primary transition-colors"
+              type="radio"
+              name="filterType"
+              aria-label="Por Código"
+              formControlName="filterType"
+              value="code"
+            />
+            <input
+              class="btn join-item btn-sm sm:btn-md hover:btn-primary transition-colors"
+              type="radio"
+              name="filterType"
+              aria-label="Por Nombre"
+              formControlName="filterType"
+              value="firstName"
+            />
+    </form>
   </div>
 
   <div class="content-movement">

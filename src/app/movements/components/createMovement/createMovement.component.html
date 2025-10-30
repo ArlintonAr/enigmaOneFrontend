@@ -447,10 +447,10 @@
 </dialog>
 
 @if(hasSuccess()){
-  <success-alert [messageSuccess]="hasNameSuccess()" (click)="hasSuccess.set(false)" />
+  <success-alert [messageSuccess]="hasNameSuccess()" (close)="hasSuccess.set(false)" />
 }
 @if (hasError()) {
-  <error-alert [messageError]="hasNameError()" (click)="hasError.set(false)" />
+  <error-alert [messageError]="hasNameError()" (close)="hasError.set(false)" />
 
 }
 

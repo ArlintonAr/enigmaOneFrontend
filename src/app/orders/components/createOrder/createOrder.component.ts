@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, signal, computed, ViewChild, ElementRef } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth.service';
 import { FormBuilder, ɵInternalFormsSharedModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CreateOrderDto, Order, TypeOrder } from '../../interfaces/order.interface';
+import { Order} from '../../interfaces/order.interface';
 import { OrderService } from '../../services/orders.service';
-import { MaterialOrder, MaterialOrderCreate } from '../../interfaces/materialOrder.interface';
+import { MaterialOrderCreate } from '../../interfaces/materialOrder.interface';
 import { ErrorAlertComponent } from "../../../shared/components/errorAlert/errorAlert.component";
-import { User } from '../../../auth/interfaces/user.interface';
 import { ServiceOrderCreate } from '../../interfaces/serviceOrder.interface';
 
 
@@ -54,7 +52,6 @@ export class CreateOrderComponent {
   //Fotos
   selectedPhoto = signal<File[] | null>([])
   @ViewChild('photoInput') photoInput!: ElementRef<HTMLInputElement>;
-
 
   //Material y Orden
   typeOrderArr = typeOrder
@@ -263,6 +260,48 @@ export class CreateOrderComponent {
 
     this.photoInput.nativeElement.value = '';
 
+  }
+
+  /**
+   * Remove a material from the current materials list by index.
+   * Called from the template when the user clicks the delete button.
+   */
+  removeMaterial(index: number) {
+    this.materialsList.update((materials) => materials.filter((_, i) => i !== index));
+  }
+
+  /**
+   * Update a single field of a material at given index. The template can call
+   * this on input change to keep the signal in sync.
+   */
+  updateMaterial(index: number, field: keyof MaterialOrderCreate, value: any) {
+    this.materialsList.update((materials) => {
+      const copy = [...materials];
+      const item = { ...(copy[index] as any) };
+      item[field as string] = value;
+      copy[index] = item as MaterialOrderCreate;
+      return copy;
+    });
+  }
+
+  /**
+   * Remove a service from the current services list by index.
+   */
+  removeService(index: number) {
+    this.servicesList.update((services) => services.filter((_, i) => i !== index));
+  }
+
+  /**
+   * Update a single field of a service at given index.
+   */
+  updateService(index: number, field: keyof ServiceOrderCreate, value: any) {
+    this.servicesList.update((services) => {
+      const copy = [...services];
+      const item = { ...(copy[index] as any) };
+      item[field as string] = value;
+      copy[index] = item as ServiceOrderCreate;
+      return copy;
+    });
   }
 
 

@@ -1,16 +1,16 @@
 <dialog #createOrder closedby="none" id="my_modal_4" class="modal ">
-  <div class="modal-box w-screen max-w-7xl h-screen flex flex-col gap-4 bg-base-100 shadow-2xl border border-base-content/10 p-6">
+  <div class="modal-box w-screen max-w-7xl h-screen flex flex-col gap-2 bg-base-100 shadow-2xl border border-base-content/10 p-6">
 
     <!-- Header con gradiente -->
-    <div class="flex items-center justify-between pb-4 border-b border-base-content/10">
+    <div class="flex items-center justify-between pb-2 border-b border-base-content/10">
       <div class="flex items-center gap-4">
-        <div class="avatar placeholder">
-          <div class="bg-gradient-to-br from-primary to-secondary rounded-xl w-14 h-14 shadow-lg">
+        <div class="avatar avatar-placeholder">
+          <div class="bg-gradient-to-br from-primary to-secondary rounded-xl w-10 h-10 shadow-lg">
             <i class="fas fa-file-invoice text-2xl text-white"></i>
           </div>
         </div>
         <div>
-          <h3 class="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h3 class="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Crear Solicitud de Pedido
           </h3>
           <p class="text-sm text-base-content/60 mt-1">Complete los datos para generar una nueva orden</p>
@@ -24,8 +24,8 @@
     </div>
 
     <!-- Form Principal - MEJORADO -->
-    <form [formGroup]="formCreateOrder" class="bg-gradient-to-br from-base-200/30 to-base-300/20 rounded-xl p-4 border border-base-content/5 shadow-md">
-      <div class="grid grid-cols-1 gap-3 sm:grid-cols-12">
+    <form [formGroup]="formCreateOrder" class="bg-gradient-to-br from-base-200/30 to-base-300/20 rounded-xl p-2 border border-base-content/5 shadow-md">
+      <div class="grid grid-cols-1 gap-1 sm:grid-cols-12">
 
         <!-- ID Empleado -->
         <div class="sm:col-span-2">
@@ -35,8 +35,8 @@
               ID Empleado
             </span>
           </label>
-          <div class="bg-primary/10 rounded-lg p-2.5 border border-primary/20">
-            <h1 class="text-xl font-bold text-primary">{{idEmployee()}}</h1>
+          <div class="bg-primary/10 rounded-lg pl-1 border border-primary/20">
+            <h1 class="text-md font-bold text-primary">{{idEmployee()}}</h1>
           </div>
         </div>
 
@@ -49,7 +49,7 @@
             </span>
           </label>
           <input type="date" formControlName="estimatedDateStock"
-            class="input input-sm input-bordered w-full bg-base-100 focus:input-primary transition-all" />
+            class="input input-xs input-bordered w-full bg-base-100 focus:input-primary transition-all" />
         </div>
 
         <!-- Tipo -->
@@ -61,7 +61,7 @@
             </span>
           </label>
           <select formControlName="type"
-            class="select select-sm select-bordered w-full bg-base-100 focus:select-primary transition-all">
+            class="select select-xs select-bordered w-full bg-base-100 focus:select-primary transition-all">
             @for (type of typeOrderArr; track $index) {
               <option [value]="type.value">{{type.value}}</option>
             }
@@ -76,14 +76,14 @@
               ID Orden
             </span>
           </label>
-          <div class="bg-info/10 rounded-lg p-2.5 border border-info/20">
-            <h1 class="text-xl font-bold text-info">{{idNewOrder() ? idNewOrder() : 0}}</h1>
+          <div class="bg-info/10 rounded-lg pl-1 border border-info/20">
+            <h1 class="text-md font-bold text-info">{{idNewOrder() ? idNewOrder() : 0}}</h1>
           </div>
         </div>
 
         <!-- Botón Generar -->
         <div class="sm:col-span-2 flex items-end">
-          <button type="button" class="btn btn-success btn-sm gap-2 shadow-md hover:shadow-lg transition-all w-full" (click)="createNewOrder()">
+          <button type="button" class="btn btn-success btn-xs gap-2 shadow-md hover:shadow-lg transition-all w-full" (click)="createNewOrder()">
             <i class="fas fa-check-circle"></i>
             Generar
           </button>
@@ -96,25 +96,26 @@
 
       <!-- Sección Material -->
       <form [formGroup]="formCreateMaterial" class="card bg-gradient-to-br from-info/5 to-info/10 shadow-xl border border-info/20">
-        <div class="card-body">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 bg-gradient-to-br from-info to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+        <div class="card-body ">
+
+          <div class="flex items-center gap-1 mb-4">
+            <div class="w-6 h-6 bg-gradient-to-br from-info to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
               <i class="fas fa-box text-2xl text-white"></i>
             </div>
             <div>
-              <h2 class="text-2xl font-bold text-info">Generar Pedido de Material</h2>
-              <p class="text-sm text-base-content/60">Complete la información del material solicitado</p>
+              <h2 class="text-sm font-bold text-info">Generar Pedido de Material</h2>
+              <p class="text-xs text-base-content/60">Complete la información del material solicitado</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-12 mb-6">
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-12 mb-6">
             <!-- Cantidad -->
             <div class="sm:col-span-2">
               <label class="label">
                 <span class="label-text font-semibold text-xs">Cantidad</span>
               </label>
               <input type="number" formControlName="quantity"
-                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+                class="input input-bordered input-xs w-full bg-base-100 focus:input-info transition-all" />
             </div>
 
             <!-- Unidad de medida -->
@@ -123,16 +124,16 @@
                 <span class="label-text font-semibold text-xs">Unidad de Medida</span>
               </label>
               <input type="text" formControlName="unitOfMeasure"
-                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+                class="input input-bordered input-xs w-full bg-base-100 focus:input-info transition-all" />
             </div>
 
             <!-- Tipo Material -->
             <div class="sm:col-span-2">
               <label class="label">
-                <span class="label-text font-semibold text-xs">Tipo *</span>
+                <span class="label-text font-semibold text-xs">Grupo de compras *</span>
               </label>
               <select formControlName="typeMaterial"
-                class="select select-bordered select-sm w-full bg-base-100 focus:select-info transition-all">
+                class="select select-bordered select-xs w-full bg-base-100 focus:select-info transition-all">
                 @for (typeMaterial of typeMaterialOrderArr; track $index) {
                   <option [value]="typeMaterial.value">{{typeMaterial.value}}</option>
                 }
@@ -145,7 +146,7 @@
                 <span class="label-text font-semibold text-xs">Características</span>
               </label>
               <input type="text" formControlName="characteristics"
-                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+                class="input input-bordered input-xs w-full bg-base-100 focus:input-info transition-all" />
             </div>
 
             <!-- Observaciones -->
@@ -154,7 +155,7 @@
                 <span class="label-text font-semibold text-xs">Observaciones</span>
               </label>
               <input type="text" formControlName="observations"
-                class="input input-bordered input-sm w-full bg-base-100 focus:input-info transition-all" />
+                class="input input-bordered input-xs w-full bg-base-100 focus:input-info transition-all" />
             </div>
 
             <!-- Foto -->
@@ -166,34 +167,34 @@
                 </span>
               </label>
               <input #photoInput type="file" (change)="selectedphotoMaterial($event)"
-                class="file-input file-input-bordered file-input-sm w-full bg-base-100 focus:file-input-info transition-all" />
+                class="file-input file-input-bordered file-input-xs w-full bg-base-100 focus:file-input-info transition-all" />
             </div>
 
             <!-- Botón Generar Material -->
             <div class="sm:col-span-2 flex items-end">
-              <button type="button" class="btn btn-info btn-sm w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListMaterials()">
+              <button type="button" class="btn btn-info btn-xs w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListMaterials()">
                 <i class="fas fa-plus-circle"></i>
                 Agregar
               </button>
             </div>
           </div>
-
           <!-- Tabla de Materiales -->
           <div class="flex gap-4 items-start">
-            <div class="flex-1 card bg-base-100 shadow-lg border border-base-content/10">
+            <div class="flex-1 card bg-base-100 shadow-md border border-base-content/10">
               <div class="card-body p-4">
-                <h3 class="font-bold text-lg mb-3 flex items-center gap-2">
+                <h3 class="font-bold text-sm mb-2 flex items-center gap-1">
                   <i class="fas fa-list text-info"></i>
                   Lista de Materiales Solicitados
                 </h3>
                 <div class="overflow-x-auto max-h-64 overflow-y-auto">
-                  <table class="table table-zebra table-sm">
+                  <table class="table table-zebra table-md">
                     <thead class="sticky top-0 bg-base-200 z-10">
                       <tr>
-                        <th class="bg-base-200">Orden</th>
-                        <th class="bg-base-200">Características</th>
-                        <th class="bg-base-200">Observaciones</th>
-                        <th class="bg-base-200">Cantidad</th>
+                        <th class="bg-base-200 text-xs">Orden</th>
+                        <th class="bg-base-200 text-xs">Características</th>
+                        <th class="bg-base-200 text-xs">Observaciones</th>
+                        <th class="bg-base-200 text-xs">Cantidad</th>
+                        <th class="bg-base-200 text-xs">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -202,10 +203,39 @@
                           <th>
                             <div class="badge badge-info badge-sm">{{$index + 1}}</div>
                           </th>
-                          <td>{{material.characteristics}}</td>
-                          <td>{{material.observations}}</td>
                           <td>
-                            <span class="font-bold text-info">{{material.quantity}}</span>
+                            <input
+                              type="text"
+                              class="input input-bordered input-xs w-full"
+                              [value]="material.characteristics"
+                              (input)="updateMaterial($index, 'characteristics', $any($event.target).value)"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              class="input input-bordered input-xs w-full"
+                              [value]="material.observations"
+                              (input)="updateMaterial($index, 'observations', $any($event.target).value)"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              class="input input-bordered input-xs w-full"
+                              [value]="material.quantity"
+                              (input)="updateMaterial($index, 'quantity', +$any($event.target).value)"
+                            />
+                          </td>
+                           <td>
+                            <button
+                              type="button"
+                              class="btn btn-error btn-xs"
+                              (click)="removeMaterial($index)"
+                              aria-label="Eliminar material"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </button>
                           </td>
                         </tr>
                       }
@@ -229,6 +259,7 @@
               Guardar Orden de Material
             </button>
           </div>
+
         </div>
       </form>
 
@@ -236,11 +267,11 @@
       <form [formGroup]="formCreateService" class="card bg-gradient-to-br from-secondary/5 to-secondary/10 shadow-xl border border-secondary/20">
         <div class="card-body">
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 bg-gradient-to-br from-secondary to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-              <i class="fas fa-tools text-2xl text-white"></i>
+            <div class="w-6 h-6 bg-gradient-to-br from-secondary to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+              <i class="fas fa-tools text-md text-white"></i>
             </div>
             <div>
-              <h2 class="text-2xl font-bold text-secondary">Generar Pedido de Servicio</h2>
+              <h2 class="text-xs font-bold text-secondary">Generar Pedido de Servicio</h2>
               <p class="text-sm text-base-content/60">Complete la información del servicio solicitado</p>
             </div>
           </div>
@@ -251,13 +282,13 @@
               <label class="label">
                 <span class="label-text font-semibold text-xs">Características</span>
               </label>
-              <input type="text" formControlName="characteristics"
-                class="input input-bordered input-sm w-full bg-base-100 focus:input-secondary transition-all" />
+              <input type="text " formControlName="characteristics"
+                class="input input-bordered input-xs w-full bg-base-100 focus:input-secondary transition-all" />
             </div>
 
             <!-- Botón Generar Servicio -->
             <div class="sm:col-span-2 flex items-end">
-              <button type="button" class="btn btn-secondary btn-sm w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListServices()">
+              <button type="button" class="btn btn-secondary btn-xs w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListServices()">
                 <i class="fas fa-plus-circle"></i>
                 Agregar
               </button>
@@ -268,7 +299,7 @@
           <div class="flex gap-4 items-start">
             <div class="flex-1 card bg-base-100 shadow-lg border border-base-content/10">
               <div class="card-body p-4">
-                <h3 class="font-bold text-lg mb-3 flex items-center gap-2">
+                <h3 class="font-bold text-xs mb-3 flex items-center gap-2">
                   <i class="fas fa-list text-secondary"></i>
                   Lista de Servicios Solicitados
                 </h3>
@@ -276,8 +307,8 @@
                   <table class="table table-zebra table-sm">
                     <thead class="sticky top-0 bg-base-200 z-10">
                       <tr>
-                        <th class="bg-base-200">Orden</th>
-                        <th class="bg-base-200">Características</th>
+                        <th class="bg-base-200 text-xs">Orden</th>
+                        <th class="bg-base-200 text-xs">Características</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -286,12 +317,29 @@
                           <th>
                             <div class="badge badge-secondary badge-sm">{{$index + 1}}</div>
                           </th>
-                          <td>{{service.characteristics}}</td>
+                          <td>
+                            <input
+                              type="text"
+                              class="input input-bordered input-xs w-full"
+                              [value]="service.characteristics"
+                              (input)="updateService($index, 'characteristics', $any($event.target).value)"
+                            />
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-error btn-xs"
+                              (click)="removeService($index)"
+                              aria-label="Eliminar servicio"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </td>
                         </tr>
                       }
                       @if(servicesList().length === 0) {
                         <tr>
-                          <td colspan="2" class="text-center py-8 text-base-content/50">
+                          <td colspan="3" class="text-center py-8 text-base-content/50">
                             <i class="fas fa-inbox text-3xl mb-2"></i>
                             <p>No hay servicios agregados</p>
                           </td>
@@ -328,14 +376,14 @@
 
   <!-- Error Alerts -->
   @if(hasErrorMaterialOrder()) {
-    <div class="toast toast-top toast-end z-50">
+
       <error-alert (close)="hasErrorMaterialOrder.set(false)" [messageError]="errorNameMaterialOrder()" />
-    </div>
+
   }
   @if(hasErrorOrder()) {
-    <div class="toast toast-top toast-end z-50">
+
       <error-alert (close)="hasErrorOrder.set(false)" [messageError]="errorNameOrder()" />
-    </div>
+
   }
 </dialog>
 

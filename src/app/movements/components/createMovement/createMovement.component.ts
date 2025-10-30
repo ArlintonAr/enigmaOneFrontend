@@ -177,8 +177,7 @@ export class CreateMovementComponent implements OnInit {
     }, 0);
   }
   createMovement(): void {
-    console.log('SUBMIT form value', this.movementForm.value);
-    // Ensure conditional validators (returnDate) are evaluated before final validation
+
     this.movementForm.get('returnDate')?.updateValueAndValidity();
     this.movementForm.updateValueAndValidity();
 
@@ -187,7 +186,6 @@ export class CreateMovementComponent implements OnInit {
       this.hasError.set(true);
       const errors = this.collectFormErrors();
       this.hasNameError.set(`Formulario inválido: ${JSON.stringify(errors)}`);
-      console.warn('Formulario inválido', errors);
       return;
     }
 
@@ -208,10 +206,7 @@ export class CreateMovementComponent implements OnInit {
       movementData.detailEntryMaterials = formValue.details;
     }
 
-    console.log('Datos del movimiento:', movementData);
 
-
-    // Aquí llamarías a tu servicio para guardar
      this.movementService.createMovement(movementData)
      .subscribe({
       next: (response)=>{
@@ -220,13 +215,13 @@ export class CreateMovementComponent implements OnInit {
         this.movementForm.reset()
         this.detailsArray.clear()
         this.cdr.markForCheck()
-          console.log(response)
+
       },
       error:(error)=>{
         this.hasError.set(true);
         this.hasNameError.set('Error al crear el movimiento')
         this.cdr.markForCheck()
-        console.log(error)
+
       }
      })
   }
@@ -240,7 +235,6 @@ export class CreateMovementComponent implements OnInit {
     return null;
   }
 
-  // Small helpers to ensure radio selections update the FormGroup reliably
   setReturnableValue(value: string) {
     const ctrl = this.movementForm.get('returnable');
     if (!ctrl) return;
@@ -255,7 +249,7 @@ export class CreateMovementComponent implements OnInit {
     if (!ctrl) return;
     ctrl.setValue(value);
     ctrl.markAsDirty();
-    // update conditional validator immediately
+
     if (value === 'RETORNABLE') {
       returnDateCtrl?.setValidators([Validators.required]);
     } else {
@@ -276,7 +270,7 @@ export class CreateMovementComponent implements OnInit {
       materialRequesterId: employeeId,
     });
 
-    // ensure control state updated
+
     const c = this.movementForm.get('materialRequesterId');
     c?.markAsDirty();
     c?.updateValueAndValidity();
@@ -286,7 +280,7 @@ export class CreateMovementComponent implements OnInit {
 
   handleEmployeeRowClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    // climb up to the table row
+
     const row = target.closest('tr');
     if (!row) return;
 
