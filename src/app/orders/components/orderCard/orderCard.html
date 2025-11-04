@@ -1,0 +1,219 @@
+<div class="order-card">
+  <div class="card bg-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-700">
+    <!-- Header compacto -->
+    <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-t-lg px-4 py-3 border-b border-slate-700">
+      <div class="flex  gap-2 items-center justify-between text-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-slate-400 font-medium">ID:</span>
+          <span class="text-white font-bold">#{{ order().id }}</span>
+          <span class="badge badge-sm bg-slate-700 text-slate-300 border-slate-600">{{ order().type }}</span>
+        </div>
+        <span class="badge badge-sm bg-emerald-900/50 text-emerald-300 border-emerald-700">
+          {{ order().approvalStatus }}
+        </span>
+
+        <!--menu hamburguesa-->
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-sm btn-circle text-slate-400 hover:bg-slate-700 border border-slate-600">
+            <i class="fas fa-ellipsis-v"></i>
+          </label>
+          <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-slate-800 rounded-box w-52 border border-slate-700">
+            <li>
+              <div (click)="generateReport(order().id)" class="text-slate-300 hover:bg-slate-700">
+                <i class="fas fa-file-pdf mr-2"></i>
+                Generar Reporte PDF
+              </div>
+
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    <!-- Contenido compacto -->
+    <div class="p-4 space-y-3">
+      <!-- Fechas en una fila compacta -->
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <div class="flex items-center gap-2 p-2 bg-slate-900/50 rounded border border-slate-700">
+          <i class="fas fa-calendar-plus text-slate-400 text-sm"></i>
+          <div>
+            <p class="text-slate-500">Creado</p>
+            <p class="text-slate-300 font-medium">{{ order().created_at | date : "short" }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 p-2 bg-slate-900/50 rounded border border-slate-700">
+          <i class="fas fa-clock text-slate-400 text-sm"></i>
+          <div>
+            <p class="text-slate-500">Estimado</p>
+            <p class="text-slate-300 font-medium">{{ order().estimatedDateStock | date : "short" }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empleado y seguimiento en una fila -->
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <div class="flex items-center gap-2 p-2 bg-slate-900/50 rounded border border-slate-700">
+          <i class="fas fa-user text-slate-400 text-sm"></i>
+          <div>
+            <p class="text-slate-500">Empleado</p>
+            <p class="text-slate-300 font-medium">{{ order().employeeId }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 p-2 bg-slate-900/50 rounded border border-slate-700">
+          <i class="fas fa-route text-slate-400 text-sm"></i>
+          <div>
+            <p class="text-slate-500">Estado</p>
+            <p class="text-slate-300 font-medium">{{ order().currentTrackingState }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progreso compacto con steps más finos -->
+      <div class="bg-slate-900/30 rounded p-3 border border-slate-700">
+        <ul class="steps steps-horizontal w-full text-xs">
+          @switch (getCurrentStep(order())) {
+            @case (0) {
+              <li class="step step-primary">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-7 h-7 flex items-center justify-center bg-blue-600 rounded-full shadow-md">
+                    <i class="fas fa-shopping-cart text-white text-xs"></i>
+                  </div>
+                  <span class="text-[10px] font-medium text-blue-400">Pedido</span>
+                </div>
+              </li>
+              <li class="step">
+                <div class="flex flex-col items-center gap-1 opacity-30">
+                  <div class="w-7 h-7 flex items-center justify-center bg-slate-600 rounded-full">
+                    <i class="fas fa-truck text-slate-400 text-xs"></i>
+                  </div>
+                  <span class="text-[10px] text-slate-500">En ruta</span>
+                </div>
+              </li>
+              <li class="step">
+                <div class="flex flex-col items-center gap-1 opacity-30">
+                  <div class="w-7 h-7 flex items-center justify-center bg-slate-600 rounded-full">
+                    <i class="fas fa-warehouse text-slate-400 text-xs"></i>
+                  </div>
+                  <span class="text-[10px] text-slate-500">Almacén</span>
+                </div>
+              </li>
+            }
+            @case (1) {
+              <li class="step step-warning">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-7 h-7 flex items-center justify-center bg-orange-600 rounded-full shadow-md">
+                    <i class="fas fa-shopping-cart text-white text-xs"></i>
+                  </div>
+                  <span class="text-[10px] font-medium text-orange-400">Pedido</span>
+                </div>
+              </li>
+              <li class="step step-warning">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-7 h-7 flex items-center justify-center bg-orange-500 rounded-full shadow-md">
+                    <i class="fas fa-truck text-white text-xs"></i>
+                  </div>
+                  <span class="text-[10px] font-medium text-orange-400">En ruta</span>
+                </div>
+              </li>
+              <li class="step">
+                <div class="flex flex-col items-center gap-1 opacity-30">
+                  <div class="w-7 h-7 flex items-center justify-center bg-slate-600 rounded-full">
+                    <i class="fas fa-warehouse text-slate-400 text-xs"></i>
+                  </div>
+                  <span class="text-[10px] text-slate-500">Almacén</span>
+                </div>
+              </li>
+            }
+            @case (2) {
+              <li class="step step-success">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-7 h-7 flex items-center justify-center bg-emerald-600 rounded-full shadow-md">
+                    <i class="fas fa-shopping-cart text-white text-xs"></i>
+                  </div>
+                  <span class="text-[10px] font-medium text-emerald-400">Pedido</span>
+                </div>
+              </li>
+              <li class="step step-success">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-7 h-7 flex items-center justify-center bg-emerald-600 rounded-full shadow-md">
+                    <i class="fas fa-truck text-white text-xs"></i>
+                  </div>
+                  <span class="text-[10px] font-medium text-emerald-400">En ruta</span>
+                </div>
+              </li>
+              <li class="step step-success">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-7 h-7 flex items-center justify-center bg-emerald-600 rounded-full shadow-md">
+                    <i class="fas fa-warehouse text-white text-xs"></i>
+                  </div>
+                  <span class="text-[10px] font-medium text-emerald-400">Almacén</span>
+                </div>
+              </li>
+            }
+            @default {
+              <li class="step step-neutral">
+                <div class="flex flex-col items-center gap-1 opacity-40">
+                  <div class="w-7 h-7 flex items-center justify-center bg-slate-600 rounded-full">
+                    <i class="fas fa-shopping-cart text-slate-400 text-xs"></i>
+                  </div>
+                  <span class="text-[10px] text-slate-500">Pedido</span>
+                </div>
+              </li>
+              <li class="step">
+                <div class="flex flex-col items-center gap-1 opacity-40">
+                  <div class="w-7 h-7 flex items-center justify-center bg-slate-600 rounded-full">
+                    <i class="fas fa-truck text-slate-400 text-xs"></i>
+                  </div>
+                  <span class="text-[10px] text-slate-500">En ruta</span>
+                </div>
+              </li>
+              <li class="step">
+                <div class="flex flex-col items-center gap-1 opacity-40">
+                  <div class="w-7 h-7 flex items-center justify-center bg-slate-600 rounded-full">
+                    <i class="fas fa-warehouse text-slate-400 text-xs"></i>
+                  </div>
+                  <span class="text-[10px] text-slate-500">Almacén</span>
+                </div>
+              </li>
+            }
+          }
+        </ul>
+      </div>
+
+      <!-- Botones compactos -->
+      <div class="flex justify-between items-center flex-wrap gap-2">
+        @if (order().materialOrders.length>0) {
+          <button
+            class="btn btn-xs bg-slate-700 hover:bg-slate-600 border-slate-600 text-slate-200"
+            (click)="openModal(order().materialOrders)"
+          >
+            <i class="fas fa-boxes text-xs"></i>
+            Ver Detalles
+          </button>
+        }
+        @if (order().serviceOrders.length>0) {
+          <button
+            class="btn btn-xs bg-slate-700 hover:bg-slate-600 border-slate-600 text-slate-200"
+            (click)="openModalServices(order().serviceOrders)"
+          >
+            <i class="fas fa-tools text-xs"></i>
+            Ver Detalles
+          </button>
+        }
+        @if(activeButtonAuthorization()){
+          <approved-order [orderId]="order().id" />
+        }
+        @if(activeButtonInRoute()){
+          <active-button-to-route-order [orderId]="order().id"/>
+        }
+      </div>
+    </div>
+  </div>
+
+  <details-of-order [orderMaterialsList]="selectedMaterials()" />
+  <detail-of-service-order [orderServiceList]="selectedServices()" />
+</div>
+
+

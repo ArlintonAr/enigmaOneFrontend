@@ -60,4 +60,17 @@ export class DetailsOfOrderComponent {
 
 
 
+  generateOrderReport() {
+
+    const orderId = this.orderMaterialsList()![0].orderId
+    this.orderService.generateOrdersReport(Number(orderId))
+    .subscribe((pdf) => {
+      const blob = new Blob([pdf], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url)
+    }
+    )
+  }
+
+
 }

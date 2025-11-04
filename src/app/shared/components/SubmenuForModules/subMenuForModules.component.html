@@ -1,51 +1,26 @@
-<ul class="menu bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 lg:menu-horizontal rounded-2xl shadow-xl border border-slate-600/50 p-2 gap-2">
+<ul class="menu bg-slate-800 lg:menu-horizontal rounded-lg border border-slate-700 p-1.5 gap-1">
   @for (item of subMenu(); track $index) {
     <li>
-
       <a
         [routerLink]="item.route"
-        routerLinkActive="bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg shadow-indigo-500/30"
-        class="group relative overflow-hidden rounded-xl transition-all duration-300 hover:bg-slate-600/50 flex items-center gap-3 px-4 py-3"
+        routerLinkActive="bg-gradient-to-r from-indigo-600 to-purple-600"
+        class="rounded-lg transition-all duration-200 hover:bg-slate-700 flex items-center gap-2.5 px-3 py-2"
       >
-        <!-- Efecto de brillo -->
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-
-        <!-- Icono con círculo -->
-        <div class="relative z-10 w-9 h-9 rounded-lg bg-slate-700/50 group-hover:bg-indigo-500/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
-          <i [class]="item.icon" class="text-base text-slate-300 group-hover:text-indigo-400 transition-colors"></i>
+        <!-- Icono -->
+        <div class="w-7 h-7 rounded-md bg-slate-700/70 flex items-center justify-center transition-colors duration-200 [a[routerLinkActive]_&]:bg-indigo-500/20">
+          <i [class]="item.icon" class="text-sm text-slate-300 transition-colors [a[routerLinkActive]_&]:text-white"></i>
         </div>
 
         <!-- Nombre -->
-        <span class="relative z-10 font-semibold text-white group-hover:text-white transition-colors">
+        <span class="font-medium text-sm text-slate-200 transition-colors [a[routerLinkActive]_&]:text-white">
           {{item.name}}
         </span>
 
         <!-- Badge de descripción -->
-        <span class="relative z-10 badge badge-sm bg-slate-600/50 border-slate-500 text-slate-300 group-hover:bg-indigo-500/30 group-hover:border-indigo-400 group-hover:text-indigo-200 transition-all">
+        <span class="badge badge-sm bg-slate-700 border-slate-600 text-slate-400 text-xs transition-colors [a[routerLinkActive]_&]:bg-indigo-500/30 [a[routerLinkActive]_&]:border-indigo-500 [a[routerLinkActive]_&]:text-indigo-200">
           {{item.description}}
         </span>
-
-        <!-- Indicador de hover -->
-        <div class="relative z-10 ml-auto opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1">
-          <i class="fas fa-chevron-right text-xs text-indigo-400"></i>
-        </div>
       </a>
     </li>
   }
 </ul>
-
-<style>
-/* Animación de pulso para el item activo */
-a[routerLinkActive].bg-gradient-to-r {
-  animation: pulseGlow 2s ease-in-out infinite;
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4), 0 0 25px rgba(147, 51, 234, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(99, 102, 241, 0.6), 0 0 35px rgba(147, 51, 234, 0.3);
-  }
-}
-</style>

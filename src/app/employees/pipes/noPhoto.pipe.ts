@@ -5,8 +5,8 @@ import { Pipe, type PipeTransform } from '@angular/core';
 })
 export class NoPhotoPipe implements PipeTransform {
 
-  transform(value: string | null | undefined ) {
-  if(value==null || value==undefined  ){
+  transform(value: string | null | undefined |'' ) {
+  if(value==null || value==undefined || value==='' ){
     return '/sin-foto.png'
   }
     return value;

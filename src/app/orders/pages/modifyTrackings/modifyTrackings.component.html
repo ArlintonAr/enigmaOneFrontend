@@ -9,17 +9,6 @@
 
   </div>
 
-  @if(listOrderForModify().length > 0) {
-
-  <div class="content-list-orders ">
-    <list-orders [orderList]="listOrderForModify()" [updatedTracking]="true" />
-  </div>
-
-  }@else{
-    <div role="alert" class="alert alert-warning alert-dash mt-4 h-full flex flex-col justify-center items-center gap-4">
-    <span>No existen órdenes por aprobar.</span>
-  </div>
-  }
 
 
 

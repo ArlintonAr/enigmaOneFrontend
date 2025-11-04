@@ -1,0 +1,59 @@
+<button class="btn btn-xs" (click)="openModal(orderId())">
+  <i class="fas fa-check-circle"></i> Aprobacion
+</button>
+
+<dialog #modalApproved class="modal">
+  <div class="modal-box w-11/12 max-w-5xl flex flex-col gap-4">
+    <div class="title">
+      <h3 class="text-lg font-bold">APROBACIÓN DE ORDENES</h3>
+      <p class="">Apruebe Orden segun su Posición en la empresa.</p>
+    </div>
+    <div class="">
+      @for (approval of ordersApproval(); track $index) {
+
+      <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+        <input type="radio" name="my-accordion-2" checked="checked" />
+        <div class="collapse-title font-semibold">
+          {{ approval.role | removeHyphen | uppercase }}
+        </div>
+        <div class="collapse-content text-sm">
+          <details-order-approval [approval]="approval" />
+          @if (approval.status==='PENDIENTE') {
+          <div class="flex flex justify-between items-center gap-2 p-3 bg-gray-800/60 rounded-lg border border-gray-700/50">
+            <form [formGroup]="formUpdateApproved" class="flex-1 flex gap-2 justify-between items-center">
+              <select formControlName="status"
+                class="select select-xs select-bordered bg-gray-900 text-gray-100 border-gray-700">
+                <option value="APROBADO">Aprobado</option>
+                <option value="RECHAZADO">Rechazado</option>
+              </select>
+
+              <input
+                type="text"
+                placeholder="Ingrese el comentario"
+                formControlName="comments"
+                class="input input-md input-bordered bg-gray-900 text-gray-100 border-gray-700 placeholder:text-gray-500"
+              />
+            </form>
+            <button class="btn btn-sm btn-success" (click)="updatedStatusApproval()">Guardar</button>
+          </div>
+          }
+        </div>
+      </div>
+
+      }
+    </div>
+    <button class="btn btn-sm btn-warning" (click)="closeModal()">
+      Cerrar
+    </button>
+  </div>
+
+
+</dialog>
+
+@if(hasError()){
+  <error-alert [messageError]="nameError()" (click)="hasError.set(false)" />
+
+  }
+@if(hasSuccess()){
+  <success-alert [messageSuccess]="nameSuccess()" (click)="hasSuccess.set(false)" />
+}

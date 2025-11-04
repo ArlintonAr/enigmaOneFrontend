@@ -376,13 +376,17 @@
 
   <!-- Error Alerts -->
   @if(hasErrorMaterialOrder()) {
-
       <error-alert (close)="hasErrorMaterialOrder.set(false)" [messageError]="errorNameMaterialOrder()" />
-
   }
   @if(hasErrorOrder()) {
-
       <error-alert (close)="hasErrorOrder.set(false)" [messageError]="errorNameOrder()" />
+  }
+
+  @if(hasSuccessMaterialOrder()){
+    <success-alert (close)="hasSuccessMaterialOrder.set(false)" [messageSuccess]="successNameMaterialOrder()" />
+  }
+  @if (hasSuccessOrder()) {
+    <success-alert (close)="hasSuccessOrder.set(false)" [messageSuccess]="successNameOrder()" />
 
   }
 </dialog>

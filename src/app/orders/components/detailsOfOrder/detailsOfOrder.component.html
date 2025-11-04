@@ -193,7 +193,8 @@
           <!-- Botón extra opcional -->
           <button
             class="btn btn-primary gap-2 shadow-md hover:shadow-lg transition-all"
-            disabled>
+            [disabled]="!orderMaterialsList() || orderMaterialsList()!.length === 0"
+            (click)="generateOrderReport()">
             <i class="fas fa-download"></i>
             Exportar
           </button>

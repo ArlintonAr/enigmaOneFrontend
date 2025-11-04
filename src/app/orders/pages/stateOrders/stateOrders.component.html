@@ -1,14 +1,14 @@
 <div class="content min-h-screen bg-base-200 p-4 sm:p-6 lg:p-8">
 
   <!-- Search Section -->
-  <div class="max-w-7xl mx-auto mb-6">
+  <div class="max-w-9xl mx-auto mb-6">
     <div class="search bg-base-100 rounded-lg shadow-sm border border-base-300 p-4">
       <!-- Tu contenido de búsqueda aquí -->
     </div>
   </div>
 
   <!-- Stats Overview -->
-  <div class="max-w-7xl mx-auto mb-8">
+  <div class="max-w-9xl mx-auto mb-8">
     <div class="stats stats-vertical lg:stats-horizontal shadow-lg w-full bg-base-100">
       <div class="stat place-items-center">
         <div class="stat-figure text-success">
@@ -46,9 +46,9 @@
   </div>
 
   <!-- Órdenes Aprobadas Section -->
-  <div class="max-w-7xl mx-auto mb-8">
-    <div class="bg-base-100 rounded-2xl shadow-xl border border-base-300 p-6">
-      <div class="flex items-center justify-between mb-6 pb-4 border-b border-base-300">
+  <div class="max-w-9xl mx-auto mb-8">
+    <div class="bg-base-100 rounded-2xl shadow-xl border  border-base-300  ">
+      <div class="flex items-center justify-between mb-6 p-4 border-b border-base-300 ">
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,16 +72,16 @@
         </div>
       </div>
 
-      <div class="content-list-orders">
-        <list-orders [orderList]="listOfApprovedOrders()" [updatedTracking]="true" />
+      <div class="list-orders ">
+        <list-orders  [orderList]="listOfApprovedOrders()" [activeButtonInRoute]="true" />
       </div>
     </div>
   </div>
 
   <!-- Órdenes Rechazadas Section -->
-  <div class="max-w-7xl mx-auto mb-8">
-    <div class="bg-base-100 rounded-2xl shadow-xl border border-base-300 p-6">
-      <div class="flex items-center justify-between mb-6 pb-4 border-b border-base-300">
+  <div class="max-w-9xl mx-auto mb-8">
+    <div class="bg-base-100 rounded-2xl shadow-xl border  border-base-300 ">
+      <div class="flex items-center justify-between mb-6 p-4 border-b border-base-300">
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 bg-error/10 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -105,7 +105,7 @@
         </div>
       </div>
 
-      <div class="content-list-orders">
+      <div class="list-orders">
         <list-orders [orderList]="listOfRejectedOrders()" />
       </div>
     </div>

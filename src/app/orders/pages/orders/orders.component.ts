@@ -30,7 +30,7 @@ export class OrdersComponent {
     this.orderService.getAllOrders()
     .subscribe((response)=>{
       this.orders.set(response.data)
-
+      console.log(this.orders())
     })
   }
 

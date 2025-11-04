@@ -22,59 +22,17 @@ export class ListOfOrdersInRouteComponent {
 
   constructor(){
 
-
-    //efecto si esa variable cambia
-    effect(()=>{
-      const isUpdated = this.orderEventsService.isOrderUpdated()
-      if(isUpdated){
-        this.orderListInRouteForModal()
-        this.orderEventsService.orderUpdatedTracking(false)
-        this.closeModal()
-      }
-    })
-
   }
 
 
   openModal(): void {
     this.modalListOrders.nativeElement.showModal();
-    this.orderListInRouteForModal()
-    // orderListInRouteForModal sets the signal asynchronously; don't log its (undefined) return
+
 
   }
   closeModal(): void {
       this.modalListOrders.nativeElement.close();
 
-  }
-
-  //obtener estado para asignar a currentStep
-  orderListInRouteForModal() {
-    this.orderService.getAllOrders()
-      .subscribe({
-        next: (resp) => {
-
-
-            // strict filter: has tracking RUTA and has materialOrders (non-empty) and no serviceOrders
-            const strict = (resp?.data || []).filter(order => {
-              const hasRuta = Array.isArray(order.trackings) && order.trackings.some((track: any) => (track?.trackingState || '').toUpperCase() === 'RUTA')
-              const hasMaterials = Array.isArray(order.materialOrders) && order.materialOrders.length > 0
-              const noServices = Array.isArray(order.serviceOrders) && order.serviceOrders.length === 0
-              return !!hasRuta && hasMaterials && noServices
-            })
-
-            if (strict.length > 0) {
-
-              this.orderListInRoute.set(strict)
-              return
-            }
-
-            // fallback: only check trackingState === 'RUTA' (useful if material/service arrays differ)
-            const relaxed = (resp?.data || []).filter(order => Array.isArray(order.trackings) && order.trackings.some((track: any) => (track?.trackingState || '').toUpperCase() === 'RUTA'))
-
-            // Optionally set the relaxed list so the modal shows something to diagnose
-            this.orderListInRoute.set(relaxed)
-        }
-      })
   }
 
 

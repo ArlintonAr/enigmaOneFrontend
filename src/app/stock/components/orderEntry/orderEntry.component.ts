@@ -41,13 +41,7 @@ export class OrderEntryComponent {
 
   constructor() {
 
-    // Load any saved order from localStorage into the OrderEventService so this component
-    // can react to orders that were moved to ALMACEN before this component was created
-    try {
-      this.orderEvents.loadSavedOrder?.()
-    } catch (e) {
-      // no-op if method not present
-    }
+
 
     const currentOrderUpdatedAlmacen = localStorage.getItem('currentOrderUpdatedAlmacen')
 
@@ -61,13 +55,9 @@ export class OrderEntryComponent {
 
 
     effect(() => {
-      const order = this.orderEvents.orderUpdated()
-      console.log("[orderEntry] Order actualizado y recibido del backend: ", order)
 
-      if (order != null) {
-        this.materialsOrderEvent.set(order.materialOrders)
-        this.syncFormWithMaterials()
-      }
+
+
 
     })
 
@@ -77,8 +67,7 @@ export class OrderEntryComponent {
         const moved = (this.orderEvents as any).orderMovedToAlmacen?.()
         if (moved) {
           console.log('[orderEntry] Detected orderMovedToAlmacen signal -> loading saved order')
-          // ensure service loads saved order from localStorage into its signal
-          try { this.orderEvents.loadSavedOrder?.() } catch (e) {}
+
           const saved = (this.orderEvents as any).orderUpdated?.()
           if (saved) {
             this.orderLocalStorage.set(saved)
@@ -93,8 +82,7 @@ export class OrderEntryComponent {
   }
 
   ngOnInit(): void {
-    // Ensure any saved order in localStorage is loaded into the service and into this component
-    try { this.orderEvents.loadSavedOrder?.() } catch(e){}
+
     try {
       const saved = (this.orderEvents as any).orderUpdated?.()
       if (saved) {
@@ -125,7 +113,7 @@ export class OrderEntryComponent {
 
   openModal(): void {
     // Ensure we load any saved order immediately before showing the modal
-    try { this.orderEvents.loadSavedOrder?.() } catch(e){}
+
     try {
       const raw = localStorage.getItem('currentOrderUpdatedAlmacen')
       console.log('[orderEntry][openModal] localStorage raw:', raw)
@@ -146,7 +134,7 @@ export class OrderEntryComponent {
 
   openModalListOrders(): void {
     // Ensure we load any saved order before opening the list modal
-    try { this.orderEvents.loadSavedOrder?.() } catch(e){}
+
     this.listOfOrdersInRouteComponent.openModal()
   }
 
@@ -251,8 +239,7 @@ export class OrderEntryComponent {
 
             // Remove saved order from localStorage now that materials were persisted
             localStorage.removeItem('currentOrderUpdatedAlmacen')
-            // Also notify OrderEventService to clear its signals
-            try { this.orderEvents.clearCurrentOrder?.() } catch(e){}
+
 
             // Clear local signal copy too
             try { this.orderLocalStorage.set(null) } catch(e){}
@@ -278,8 +265,8 @@ export class OrderEntryComponent {
     this.materialsOrderEvent.set([])
     this.syncFormWithMaterials()
 
-  // Ensure UI updates and local storage cleared
-  try { this.orderEvents.loadSavedOrder?.() } catch(e){}
+
+
   }
 }
 

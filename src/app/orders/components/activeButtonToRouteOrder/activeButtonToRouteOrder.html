@@ -1,0 +1,26 @@
+<button  (click)="openModal()" class="btn btn-xs bg-gradient-to-r from-emerald-500 to-green-600 border-0 text-white font-semibold shadow-md hover:shadow-lg hover:from-emerald-600 hover:to-green-700">
+  En ruta
+</button>
+
+
+<dialog #modalChangeToRoute class="modal">
+  <div class="modal-box bg-gradient-to-br from-gray-900 to-slate-900 border border-gray-700">
+    <h3 class="text-lg font-bold text-gray-100 mb-2">Poner en marcha!</h3>
+    <p class="text-sm text-gray-400 mb-4">Puede agregar un mensaje.</p>
+
+    <form [formGroup]="formUpdatedOrderTracking">
+      <input
+        formControlName="note"
+        type="text"
+        placeholder="Mensaje aquí"
+        class="input input-bordered w-full bg-gray-800 text-gray-100 border-gray-700 placeholder:text-gray-500 mb-4"
+      />
+    </form>
+
+    <div class="flex justify-end gap-2">
+      <button class="btn btn-sm btn-ghost text-gray-300 hover:bg-gray-800" (click)="closeModal()">Cancelar</button>
+      <button class="btn btn-sm bg-gradient-to-r from-emerald-500
+      to-green-600 border-0 text-white hover:from-emerald-600 hover:to-green-700" (click)="updatedOrderTrackingInRoute()" >Confirmar</button>
+    </div>
+  </div>
+</dialog>

@@ -17,34 +17,47 @@ export class AuthorizationOrdersComponent {
   orderEventsService = inject(OrderEventService)
   listOrderForAproved = signal<Order[]>([]);
 
+
+  //Variables de error y acierto
+  hasError = signal<Boolean>(false)
+  errorMessage = signal<string>('')
+
+  hasSuccess = signal<Boolean>(false)
+  successMessage = signal<string>('')
+
+
   constructor() {
-    //cuando inicia el componente
-    this.orderListForApprove();
+    this.getOrdersForAproved();
 
     effect(()=>{
-      //al escuchar un cambio
-      const isUpdatedOrder = this.orderEventsService.isOrderUpdated()
-      if (isUpdatedOrder) {
-        this.orderListForApprove()
-        this.orderEventsService.orderUpdatedTracking(false)
+      if(this.orderEventsService.isUpdatedStatusOrder()){
+        this.getOrdersForAproved()
+        //Devolver la variable a falso despues del proceso
+        this.orderEventsService.updatedStatusOrder(false)
       }
     })
   }
 
 
 
-  orderListForApprove() {
-    this.orderService.getAllOrders()
-      .subscribe(
-        (response) => {
-          const orders = response.data.filter(order =>
-            order.trackings.some(track => track.trackingState === 'PEDIDO') //Listar solo los pedidos con estado 'PEDIDO'
-          );
-          this.listOrderForAproved.set(orders);
+  getOrdersForAproved() {
+    this.orderService.getOrdersByApprovalStatus('PENDIENTE')
+    .subscribe({
+      next: ({ data }) => {
+        this.hasSuccess.set(true)
+        this.listOrderForAproved.set(data);
+      },
+      error: (err) => {
+        if (err.status ===403) {
+          this.hasError.set(true);
+          this.errorMessage.set('No tiene permiso para ver las órdenes pendientes de aprobación.');
+          this.listOrderForAproved.set([]);
+          return;
         }
-      )
-  }
 
+      }
+    })
+  }
 
 
 }
