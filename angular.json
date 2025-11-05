@@ -26,8 +26,7 @@
             ],
             "styles": [
               "src/styles.css"
-            ],
-             "outputPath": "dist/enigmaOne-front/browser"
+            ]
           },
           "configurations": {
             "production": {
