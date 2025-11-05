@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="card flex justify-center items-center w-[100%] lg:w-[50%] h-screen">
+    <div class="card flex justify-center items-center w-[100%] lg:w-full h-screen">
 
       <form [formGroup]="loginForm" (ngSubmit)="login()"
         class="card  w-[100%]  flex flex-col justify-center items-center">
@@ -25,12 +25,12 @@
             <div class="flex justify-center"><img src="/logoLetras.png" width="250px" height="250px" alt=""></div>
             <p class="text-center">Bienvenido puedes iniciar sesión para acceder y trabajar en nuestra plataforma.</p>
           </div>
-          <fieldset class="fieldset">
-            <input type="email" class="input" placeholder="Email" formControlName="email" />
-            <input type="password" class="input" placeholder="Contraseña" formControlName="password" />
+          <fieldset class="fieldset w-full ">
+            <div class="inputs w-full flex flex-col gap-2">
+              <input type="email" class="input w-full" placeholder="Email" formControlName="email" />
+              <input type="password" class="input w-full" placeholder="Contraseña" formControlName="password" />
+            </div>
             <div><a class="link link-hover">Olvidaste tu contraseña?</a></div>
-
-
             <button class="btn btn-warning mt-6" (click)="login()">Ingresar</button>
           </fieldset>
         </div>
