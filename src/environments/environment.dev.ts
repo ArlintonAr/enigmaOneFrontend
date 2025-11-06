@@ -1,7 +1,7 @@
 
 
 export const environment = {
-  apiUrl: 'https://enigmaoneapp-latest.onrender.com'
+  apiUrl: 'https://enigmaoneapp-latest.onrender.com/api/enigmaOne'
 };
 
 
