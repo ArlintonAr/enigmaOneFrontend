@@ -15,6 +15,7 @@ import { ServiceOrder } from '../../interfaces/serviceOrder.interface';
 import { OrderService } from '../../services/orders.service';
 import { ApprovedOrder } from '../approvedOrder/approvedOrder';
 import { ActiveButtonToRouteOrder } from '../activeButtonToRouteOrder/activeButtonToRouteOrder';
+import { ActiveButtonToWarehouse } from "../../../stock/components/activeButtonToWarehouse/activeButtonToWarehouse";
 
 @Component({
   selector: 'order-card',
@@ -23,7 +24,8 @@ import { ActiveButtonToRouteOrder } from '../activeButtonToRouteOrder/activeButt
     DetailsOfOrderComponent,
     DetailOfServiceOrderComponent,
     ApprovedOrder,
-    ActiveButtonToRouteOrder
+    ActiveButtonToRouteOrder,
+    ActiveButtonToWarehouse
 ],
   templateUrl: './orderCard.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +46,7 @@ export class OrderCard {
   //Autorizacion de ordenes: Variables para mostrar botones
   activeButtonAuthorization = input<boolean>();
   activeButtonInRoute = input<boolean>();
+  activeButtonForToWarehouse = input<boolean>();
 
   openModal(materials: MaterialOrder[]): void {
     console.log(materials);

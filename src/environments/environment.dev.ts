@@ -5,3 +5,8 @@ export const environment = {
 };
 
 
+/*
+http://localhost:8080
+https://enigmaoneapp-latest.onrender.com
+
+*/

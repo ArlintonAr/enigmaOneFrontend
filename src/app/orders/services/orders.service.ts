@@ -88,6 +88,16 @@ export class OrderService {
     );
   }
 
+  getOrdersByTrackingState(state: string): Observable<APIResponseOrders> {
+    const token = localStorage.getItem('token');
+    return this.http.get<APIResponseOrders>(
+      `${this.baseUrl}/orders/trackingState/${state}`,
+      {
+         headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  }
+
   //Aprobar Orden
   approveOrder(
     orderId: number,
@@ -273,7 +283,7 @@ export class OrderService {
     orderId: number,
     trackingAction: TrackingActionDTO
   ): Observable<ResponseUpdateTracking> {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     return this.http.post<ResponseUpdateTracking>(
       `${this.baseUrl}/orders/${orderId}/tracking`,
       trackingAction,
@@ -282,4 +292,7 @@ export class OrderService {
       }
     );
   }
+
+
+
 }

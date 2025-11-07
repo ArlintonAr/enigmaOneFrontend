@@ -49,6 +49,6 @@ export class ListOrdersComponent {
  //Autorizacion de ordenes: Variables para mostrar botones
   activeButtonAuthorization = input<boolean>()
   activeButtonInRoute= input<boolean>()
-
+  activeButtonForToWarehouse= input<boolean>()
 
 }
