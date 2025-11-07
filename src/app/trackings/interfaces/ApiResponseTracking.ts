@@ -1,5 +1,3 @@
-
-
 export interface APIResponseTracking {
   message: string;
   data: Tracking[];
@@ -11,18 +9,18 @@ export interface APIResponseTrackingById {
   success: boolean;
 }
 
-
 export interface Tracking {
   created_at: Date;
   updated_at: Date;
   id: number;
   trackingState: string;
+  actorName: string;
+  note: string | null;
   orderId: number;
 }
 
 export interface TrackingUpdate {
-  trackingState:TrackingState
-
+  trackingState: TrackingState;
 }
 
 export interface TrackingResponseUpdated {
@@ -31,11 +29,10 @@ export interface TrackingResponseUpdated {
   success: boolean;
 }
 
-
 export enum TrackingState {
-  pedido = "PEDIDO",
-  aprobado = "APROBADO",
-  rechazado = "RECHAZADO",
-  ruta = "RUTA",
-  almacen = "ALMACEN",
+  pedido = 'PEDIDO',
+  aprobado = 'APROBADO',
+  rechazado = 'RECHAZADO',
+  ruta = 'RUTA',
+  almacen = 'ALMACEN',
 }

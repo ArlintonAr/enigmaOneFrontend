@@ -23,12 +23,8 @@ export const dashboardRoutes: Routes = [
         loadChildren: () => import('../employees/employees.routes')
       },
       {
-        path: 'stock',
-        component: StockLayoutComponent
-      },
-      {
-        path: 'movimientos',
-        loadChildren: () => import('../movements/movement.routes')
+        path: 'almacen',
+        loadChildren: () => import('../stock/stock.routes')
       },
       {
         path: 'ordenes',

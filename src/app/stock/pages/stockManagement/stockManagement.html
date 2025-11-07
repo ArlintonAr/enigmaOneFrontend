@@ -1,0 +1,174 @@
+<div class="content min-h-screen bg-base-200/30 flex flex-col">
+
+  <!-- Header Section with Gradient -->
+  <div class="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 backdrop-blur-sm border-b border-base-content/10">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+
+        <!-- Title and Action Button -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+          <div class="flex items-center gap-3">
+            <div class="avatar avatar-placeholder">
+              <div class="bg-primary text-primary-content rounded-full w-10 h-10 sm:w-12 sm:h-12">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+            </div>
+            <h1 class="text-xl sm:text-xl lg:text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              STOCK
+            </h1>
+          </div>
+
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+          <div class="flex-1 lg:flex-none lg:w-80">
+            <app-search
+              class="w-full"
+              placeholder="Buscar producto..."
+              (onValue)="searchStockForTerm($event)"
+            />
+          </div>
+
+          <form class="join join-horizontal shadow-lg" [formGroup]="formValueOfFiler">
+            <button type="reset" class="btn btn-square btn-ghost join-item hover:btn-error transition-colors" title="Limpiar filtros">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <input
+              class="btn join-item btn-sm sm:btn-md hover:btn-primary transition-colors"
+              type="radio"
+              name="filterType"
+              aria-label="Por Id"
+              formControlName="filterType"
+              value="id"
+            />
+            <input
+              class="btn join-item btn-sm sm:btn-md hover:btn-primary transition-colors"
+              type="radio"
+              name="filterType"
+              aria-label="Por Código"
+              formControlName="filterType"
+              value="code"
+            />
+            <input
+              class="btn join-item btn-sm sm:btn-md hover:btn-primary transition-colors"
+              type="radio"
+              name="filterType"
+              aria-label="Por Nombre"
+              formControlName="filterType"
+              value="name"
+            />
+          </form>
+        </div>
+      </div>
+
+      <!-- Stats Cards (Optional Enhancement) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-6">
+        <div class="stats shadow bg-base-100 hover:shadow-lg transition-shadow">
+          <div class="stat py-3 px-4">
+            <div class="stat-title text-xs">Total Items</div>
+            <div class="stat-value text-xl sm:text-2xl text-primary">{{ stock().length }}</div>
+          </div>
+        </div>
+        <div class="stats shadow bg-base-100 hover:shadow-lg transition-shadow">
+          <div class="stat py-3 px-4">
+            <div class="stat-title text-xs">En Stock</div>
+            <div class="stat-value text-xl sm:text-2xl text-success">{{ stock().length }}</div>
+          </div>
+        </div>
+        <div class="stats shadow bg-base-100 hover:shadow-lg transition-shadow hidden sm:block">
+          <div class="stat py-3 px-4">
+            <div class="stat-title text-xs">Alertas</div>
+            <div class="stat-value text-xl sm:text-2xl text-warning">0</div>
+          </div>
+        </div>
+        <div class="stats shadow bg-base-100 hover:shadow-lg transition-shadow hidden lg:block">
+          <div class="stat py-3 px-4">
+            <div class="stat-title text-xs">Actualizado</div>
+            <div class="stat-value text-xl sm:text-2xl text-info">Hoy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button-entry container mx-auto px-4 sm:px-3 lg:px-8 py-3 sm:py-3">
+      <button class="btn btn-success btn-sm sm:btn-md gap-2 shadow-lg hover:shadow-xl transition-all duration-100 hover:scale-105" (click)="openModal()">
+       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+       </svg>
+       <span class="hidden sm:inline">Entrada de Pedido</span>
+       <span class="sm:hidden">Nueva Entrada</span>
+     </button>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-base-100 rounded-2xl shadow-xl border border-base-content/5 overflow-hidden min-h-[60vh]">
+      @if(stock().length > 0) {
+        <div class="animate-fadeIn">
+          <list-stock [listStock]="stock()" />
+        </div>
+      } @else {
+        <div class="flex flex-col items-center justify-center min-h-[60vh] p-8">
+          <div class="text-center max-w-md space-y-6">
+            <!-- Animated Icon -->
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-warning/10 animate-pulse">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+
+            <!-- Message -->
+            <div class="space-y-2">
+              <h3 class="text-xl sm:text-2xl font-bold text-base-content">
+                No se encontraron productos
+              </h3>
+              <p class="text-base-content/60 text-sm sm:text-base">
+                Intente con otro término de búsqueda o ajuste los filtros
+              </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+              <button class="btn btn-outline btn-primary gap-2" onclick="document.querySelector('input[type=reset]').click()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                </svg>
+                Limpiar Filtros
+              </button>
+              <button class="btn btn-success gap-2" (click)="openModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                Agregar Producto
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<order-entry/>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+  }
+</style>

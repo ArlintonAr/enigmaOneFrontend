@@ -20,7 +20,7 @@ interface Item {
 export class ItemDashboardComponent {
 
    authService = inject(AuthService);
-    router = inject(Router)
+   router = inject(Router)
 
   items: Item[] = [
     {
@@ -39,15 +39,9 @@ export class ItemDashboardComponent {
       title: 'Almacen',
       description: 'Gestion de productos',
       icon: `fa-solid fa-cubes`,
-      route: '/dashboard/stock'
+      route: '/dashboard/almacen'
     },
 
-     {
-      title: 'Movimientos',
-      description: 'Seguimiento de pedidos',
-      icon: `fa-solid fa-hands`,
-      route: '/dashboard/movimientos'
-    },
     {
       title: 'Ordenes',
       description: 'Ordena pedidos',

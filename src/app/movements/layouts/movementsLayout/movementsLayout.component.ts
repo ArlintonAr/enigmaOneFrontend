@@ -18,25 +18,19 @@ subMenu: SubMenu[] = [
       name: 'Administración de movimientos',
       icon: 'fa-regular fa-circle-right',
       description: '+1',
-      route: '/dashboard/movimientos/administracion'
+      route: '/dashboard/almacen/movimientos/administracion'
     },
     {
       name: 'Salidas',
       icon: 'fa-regular fa-circle-right',
       description: '+1',
-      route: '/dashboard/movimientos/salidas'
+      route: '/dashboard/almacen/movimientos/salidas'
     },
     {
       name: 'Entradas',
       icon: 'fa-regular fa-circle-left',
       description: '+3',
-      route: '/dashboard/movimientos/entradas'
-    },
-    {
-      name: 'Reportes de entradas y salidas',
-      icon: 'fa-regular fa-file-powerpoint',
-      description: '+1',
-      route: '/dashboard/movimientos/reportes-salidas-entradas'
+      route: '/dashboard/almacen/movimientos/entradas'
     }
   ]
 

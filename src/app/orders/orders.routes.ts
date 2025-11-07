@@ -6,10 +6,7 @@ import { StateOrdersComponent } from "./pages/stateOrders/stateOrders.component"
 import { ModifyTrackingsComponent } from "./pages/modifyTrackings/modifyTrackings.component";
 
 
-
-
 export const ordersRoutes:Routes = [
-
   {
     path:'',
     component:OrdersLayoutComponent,
