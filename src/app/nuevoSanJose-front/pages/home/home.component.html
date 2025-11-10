@@ -17,7 +17,7 @@
 
 
   <div class="navbar-end ">
-    <label class="flex cursor-pointer gap-2 pr-4" >
+    <!-- <label class="flex cursor-pointer gap-2 pr-4" >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5" />
@@ -28,7 +28,7 @@
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
       </svg>
-    </label>
+    </label> -->
     <a class="btn  btn-soft btn-warning	" [routerLink]="['/autenticacion/acceder']"  >Acceder</a>
   </div>
 </div>
@@ -41,7 +41,7 @@
 
 
     <div class="buttons flex gap-4">
-      <div class="badge badge-outline badge-warning w-xs cursor-pointer">Acceder</div>
+      <div class="badge badge-outline badge-warning w-xs cursor-pointer"  [routerLink]="['/autenticacion/acceder']"  >Acceder</div>
       <div class="badge badge-outline badge-secondary w-xs cursor-pointer">Contacto</div>
     </div>
 
