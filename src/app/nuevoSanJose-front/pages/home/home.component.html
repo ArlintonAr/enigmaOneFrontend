@@ -1,51 +1,229 @@
-<!-- insert nav var -->
-<div class="navbar bg-base-100 shadow-sm">
+<!-- Navbar mejorado con glassmorphism -->
+<div class="navbar bg-base-100/80 shadow-xl sticky top-0 z-50 backdrop-blur-md border-b border-base-300">
 
   <div class="navbar-start">
     <div class="dropdown">
       <app-menu-start />
     </div>
-    <a class=" cursor-pointer"><img src="/logoLetras.png" width="150px" height="150px" alt=""></a>
-
+    <a class="cursor-pointer flex items-center group">
+      <img src="/logoLetras.png" class="w-28 h-auto md:w-36 transition-transform group-hover:scale-105" alt="Logo">
+    </a>
   </div>
-
 
   <div class="navbar-center hidden lg:flex">
     <app-menu></app-menu>
-
   </div>
 
-
-  <div class="navbar-end ">
-    <!-- <label class="flex cursor-pointer gap-2 pr-4" >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5" />
-        <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
+  <div class="navbar-end gap-2 pr-3">
+    <a class="btn btn-warning btn-sm md:btn-md hover:scale-110 hover:shadow-xl transition-all duration-300 font-semibold"
+       [routerLink]="['/autenticacion/acceder']">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
       </svg>
-      <input type="checkbox" checked="true" value="synthwave" class="toggle theme-controller" (change)="changeTheme($event)" />
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
-    </label> -->
-    <a class="btn  btn-soft btn-warning	" [routerLink]="['/autenticacion/acceder']"  >Acceder</a>
+      Acceder
+    </a>
   </div>
 </div>
 
-<div class="flex flex-col items-center pt-8 gap-8">
-  <div class="w-[50%] flex flex-col items-center gap-8">
-    <p class="text-8xl text-center">Brindamos soluciones y servicios a medida de tu negocio</p>
-    <span class="text-xl">Trabajando con compromiso, seguridad y tecnología </span>
+<!-- Hero Section optimizado para viewport completo -->
+<div class="hero min-h-[calc(100vh-4rem)] bg-gradient-to-br from-base-100 via-base-200 to-base-300 relative overflow-hidden">
+
+  <!-- Elementos decorativos de fondo -->
+  <div class="absolute inset-0 opacity-30">
+    <div class="absolute top-20 left-10 w-72 h-72 bg-warning rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+    <div class="absolute top-40 right-10 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+    <div class="absolute bottom-20 left-1/2 w-72 h-72 bg-info rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
   </div>
 
+  <div class="hero-content text-center relative z-10 px-4 py-6 md:py-8 max-w-6xl">
+    <div class="w-full flex flex-col items-center gap-4 md:gap-6">
 
-    <div class="buttons flex gap-4">
-      <div class="badge badge-outline badge-warning w-xs cursor-pointer"  [routerLink]="['/autenticacion/acceder']"  >Acceder</div>
-      <div class="badge badge-outline badge-secondary w-xs cursor-pointer">Contacto</div>
+      <!-- Título principal con efecto gradient animado -->
+      <div class="space-y-2 md:space-y-3">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight animate-fade-in-up">
+          <span class="bg-gradient-to-r from-warning via-secondary to-info bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
+            Brindamos soluciones y servicios
+          </span>
+          <br class="hidden sm:block">
+          <span class="bg-gradient-to-r from-info via-warning to-secondary bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient animation-delay-1000">
+            a medida de tu negocio
+          </span>
+        </h1>
+
+        <!-- Subtítulo optimizado -->
+        <p class="text-sm sm:text-base md:text-lg lg:text-xl text-base-content/70 max-w-2xl mx-auto font-medium animate-fade-in-up animation-delay-500">
+          Trabajando con <span class="text-warning font-semibold">compromiso</span>,
+          <span class="text-secondary font-semibold">seguridad</span> y
+          <span class="text-info font-semibold">tecnología</span>
+        </p>
+      </div>
+
+      <!-- Botones mejorados -->
+      <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto animate-fade-in-up animation-delay-1000">
+        <button
+          class="btn btn-warning btn-md md:btn-lg gap-2 hover:scale-105 hover:shadow-2xl hover:shadow-warning/50 transition-all duration-300 font-semibold border-0"
+          [routerLink]="['/autenticacion/acceder']">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+          </svg>
+          Comenzar Ahora
+        </button>
+
+        <button class="btn btn-outline btn-secondary btn-md md:btn-lg gap-2 hover:scale-105 hover:shadow-xl transition-all duration-300 font-semibold">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Contacto
+        </button>
+      </div>
+
+      <!-- Badges rediseñados como cards flotantes -->
+      <div class="flex flex-wrap justify-center gap-2 md:gap-4 mt-2 md:mt-4 animate-fade-in-up animation-delay-1500">
+        <div class="card bg-base-100/80 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-warning/20">
+          <div class="card-body p-3 md:p-4 flex-row items-center gap-2">
+            <div class="avatar placeholder">
+              <div class="bg-warning text-warning-content rounded-full w-8 h-8 md:w-10 md:h-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <span class="font-semibold text-sm md:text-base">Confiable</span>
+          </div>
+        </div>
+
+        <div class="card bg-base-100/80 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-secondary/20">
+          <div class="card-body p-3 md:p-4 flex-row items-center gap-2">
+            <div class="avatar placeholder">
+              <div class="bg-secondary text-secondary-content rounded-full w-8 h-8 md:w-10 md:h-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+            </div>
+            <span class="font-semibold text-sm md:text-base">Seguro</span>
+          </div>
+        </div>
+
+        <div class="card bg-base-100/80 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-info/20">
+          <div class="card-body p-3 md:p-4 flex-row items-center gap-2">
+            <div class="avatar placeholder">
+              <div class="bg-info text-info-content rounded-full w-8 h-8 md:w-10 md:h-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+            </div>
+            <span class="font-semibold text-sm md:text-base">Rápido</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indicador de scroll sutil -->
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-base-content/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+
     </div>
-
+  </div>
 </div>
-<!-- carrucel -->
 
-<!-- otras cosas -->
+<!-- Estilos personalizados mejorados -->
+<style>
+/* Animaciones personalizadas */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -50px) scale(1.1);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  75% {
+    transform: translate(50px, 50px) scale(1.05);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-gradient {
+  animation: gradient 8s ease infinite;
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-1500 {
+  animation-delay: 1.5s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Mejora de rendimiento */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimización para diferentes tamaños de pantalla */
+@media (max-width: 640px) {
+  .hero-content {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+</style>
