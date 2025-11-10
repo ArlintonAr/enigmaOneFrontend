@@ -1,47 +1,317 @@
-<div class="  w-auto  h-screen ">
-  <div class="flex flex-col lg:flex-row justify-between w-[100%] ">
+<div class="w-full h-screen overflow-hidden">
+  <div class="flex flex-col lg:flex-row w-full h-full">
 
-    <div class="hero  h-screen max-width-lg lg:w-[50%] "
+    <!-- Panel Izquierdo - Hero Section con mejoras visuales -->
+    <div class="relative hero min-h-[35vh] lg:h-screen lg:w-1/2 overflow-hidden group"
       style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);">
-      <div class="hero-overlay"></div>
-      <div class="hero-content text-neutral-content text-center">
-        <div class="max-w">
-          <h1 class="mb-5 text-5xl font-bold">Somos Enigma</h1>
-          <p class="mb-5">
-            "Enigma One: el software inteligente que transforma la logística, contabilidad y gestión empresarial en una
-            sola solución hecha a tu medida."
+
+      <!-- Overlay con gradiente mejorado -->
+      <div class="hero-overlay bg-gradient-to-br from-black/75 via-black/65 to-black/55"></div>
+
+      <!-- Elementos decorativos animados -->
+      <div class="absolute inset-0 opacity-20 hidden lg:block">
+        <div class="absolute top-10 left-10 w-64 h-64 bg-warning rounded-full mix-blend-screen filter blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-20 right-10 w-80 h-80 bg-success rounded-full mix-blend-screen filter blur-3xl animate-pulse-slow animation-delay-2000"></div>
+      </div>
+
+      <!-- Contenido del Hero -->
+      <div class="hero-content text-neutral-content text-center relative z-10 px-4 py-6 lg:px-8 lg:py-0">
+        <div class="max-w-xs sm:max-w-md lg:max-w-lg animate-fade-in-up">
+
+          <!-- Logo o icono decorativo -->
+          <div class="mb-3 lg:mb-6 flex justify-center">
+            <div class="w-14 h-14 lg:w-20 lg:h-20 bg-warning/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-warning/50 group-hover:scale-110 transition-transform duration-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 lg:h-10 lg:w-10 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+          </div>
+
+          <h1 class="mb-3 lg:mb-6 text-2xl sm:text-3xl lg:text-5xl xl:text-6xl font-extrabold leading-tight animate-fade-in-up animation-delay-300">
+            Somos <span class="text-warning bg-warning/10 px-2 py-1 rounded-lg">Enigma</span>
+          </h1>
+
+          <p class="mb-4 lg:mb-8 text-xs sm:text-sm lg:text-lg leading-relaxed text-neutral-content/90 font-light animate-fade-in-up animation-delay-600">
+            El software inteligente que transforma tu
+            <span class="text-success font-semibold">logística</span>,
+            <span class="text-info font-semibold">contabilidad</span> y
+            <span class="text-warning font-semibold">gestión</span>
           </p>
-          <button class="btn btn-success" [routerLink]="['/inicio']">Volver</button>
+
+          <button class="btn btn-success btn-sm lg:btn-md gap-2 hover:scale-105 hover:shadow-2xl hover:shadow-success/50 transition-all duration-300 animate-fade-in-up animation-delay-900"
+            [routerLink]="['/inicio']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Volver
+          </button>
         </div>
       </div>
+
+      <!-- Patrón decorativo inferior -->
+      <div class="absolute bottom-0 left-0 right-0 h-20 lg:h-32 bg-gradient-to-t from-black/50 to-transparent"></div>
     </div>
 
-    <div class="card flex justify-center items-center w-[100%] lg:w-full h-screen">
+    <!-- Panel Derecho - Formulario de Login mejorado -->
+    <div class="relative flex justify-center items-center w-full lg:w-1/2 min-h-[65vh] lg:h-screen bg-gradient-to-br from-base-100 via-base-200 to-base-100 overflow-y-auto py-6 lg:py-0">
 
-      <form [formGroup]="loginForm" (ngSubmit)="login()"
-        class="card  w-[100%]  flex flex-col justify-center items-center">
-        <div class="card-body w-[50%] mx-auto grow-0  shadow-md">
-          <div class="text-center mb-4">
-            <div class="flex justify-center"><img src="/logoLetras.png" width="250px" height="250px" alt=""></div>
-            <p class="text-center">Bienvenido puedes iniciar sesión para acceder y trabajar en nuestra plataforma.</p>
-          </div>
-          <fieldset class="fieldset w-full ">
-            <div class="inputs w-full flex flex-col gap-2">
-              <input type="email" class="input w-full" placeholder="Email" formControlName="email" />
-              <input type="password" class="input w-full" placeholder="Contraseña" formControlName="password" />
+      <!-- Elementos decorativos de fondo -->
+      <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-20 right-20 w-96 h-96 bg-warning rounded-full filter blur-3xl"></div>
+        <div class="absolute bottom-20 left-20 w-96 h-96 bg-info rounded-full filter blur-3xl"></div>
+      </div>
+
+      <!-- Contenedor del formulario -->
+      <div class="w-full max-w-md px-4 sm:px-6 lg:px-8 relative z-10">
+
+        <form [formGroup]="loginForm" (ngSubmit)="login()"
+          class="card bg-base-100/80 backdrop-blur-sm shadow-2xl border border-base-300 hover:shadow-3xl transition-shadow duration-500 animate-scale-in">
+
+          <div class="card-body p-5 sm:p-8 lg:p-10">
+
+            <!-- Header del formulario -->
+            <div class="text-center mb-6 lg:mb-8 space-y-3 lg:space-y-4">
+              <div class="flex justify-center mb-3 lg:mb-4 animate-fade-in-down">
+                <img src="/logoLetras.png"
+                  class="w-36 h-auto sm:w-44 lg:w-56 hover:scale-105 transition-transform duration-300"
+                  alt="Enigma Logo">
+              </div>
+
+              <div class="space-y-1 lg:space-y-2 animate-fade-in-up animation-delay-300">
+                <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-warning via-secondary to-info bg-clip-text text-transparent">
+                  ¡Bienvenido de vuelta!
+                </h2>
+                <p class="text-xs sm:text-sm lg:text-base text-base-content/70">
+                  Inicia sesión para acceder a tu plataforma
+                </p>
+              </div>
             </div>
-            <div><a class="link link-hover">Olvidaste tu contraseña?</a></div>
-            <button class="btn btn-warning mt-6" (click)="login()">Ingresar</button>
-          </fieldset>
-        </div>
-      </form>
 
-      @if(hasError()){
-          <error-alert messageError="{{ hasNameError() }}" (close)="closeAlert()"/>
-      }
+            <!-- Campos del formulario -->
+            <fieldset class="space-y-4 lg:space-y-5 animate-fade-in-up animation-delay-600">
 
+              <!-- Email Input -->
+              <div class="form-control">
+                <label class="label pb-1">
+                  <span class="label-text text-xs sm:text-sm font-semibold flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Correo Electrónico
+                  </span>
+                </label>
+                <input
+                  type="email"
+                  class="input input-bordered w-full text-sm focus:input-warning focus:scale-[1.02] transition-all duration-300 bg-base-200/50"
+                  placeholder="tu@email.com"
+                  formControlName="email"
+                />
+              </div>
 
+              <!-- Password Input -->
+              <div class="form-control">
+                <label class="label pb-1">
+                  <span class="label-text text-xs sm:text-sm font-semibold flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    Contraseña
+                  </span>
+                </label>
+                <input
+                  type="password"
+                  class="input input-bordered w-full text-sm focus:input-warning focus:scale-[1.02] transition-all duration-300 bg-base-200/50"
+                  placeholder="••••••••"
+                  formControlName="password"
+                />
+              </div>
+
+              <!-- Olvidaste contraseña -->
+              <div class="flex justify-end">
+                <a class="link link-hover text-xs sm:text-sm text-warning hover:text-warning-focus transition-colors duration-300 flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  ¿Olvidaste tu contraseña?
+                </a>
+              </div>
+
+              <!-- Botón de submit -->
+              <button
+                type="submit"
+                class="btn btn-warning w-full btn-md lg:btn-lg gap-2 hover:scale-[1.02] hover:shadow-2xl hover:shadow-warning/50 transition-all duration-300 font-semibold mt-2 text-sm sm:text-base">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                Iniciar Sesión
+              </button>
+            </fieldset>
+
+            <!-- Divider decorativo -->
+            <div class="divider my-4 lg:my-6 text-[10px] sm:text-xs text-base-content/50">ACCESO SEGURO</div>
+
+            <!-- Indicadores de seguridad -->
+            <div class="flex justify-center gap-2 sm:gap-3 flex-wrap">
+              <div class="badge badge-outline badge-success gap-1 py-3 px-2.5 text-[10px] sm:text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Encriptado
+              </div>
+              <div class="badge badge-outline badge-info gap-1 py-3 px-2.5 text-[10px] sm:text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                Protegido
+              </div>
+            </div>
+
+          </div>
+        </form>
+
+        <!-- Alerta de error con diseño mejorado -->
+        @if(hasError()){
+          <div class="mt-4 animate-shake">
+            <error-alert messageError="{{ hasNameError() }}" (close)="closeAlert()"/>
+          </div>
+        }
+
+      </div>
     </div>
 
   </div>
 </div>
+
+<!-- Estilos personalizados mejorados -->
+<style>
+/* Animaciones personalizadas */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animation-delay-900 {
+  animation-delay: 0.9s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+/* Mejora de sombras personalizadas */
+.shadow-3xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Mejora visual del scroll en dispositivos móviles */
+@media (max-height: 700px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+/* Efectos de focus mejorados */
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+}
+
+/* Mejora de rendimiento */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Transiciones suaves en todos los elementos interactivos */
+button, input, a {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mejora del scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimización para pantallas pequeñas */
+@media (max-width: 1024px) {
+  .hero {
+    background-attachment: scroll;
+  }
+}
+</style>
