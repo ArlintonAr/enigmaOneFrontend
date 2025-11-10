@@ -4,7 +4,7 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import { APIResponseEmployee, EmployeeResponse, EmployeeUpdate, EmployeeUpdatedResponse } from '../interfaces/employeeResponse.interface';
 import { environment } from '../../../environments/environment.dev';
 import { CreateNewEmploye } from '../interfaces/employeeNewCreate.interface';
-import { APIResponse } from '../interfaces/apiResponse.interface';
+import { APIResponse, APIResponseCreateEmployee } from '../interfaces/apiResponse.interface';
 
 
 @Injectable({ providedIn: 'root' })
@@ -35,7 +35,7 @@ export class EmployeesService {
   }
 
 
-  createNewEmployee(newEmployee: Partial<CreateNewEmploye>, photo?:File | null) {
+  createNewEmployee(newEmployee: Partial<CreateNewEmploye>, photo?:File | null):Observable<APIResponseCreateEmployee> {
     const token = localStorage.getItem('token')
 
     const formData = new FormData();
@@ -44,13 +44,13 @@ export class EmployeesService {
       formData.append('photo', photo);
     }
 
-    return this.http.post<CreateNewEmploye>(`${this.baseUrl}/employees/createEmployee`,
+    return this.http.post<APIResponseCreateEmployee>(`${this.baseUrl}/employees/createEmployee`,
       formData,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     ).pipe(
-      catchError((error: any) => of(error))
+
     )
   }
 

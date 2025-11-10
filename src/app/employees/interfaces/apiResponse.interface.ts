@@ -19,3 +19,9 @@ export interface APIResponseMovements {
 }
 
 
+export interface APIResponseCreateEmployee {
+  message: string;
+  data:    EmployeeResponse;
+  status:  number;
+  success: boolean;
+}

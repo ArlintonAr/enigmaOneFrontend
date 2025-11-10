@@ -22,13 +22,20 @@ import { ListEmployeesComponent } from '../../../employees/components/listEmploy
 import { EmployeesService } from '../../../employees/services/employees.service';
 import { ManagementEmployeesComponent } from '../../../employees/pages/managementEmployees/managementEmployees.component';
 import { MovementService } from '../../services/movements.service';
-import { SuccessAlertComponent } from "../../../shared/components/exitAlert/successAlert.component";
-import { ErrorAlertComponent } from "../../../shared/components/errorAlert/errorAlert.component";
-import { SearchComponent } from "../../../shared/components/search/search.component";
+import { SuccessAlertComponent } from '../../../shared/components/exitAlert/successAlert.component';
+import { ErrorAlertComponent } from '../../../shared/components/errorAlert/errorAlert.component';
+import { SearchComponent } from '../../../shared/components/search/search.component';
 
 @Component({
   selector: 'create-movement',
-  imports: [ReactiveFormsModule, ListStockComponent, ListEmployeesComponent, SuccessAlertComponent, ErrorAlertComponent, SearchComponent],
+  imports: [
+    ReactiveFormsModule,
+    ListStockComponent,
+    ListEmployeesComponent,
+    SuccessAlertComponent,
+    ErrorAlertComponent,
+    SearchComponent,
+  ],
   templateUrl: './createMovement.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -38,12 +45,12 @@ export class CreateMovementComponent implements OnInit {
   listEmployeeModal!: ElementRef<HTMLDialogElement>;
 
   //Servvicios
-  private employeesService = inject(EmployeesService)
-  private movementService = inject(MovementService)
-  private fb = inject(FormBuilder)
-  private cdr = inject(ChangeDetectorRef)
+  private employeesService = inject(EmployeesService);
+  private movementService = inject(MovementService);
+  private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
-  movementForm!: FormGroup
+  movementForm!: FormGroup;
 
   public stockInfoMap: Record<
     number,
@@ -51,21 +58,23 @@ export class CreateMovementComponent implements OnInit {
   > = {};
 
   //Variables de error y acierto
-  public hasError = signal<boolean>(false)
-  public hasNameError= signal<string>('')
+  public hasError = signal<boolean>(false);
+  public hasNameError = signal<string>('');
 
-  public hasSuccess = signal<boolean>(false)
-  public hasNameSuccess= signal<string>('')
-
+  public hasSuccess = signal<boolean>(false);
+  public hasNameSuccess = signal<string>('');
 
   private initForm(): void {
-    this.movementForm = this.fb.group({
-      type: [null, Validators.required],
-      returnable: [null, Validators.required],
-      materialRequesterId: [null, Validators.required],
-      returnDate: [null],
-      details: this.fb.array([]),
-    }, { validators: this.returnDateRequiredWhenRetornable.bind(this) });
+    this.movementForm = this.fb.group(
+      {
+        type: [null, Validators.required],
+        returnable: [null, Validators.required],
+        materialRequesterId: [null, Validators.required],
+        returnDate: [null],
+        details: this.fb.array([]),
+      },
+      { validators: this.returnDateRequiredWhenRetornable.bind(this) }
+    );
   }
 
   ngOnInit(): void {
@@ -75,19 +84,19 @@ export class CreateMovementComponent implements OnInit {
   }
 
   // Local employees cache used by the template
-  public employees = signal<any[]>([])
+  public employees = signal<any[]>([]);
 
   // Load all employees and populate the local signal
   getEmployees(): void {
     this.employeesService.getAllEmployees().subscribe({
       next: (resp) => {
-        this.employees.set(resp as any[])
-        this.cdr.markForCheck()
+        this.employees.set(resp as any[]);
+        this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error loading employees', err)
-      }
-    })
+        console.error('Error loading employees', err);
+      },
+    });
   }
 
   // Search employees by name (calls backend endpoint)
@@ -98,12 +107,12 @@ export class CreateMovementComponent implements OnInit {
     }
     this.employeesService.searchEmployeeForName(term).subscribe({
       next: (resp: any) => {
-        const list = Array.isArray(resp?.data) ? resp.data : (resp || [])
-        this.employees.set(list)
-        this.cdr.markForCheck()
+        const list = Array.isArray(resp?.data) ? resp.data : resp || [];
+        this.employees.set(list);
+        this.cdr.markForCheck();
       },
-      error: (err) => console.error('Error searching employees', err)
-    })
+      error: (err) => console.error('Error searching employees', err),
+    });
   }
 
   addFromModal(stock: Stock): void {
@@ -176,8 +185,8 @@ export class CreateMovementComponent implements OnInit {
       return total + quantity;
     }, 0);
   }
-  createMovement(): void {
 
+  createMovement(): void {
     this.movementForm.get('returnDate')?.updateValueAndValidity();
     this.movementForm.updateValueAndValidity();
 
@@ -196,7 +205,6 @@ export class CreateMovementComponent implements OnInit {
       returnable: formValue.returnable,
       materialRequesterId: formValue.materialRequesterId,
       returnDate: formValue.returnDate,
-
     };
 
     // Asignar detalles según el tipo de movimiento
@@ -206,24 +214,23 @@ export class CreateMovementComponent implements OnInit {
       movementData.detailEntryMaterials = formValue.details;
     }
 
-
-     this.movementService.createMovement(movementData)
-     .subscribe({
-      next: (response)=>{
-        this.hasSuccess.set(true)
-        this.hasNameSuccess.set(`Movimiento con código ${response.data?.transactionCode} creado con éxito`)
-        this.movementForm.reset()
-        this.detailsArray.clear()
-        this.cdr.markForCheck()
-
+    this.movementService.createMovement(movementData).subscribe({
+      next: (response) => {
+        this.hasSuccess.set(true);
+        this.hasNameSuccess.set(
+          `Movimiento con código ${response.data?.transactionCode} creado con éxito`
+        );
+        this.generateMovementReport(response.data!.id);
+        this.movementForm.reset();
+        this.detailsArray.clear();
+        this.cdr.markForCheck();
       },
-      error:(error)=>{
+      error: (error) => {
         this.hasError.set(true);
-        this.hasNameError.set('Error al crear el movimiento')
-        this.cdr.markForCheck()
-
-      }
-     })
+        this.hasNameError.set('Error al crear el movimiento');
+        this.cdr.markForCheck();
+      },
+    });
   }
 
   private returnDateRequiredWhenRetornable(group: FormGroup) {
@@ -270,7 +277,6 @@ export class CreateMovementComponent implements OnInit {
       materialRequesterId: employeeId,
     });
 
-
     const c = this.movementForm.get('materialRequesterId');
     c?.markAsDirty();
     c?.updateValueAndValidity();
@@ -298,10 +304,13 @@ export class CreateMovementComponent implements OnInit {
 
   private collectFormErrors() {
     const result: any = {};
-    Object.keys(this.movementForm.controls).forEach(key => {
+    Object.keys(this.movementForm.controls).forEach((key) => {
       const control: any = this.movementForm.get(key);
       if (control instanceof FormArray) {
-        result[key] = control.controls.map((c: any, idx: number) => ({ index: idx, errors: c.errors }));
+        result[key] = control.controls.map((c: any, idx: number) => ({
+          index: idx,
+          errors: c.errors,
+        }));
       } else {
         result[key] = control.errors || null;
       }
@@ -316,8 +325,14 @@ export class CreateMovementComponent implements OnInit {
 
   //Listar empleados
 
-
-
-
-
+  //Crear reporte al guardar
+  generateMovementReport(movementId: number) {
+    this.movementService
+      .genereteReportForMovementId(Number(movementId))
+      .subscribe((pdf) => {
+        const blob = new Blob([pdf], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
+  }
 }

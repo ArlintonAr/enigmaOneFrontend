@@ -174,6 +174,11 @@ export class DetailEmployeeComponent {
       },
       error: (err) => {
 
+        if(err.status==403){
+          this.hasError.set(true)
+          this.hasNameError.set('No tiene permisos para actualizar empleados.')
+        }
+
         if (err.status==409) {
           this.hasError.set(true)
           this.hasNameError.set('El DNI o correo ya existe en otro empleado.')
@@ -195,7 +200,10 @@ export class DetailEmployeeComponent {
           this.clouseModal();
           this.clouseModalForDelete();
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          this.hasError.set(true)
+          this.hasNameError.set('Error al eliminar el empleado.')
+        }
       })
   }
 

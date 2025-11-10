@@ -74,5 +74,15 @@ export class MovementService {
 
 
 
+  //Reportes
+
+  genereteReportForMovementId(id:number): Observable<Blob> {
+    const token = localStorage.getItem('token');
+
+    return this.http.get<Blob>(`${this.apiUrl}/movements/${id}/report`, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'blob' as 'json',
+    });
+  }
 
 }

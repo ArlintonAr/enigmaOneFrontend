@@ -15,7 +15,7 @@ const positionsArray = [
   { name: 'Residente de Obra', id: 3 },
   { name: 'Administrativo', id: 4 },
   { name: 'Tesorero', id: 5 },
-  { name: 'Almacenero', id: 7 },
+  { name: 'Almacenero', id: 6 },
 
 ]
 
@@ -110,8 +110,49 @@ export class ModalCreateEmployeeComponent {
     }
 
     this.employeeService.createNewEmployee(employeeLike, this.selectedPhoto!)
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next: (response) => {
+
+          if (response.status === 201) {
+            this.success.set(true)
+            this.successMessage.set(response.message)
+            this.resetValuesOfForm()
+          }
+        },
+        error: (err) => {
+          if (err.status == 409 || err.status == 500) {
+            this.hasError.set(true)
+            this.errorName.set(err.error.message)
+            return
+          }
+          if (err.status==403) {
+            this.hasError.set(true)
+            this.errorName.set('No tiene permisos para crear empleados.')
+            return
+          }
+        }
+      })
+
+
+  }
+
+
+  resetValuesOfForm() {
+    this.createEmployeeForm.reset()
+
+    this.selectedPhoto = null
+    this.namedSelectPhoto.set('')
+
+
+    this.hasError.set(false)
+    this.errorName.set('')
+  }
+
+
+}
+/*
+
+  (response) => {
           //Validaciones para saber si hubo un error
           if (response.status == 409 || response.status == 500) {
             this.hasError.set(true)
@@ -125,22 +166,5 @@ export class ModalCreateEmployeeComponent {
             this.resetValuesOfForm()
           }
         }
-      )
 
-
-  }
-
-
-  resetValuesOfForm() {
-    this.createEmployeeForm.reset()
-
-    this.selectedPhoto = null
-    this.namedSelectPhoto.set('')
-    this.createEmployee.nativeElement.close()
-
-    this.hasError.set(false)
-    this.errorName.set('')
-  }
-
-
-}
+        */
