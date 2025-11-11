@@ -12,7 +12,7 @@
         >
           Movimientos de Salida
         </h2>
-        <p class="text-sm text-base-content/60 mt-1">
+        <p class="text-sm text-base-content/70 mt-1 font-medium">
           Historial de transacciones y salidas de inventario
         </p>
       </div>
@@ -24,7 +24,7 @@
             <div class="stat-figure text-error">
               <i class="fas fa-arrow-circle-down text-2xl"></i>
             </div>
-            <div class="stat-title text-xs">Total Salidas</div>
+            <div class="stat-title text-xs font-semibold">Total Salidas</div>
             <div class="stat-value text-2xl text-error">
               {{ movements().length }}
             </div>
@@ -36,7 +36,7 @@
             <div class="stat-figure text-warning">
               <i class="fas fa-boxes text-2xl"></i>
             </div>
-            <div class="stat-title text-xs">Items Total</div>
+            <div class="stat-title text-xs font-semibold">Items Total</div>
             <div class="stat-value text-2xl text-warning">-</div>
           </div>
         </div>
@@ -147,7 +147,7 @@
               <!-- ID compacto -->
               <td class="py-2">
                 <div
-                  class="text-xl font-black tabular-nums bg-gradient-to-br from-error to-warning bg-clip-text text-transparent opacity-80 group-hover:opacity-100 transition-opacity"
+                  class="text-xl font-black tabular-nums bg-gradient-to-br from-error to-warning bg-clip-text text-transparent opacity-90 group-hover:opacity-100 transition-opacity dark:opacity-80"
                 >
                   #{{ mov.id }}
                 </div>
@@ -162,10 +162,10 @@
                     <i class="fas fa-barcode text-error text-sm"></i>
                   </div>
                   <div>
-                    <div class="font-bold text-sm font-mono">
+                    <div class="font-bold text-sm font-mono text-base-content">
                       {{ mov.transactionCode }}
                     </div>
-                    <div class="text-xs text-base-content/50">Código</div>
+                    <div class="text-xs text-base-content/60 font-medium">Código</div>
                   </div>
                 </div>
               </td>
@@ -204,12 +204,12 @@
                     </div>
                   </div>
                   <div>
-                    <div class="font-bold text-sm">
+                    <div class="font-bold text-sm text-base-content">
                       {{ mov.employeeFirstName | toUpperCaseFirstLetter }}
                       {{ mov.employeeLastName | toUpperCaseFirstLetter }}
                     </div>
                     <div
-                      class="text-xs text-base-content/50 flex items-center gap-1"
+                      class="text-xs text-base-content/65 flex items-center gap-1 font-medium"
                     >
                       <i class="fas fa-shield-alt text-success text-xs"></i>
                       <span>Autoriza</span>
@@ -237,7 +237,7 @@
                     </div>
                   </div>
                   <div>
-                    <div class="font-bold text-sm">
+                    <div class="font-bold text-sm text-base-content">
                       {{
                         mov.materialRequesterFirstName
                           | toUpperCaseFirstLetter
@@ -248,7 +248,7 @@
                       }}
                     </div>
                     <div
-                      class="text-xs text-base-content/50 flex items-center gap-1"
+                      class="text-xs text-base-content/65 flex items-center gap-1 font-medium"
                     >
                       <i class="fas fa-hand-paper text-info text-xs"></i>
                       <span>Solicita</span>
@@ -264,7 +264,7 @@
                     {{ mov.quantity }}
                   </div>
                   <div
-                    class="text-xs text-base-content/50 font-semibold uppercase"
+                    class="text-xs text-base-content/65 font-semibold uppercase"
                   >
                     unid.
                   </div>
@@ -276,7 +276,7 @@
               <!-- Tipo compacto -->
               <td class="py-2">
                 <div
-                  class="badge badge-lg badge-outline gap-1 hover:badge-ghost transition-all"
+                  class="badge badge-lg badge-outline gap-1 hover:badge-ghost transition-all border-base-content/30"
                 >
                   <i class="fas fa-tag text-xs"></i>
                   <span class="font-semibold text-xs">{{
@@ -312,7 +312,7 @@
                       <div class="stat-figure text-error">
                         <i class="fas fa-clipboard-list text-lg"></i>
                       </div>
-                      <div class="stat-title text-xs">Total Movimientos</div>
+                      <div class="stat-title text-xs font-semibold">Total Movimientos</div>
                       <div class="stat-value text-lg text-error">
                         {{ movements().length }}
                       </div>
@@ -329,7 +329,7 @@
                     >
                       <i class="fas fa-boxes text-warning text-lg"></i>
                       <div>
-                        <div class="text-xs font-semibold text-warning/70">
+                        <div class="text-xs font-semibold text-warning/80">
                           Items
                         </div>
                         <div class="text-base font-bold text-warning">-</div>
@@ -343,7 +343,7 @@
                         class="fas fa-arrow-circle-down text-error text-lg"
                       ></i>
                       <div>
-                        <div class="text-xs font-semibold text-error/70">
+                        <div class="text-xs font-semibold text-error/80">
                           Hoy
                         </div>
                         <div class="text-base font-bold text-error">-</div>
@@ -355,7 +355,7 @@
                     >
                       <i class="fas fa-user-check text-success text-lg"></i>
                       <div>
-                        <div class="text-xs font-semibold text-success/70">
+                        <div class="text-xs font-semibold text-success/80">
                           Autorizadas
                         </div>
                         <div class="text-base font-bold text-success">
@@ -382,7 +382,7 @@
             class="relative w-32 h-32 bg-gradient-to-br from-error/20 to-warning/20 rounded-full flex items-center justify-center backdrop-blur-sm border-4 border-base-content/10"
           >
             <i
-              class="fas fa-box-open text-6xl opacity-40 bg-gradient-to-r from-error to-warning bg-clip-text text-transparent"
+              class="fas fa-box-open text-6xl opacity-50 bg-gradient-to-r from-error to-warning bg-clip-text text-transparent dark:opacity-40"
             ></i>
           </div>
         </div>
@@ -392,7 +392,7 @@
         >
           No hay movimientos registrados
         </h3>
-        <p class="text-center text-base-content/60 max-w-md mb-6">
+        <p class="text-center text-base-content/70 max-w-md mb-6 font-medium">
           No se encontraron salidas de inventario. Los movimientos aparecerán
           aquí una vez que se registren transacciones.
         </p>

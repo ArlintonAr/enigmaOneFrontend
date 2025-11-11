@@ -1,4 +1,3 @@
-
 <dialog #detailsOfOrderModal class="modal">
   <div class="modal-box w-11/12 max-w-6xl h-[90vh] p-0 flex flex-col">
 
@@ -11,7 +10,7 @@
           </div>
           <div>
             <h1 class="text-2xl font-bold text-white">Detalles de Materiales</h1>
-            <p class="text-blue-100 text-sm mt-0.5">Gestión de materiales de la orden</p>
+            <p class="text-blue-100 text-sm mt-0.5 font-medium">Gestión de materiales de la orden</p>
           </div>
         </div>
 
@@ -34,49 +33,49 @@
               <!-- head -->
               <thead class="bg-base-200 sticky top-0 z-[5]">
                 <tr>
-                  <th class="text-xs font-semibold uppercase">
+                  <th class="text-xs font-bold uppercase text-base-content">
                     <div class="flex items-center gap-2">
                       <i class="fas fa-image text-primary"></i>
                       Material
                     </div>
                   </th>
-                  <th class="text-xs font-semibold uppercase">
+                  <th class="text-xs font-bold uppercase text-base-content">
                     <div class="flex items-center gap-2">
                       <i class="fas fa-barcode text-info"></i>
                       Código
                     </div>
                   </th>
-                  <th class="text-xs font-semibold uppercase">
+                  <th class="text-xs font-bold uppercase text-base-content">
                     <div class="flex items-center gap-2">
                       <i class="fas fa-hashtag text-accent"></i>
                       ID
                     </div>
                   </th>
-                  <th class="text-xs font-semibold uppercase">
+                  <th class="text-xs font-bold uppercase text-base-content">
                     <div class="flex items-center gap-2">
                       <i class="fas fa-sort-numeric-up text-success"></i>
                       Cantidad
                     </div>
                   </th>
-                  <th class="text-xs font-semibold uppercase">
+                  <th class="text-xs font-bold uppercase text-base-content">
                     <div class="flex items-center gap-2">
                       <i class="fas fa-calendar-plus text-warning"></i>
                       Creación
                     </div>
                   </th>
-                  <th class="text-xs font-semibold uppercase">
+                  <th class="text-xs font-bold uppercase text-base-content">
                     <div class="flex items-center gap-2">
                       <i class="fas fa-calendar-check text-success"></i>
                       Llegada
                     </div>
                   </th>
-                  <th class="text-xs font-semibold uppercase">
+                  <th class="text-xs font-bold uppercase text-base-content">
                     <div class="flex items-center gap-2">
                       <i class="fas fa-ruler text-secondary"></i>
                       Unidad
                     </div>
                   </th>
-                  <th class="text-xs font-semibold uppercase text-center">
+                  <th class="text-xs font-bold uppercase text-center text-base-content">
                     <i class="fas fa-cog text-neutral"></i>
                     Acciones
                   </th>
@@ -93,8 +92,8 @@
                           </div>
                         </div>
                         <div>
-                          <div class="font-bold text-sm">{{ material.characteristics }}</div>
-                          <div class="text-xs opacity-60 uppercase font-medium">
+                          <div class="font-bold text-sm text-base-content">{{ material.characteristics }}</div>
+                          <div class="text-xs text-base-content/70 uppercase font-medium">
                             <i class="fas fa-comment-dots text-info mr-1"></i>
                             {{ material.observations }}
                           </div>
@@ -102,14 +101,14 @@
                       </div>
                     </td>
                     <td>
-                      <div class="badge badge-outline badge-info gap-2">
+                      <div class="badge badge-outline badge-info gap-2 border-info/40">
                         <i class="fas fa-tag text-xs"></i>
-                        {{ material.code }}
+                        <span class="font-medium">{{ material.code }}</span>
                       </div>
                     </td>
                     <td>
-                      <div class="badge badge-outline badge-accent">
-                        {{ material.id }}
+                      <div class="badge badge-outline badge-accent border-accent/40">
+                        <span class="font-medium">{{ material.id }}</span>
                       </div>
                     </td>
                     <td>
@@ -118,20 +117,20 @@
                       </div>
                     </td>
                     <td>
-                      <div class="badge badge-ghost gap-2">
+                      <div class="badge badge-ghost gap-2 text-base-content/80 font-medium">
                         <i class="far fa-calendar text-xs"></i>
                         {{ material.created_at | date }}
                       </div>
                     </td>
                     <td>
-                      <div class="badge badge-ghost gap-2">
+                      <div class="badge badge-ghost gap-2 text-base-content/80 font-medium">
                         <i class="far fa-calendar-check text-xs"></i>
                         {{ material.estimatedDateStock | date }}
                       </div>
                     </td>
                     <td>
-                      <div class="badge badge-outline badge-secondary">
-                        {{ material.unitOfMeasure }}
+                      <div class="badge badge-outline badge-secondary border-secondary/40">
+                        <span class="font-medium">{{ material.unitOfMeasure }}</span>
                       </div>
                     </td>
                     <td>
@@ -161,11 +160,11 @@
         <div class="flex flex-col items-center justify-center h-full py-16">
           <div class="avatar placeholder mb-4">
             <div class="bg-base-300 text-base-content rounded-full w-24">
-              <i class="fas fa-box-open text-5xl opacity-40"></i>
+              <i class="fas fa-box-open text-5xl opacity-50"></i>
             </div>
           </div>
-          <h3 class="text-xl font-semibold mb-2">No hay materiales</h3>
-          <p class="text-center opacity-60 max-w-md">
+          <h3 class="text-xl font-semibold mb-2 text-base-content">No hay materiales</h3>
+          <p class="text-center text-base-content/70 max-w-md font-medium">
             No se encontraron materiales asociados a esta orden
           </p>
         </div>
@@ -176,9 +175,9 @@
     <div class="px-6 py-4 bg-base-200 border-t border-base-300 rounded-b-2xl">
       <div class="flex items-center justify-between gap-4">
         <!-- Info adicional -->
-        <div class="text-sm opacity-60 hidden sm:flex items-center gap-2">
+        <div class="text-sm text-base-content/70 hidden sm:flex items-center gap-2 font-medium">
           <i class="fas fa-info-circle"></i>
-          <span>Total de registros: <strong>{{ orderMaterialsList()?.length }}</strong></span>
+          <span>Total de registros: <strong class="text-base-content">{{ orderMaterialsList()?.length }}</strong></span>
         </div>
 
         <!-- Botones de acción -->

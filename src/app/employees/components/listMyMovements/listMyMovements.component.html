@@ -18,9 +18,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
             </svg>
           </div>
-          <div class="stat-title">Total</div>
+          <div class="stat-title text-base-content/70">Total</div>
           <div class="stat-value text-primary">{{movements()!.length}}</div>
-          <div class="stat-desc">Movimientos registrados</div>
+          <div class="stat-desc text-base-content/60">Movimientos registrados</div>
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@
                   </svg>
                   <span class="text-xs text-base-content/60">Stock ID</span>
                 </div>
-
+                <p class="font-bold text-sm text-base-content">-</p>
               </div>
 
               <div class="bg-base-200 rounded-lg p-3">
@@ -120,7 +120,7 @@
             <!-- Collapsible Details -->
             <div class="collapse collapse-arrow bg-base-200 rounded-lg">
               <input type="checkbox" />
-              <div class="collapse-title text-sm font-semibold">
+              <div class="collapse-title text-sm font-semibold text-base-content">
                 Ver más detalles
               </div>
               <div class="collapse-content">
@@ -151,15 +151,15 @@
             </div>
 
             <!-- Actions -->
-            <div class="card-actions justify-end mt-4 pt-4 border-t border-base-300">
-              <button class="btn btn-sm btn-ghost gap-2">
+            <div class="card-actions justify-end mt-4 pt-4 border-t border-base-300 ">
+              <button class="btn btn-sm btn-info gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
                 Ver
               </button>
-              <button class="btn btn-sm btn-ghost gap-2">
+              <button class="btn btn-sm btn-success gap-2 ">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                 </svg>

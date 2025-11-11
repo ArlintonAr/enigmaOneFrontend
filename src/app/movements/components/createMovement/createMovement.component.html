@@ -4,7 +4,7 @@
     <h1 class="text-3xl font-bold text-base-content mb-2">
       📝 Nuevo Movimiento
     </h1>
-    <p class="text-base-content opacity-70">
+    <p class="text-base-content/70">
       Registra una entrada o salida de materiales
     </p>
   </div>
@@ -18,7 +18,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold text-base">Tipo de Movimiento</span>
+              <span class="label-text font-semibold text-base text-base-content">Tipo de Movimiento</span>
               <span class="label-text-alt text-error text-lg">*</span>
             </label>
             <div class="join join-vertical lg:join-horizontal w-full">
@@ -43,7 +43,7 @@
 
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold text-base">¿Es Retornable?</span>
+              <span class="label-text font-semibold text-base text-base-content">¿Es Retornable?</span>
               <span class="label-text-alt text-error text-lg">*</span>
             </label>
             <div class="join join-vertical lg:join-horizontal w-full">
@@ -73,7 +73,7 @@
           <!-- Material Requester -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold">Solicitante de Material</span>
+              <span class="label-text font-semibold text-base-content">Solicitante de Material</span>
               <span class="label-text-alt text-error">*</span>
             </label>
             <div class="join w-full">
@@ -92,14 +92,14 @@
               </button>
             </div>
             <label class="label">
-              <span class="label-text-alt text-neutral-content/70">Click en "Buscar" para abrir el selector de empleados</span>
+              <span class="label-text-alt text-base-content/70">Click en "Buscar" para abrir el selector de empleados</span>
             </label>
           </div>
 
            <!-- Material Requester -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold">Stock disponible</span>
+              <span class="label-text font-semibold text-base-content">Stock disponible</span>
               <span class="label-text-alt text-error">*</span>
             </label>
             <div class="join w-full">
@@ -114,14 +114,14 @@
               </button>
             </div>
             <label class="label">
-              <span class="label-text-alt text-neutral-content/70">Click en "Buscar" para abrir el selector de Stock</span>
+              <span class="label-text-alt text-base-content/70">Click en "Buscar" para abrir el selector de Stock</span>
             </label>
           </div>
 
           <!-- Return Date (Solo si es RETORNABLE) -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold">Fecha de Devolución</span>
+              <span class="label-text font-semibold text-base-content">Fecha de Devolución</span>
               <span class="label-text-alt text-error">*</span>
             </label>
             <input
@@ -130,7 +130,7 @@
               class="input input-bordered w-full"
             />
             <label class="label">
-              <span class="label-text-alt text-neutral-content/70">Solo requerido si es movimiento retornable</span>
+              <span class="label-text-alt text-base-content/70">Solo requerido si es movimiento retornable</span>
             </label>
           </div>
 
@@ -155,12 +155,12 @@
             <table class="table table-zebra w-full">
               <thead>
                 <tr class="bg-base-200">
-                  <th class="text-center">Stock ID</th>
-                  <th>Descripción</th>
-                  <th>Disponible</th>
-                  <th class="text-center">Cantidad</th>
-                  <th>Fines del material</th>
-                  <th class="text-center">Acción</th>
+                  <th class="text-center text-base-content">Stock ID</th>
+                  <th class="text-base-content">Descripción</th>
+                  <th class="text-base-content">Disponible</th>
+                  <th class="text-center text-base-content">Cantidad</th>
+                  <th class="text-base-content">Fines del material</th>
+                  <th class="text-center text-base-content">Acción</th>
                 </tr>
               </thead>
               <tbody formArrayName="details">
@@ -173,7 +173,7 @@
                     </td>
                       <!-- Stock ID -->
                       <td>
-                        <div class="max-w-xs truncate font-medium" [title]="getStockInfo(detail.get('stockId')?.value)?.description">
+                        <div class="max-w-xs truncate font-medium text-base-content" [title]="getStockInfo(detail.get('stockId')?.value)?.description">
                           {{ getStockInfo(detail.get('stockId')?.value)?.description || '-' }}
                         </div>
                       </td>
@@ -222,14 +222,14 @@
                   </tr>
                 } @empty {
                   <tr>
-                    <td colspan="5" class="text-center py-12">
+                    <td colspan="6" class="text-center py-12">
                       <div class="flex flex-col items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-neutral-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                         </svg>
                         <div>
-                          <p class="font-semibold text-lg text-neutral-content/70">No hay items agregados</p>
-                          <p class="text-sm text-neutral-content/50 mt-1">Selecciona items desde la tabla de stock para agregarlos al movimiento</p>
+                          <p class="font-semibold text-lg text-base-content/70">No hay items agregados</p>
+                          <p class="text-sm text-base-content/50 mt-1">Selecciona items desde la tabla de stock para agregarlos al movimiento</p>
                         </div>
                       </div>
                     </td>
@@ -249,7 +249,7 @@
                       <div>
                         <!-- Stock ID -->
                       <div>
-                        <div class="max-w-xs truncate font-medium" [title]="getStockInfo(detail.get('stockId')?.value)?.description">
+                        <div class="max-w-xs truncate font-medium text-base-content" [title]="getStockInfo(detail.get('stockId')?.value)?.description">
                           {{ getStockInfo(detail.get('stockId')?.value)?.description || '-' }}
                         </div>
                       </div>
@@ -275,7 +275,7 @@
                     <div class="space-y-3">
                       <div class="form-control">
                         <label class="label py-1">
-                          <span class="label-text font-semibold">Cantidad</span>
+                          <span class="label-text font-semibold text-base-content">Cantidad</span>
                           <span class="label-text-alt text-error">*</span>
                         </label>
                         <input
@@ -289,7 +289,7 @@
 
                       <div class="form-control">
                         <label class="label py-1">
-                          <span class="label-text font-semibold">Destino del Material</span>
+                          <span class="label-text font-semibold text-base-content">Destino del Material</span>
                           <span class="label-text-alt text-error">*</span>
                         </label>
                         <input
@@ -304,11 +304,11 @@
                 </div>
               } @empty {
                 <div class="text-center py-12">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-neutral-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                   </svg>
-                  <p class="font-semibold mt-3 text-neutral-content/70">No hay items agregados</p>
-                  <p class="text-sm text-neutral-content/50 mt-1">Selecciona items desde la tabla de stock</p>
+                  <p class="font-semibold mt-3 text-base-content/70">No hay items agregados</p>
+                  <p class="text-sm text-base-content/50 mt-1">Selecciona items desde la tabla de stock</p>
                 </div>
               }
             </div>
@@ -318,23 +318,23 @@
         <!-- Summary Stats -->
         <div class="stats stats-vertical lg:stats-horizontal shadow w-full mb-6">
           <div class="stat place-items-center">
-            <div class="stat-title">Total Items</div>
+            <div class="stat-title text-base-content/70">Total Items</div>
             <div class="stat-value text-primary">{{ detailsArray.length }}</div>
-            <div class="stat-desc">En este movimiento</div>
+            <div class="stat-desc text-base-content/60">En este movimiento</div>
           </div>
 
           <div class="stat place-items-center">
-            <div class="stat-title">Cantidad Total</div>
+            <div class="stat-title text-base-content/70">Cantidad Total</div>
             <div class="stat-value text-secondary">{{ getTotalQuantity() }}</div>
-            <div class="stat-desc">Unidades en total</div>
+            <div class="stat-desc text-base-content/60">Unidades en total</div>
           </div>
 
           <div class="stat place-items-center">
-            <div class="stat-title">Tipo</div>
+            <div class="stat-title text-base-content/70">Tipo</div>
             <div class="stat-value text-accent text-2xl">
               {{ movementForm.get('returnable')?.value || '-' }}
             </div>
-            <div class="stat-desc">
+            <div class="stat-desc text-base-content/60">
               {{ movementForm.get('type')?.value || 'Sin definir' }}
             </div>
           </div>
@@ -383,7 +383,7 @@
       <div class="flex items-center justify-between">
         <div>
           <h3 class="text-3xl font-light tracking-tight text-base-content">Inventario</h3>
-          <p class="text-sm text-neutral-content/60 mt-1">Gestión de stock y productos</p>
+          <p class="text-sm text-base-content/60 mt-1">Gestión de stock y productos</p>
         </div>
 
 
@@ -418,7 +418,7 @@
         </div>
         <div>
           <h3 class="text-xl font-bold text-base-content">Seleccionar Empleado</h3>
-          <p class="text-xs text-neutral-content/70">Busca y selecciona un empleado de la lista</p>
+          <p class="text-xs text-base-content/70">Busca y selecciona un empleado de la lista</p>
         </div>
       </div>
     </div>
