@@ -5,24 +5,24 @@
 <dialog #modalApproved class="modal">
   <div class="modal-box w-11/12 max-w-5xl flex flex-col gap-4">
     <div class="title">
-      <h3 class="text-lg font-bold">APROBACIÓN DE ORDENES</h3>
-      <p class="">Apruebe Orden segun su Posición en la empresa.</p>
+      <h3 class="text-lg font-bold text-base-content">APROBACIÓN DE ORDENES</h3>
+      <p class="text-base-content/80">Apruebe Orden segun su Posición en la empresa.</p>
     </div>
     <div class="">
       @for (approval of ordersApproval(); track $index) {
 
       <div class="collapse collapse-arrow bg-base-100 border border-base-300">
         <input type="radio" name="my-accordion-2" checked="checked" />
-        <div class="collapse-title font-semibold">
+        <div class="collapse-title font-semibold text-base-content">
           {{ approval.role | removeHyphen | uppercase }}
         </div>
-        <div class="collapse-content text-sm">
+        <div class="collapse-content text-sm text-base-content">
           <details-order-approval [approval]="approval" />
           @if (approval.status==='PENDIENTE') {
-          <div class="flex flex justify-between items-center gap-2 p-3 bg-gray-800/60 rounded-lg border border-gray-700/50">
+          <div class="flex flex justify-between items-center gap-2 p-3 bg-base-200 rounded-lg border border-base-300">
             <form [formGroup]="formUpdateApproved" class="flex-1 flex gap-2 justify-between items-center">
               <select formControlName="status"
-                class="select select-xs select-bordered bg-gray-900 text-gray-100 border-gray-700">
+                class="select select-xs select-bordered bg-base-100 text-base-content border-base-300">
                 <option value="APROBADO">Aprobado</option>
                 <option value="RECHAZADO">Rechazado</option>
               </select>
@@ -31,7 +31,7 @@
                 type="text"
                 placeholder="Ingrese el comentario"
                 formControlName="comments"
-                class="input input-md input-bordered bg-gray-900 text-gray-100 border-gray-700 placeholder:text-gray-500"
+                class="input input-md input-bordered bg-base-100 text-base-content border-base-300 placeholder:text-base-content/50"
               />
             </form>
             <button class="btn btn-sm btn-success" (click)="updatedStatusApproval()">Guardar</button>
