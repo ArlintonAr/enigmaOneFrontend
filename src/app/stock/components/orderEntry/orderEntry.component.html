@@ -12,7 +12,7 @@
           </div>
           <div>
             <h3 class="text-xl font-bold text-base-content">Entrada de Pedido</h3>
-            <p class="text-xs text-base-content/60">Gestiona los materiales de tu orden</p>
+            <p class="text-xs text-base-content/70">Gestiona los materiales de tu orden</p>
           </div>
         </div>
 
@@ -35,7 +35,7 @@
         </button>
 
         <div class="flex items-center gap-2">
-          <span class="text-sm text-base-content/70 hidden sm:inline">Agregar material</span>
+          <span class="text-sm text-base-content/80 hidden sm:inline font-medium">Agregar material</span>
           <button class="btn btn-success btn-sm btn-circle" (click)="addNewMaterial()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -54,21 +54,21 @@
               <thead class="sticky top-0 z-10 bg-base-300">
                 <tr>
                   <th class="bg-base-300">
-                    <div class="flex items-center gap-1 text-xs">
+                    <div class="flex items-center gap-1 text-xs font-semibold text-base-content">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-primary" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                       </svg>
                       Id Orden
                     </div>
                   </th>
-                  <th class="bg-base-300 text-xs">Código</th>
-                  <th class="bg-base-300 text-xs">Cantidad</th>
-                  <th class="bg-base-300 text-xs">UM</th>
-                  <th class="bg-base-300 text-xs">Características</th>
-                  <th class="bg-base-300 text-xs">Fecha llegada</th>
-                  <th class="bg-base-300 text-xs">Observaciones</th>
-                  <th class="bg-base-300 text-xs">Foto</th>
-                  <th class="bg-base-300 text-xs">Acciones</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">Código</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">Cantidad</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">UM</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">Características</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">Fecha llegada</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">Observaciones</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">Foto</th>
+                  <th class="bg-base-300 text-xs font-semibold text-base-content">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,10 +76,10 @@
                   <!-- Main Row -->
                   <tr [formGroupName]="i" class="hover">
                     <th>
-                      <div class="badge badge-ghost badge-xs">{{ material.orderId }}</div>
+                      <div class="badge badge-ghost badge-xs font-semibold">{{ material.orderId }}</div>
                     </th>
                     <td>
-                      <code class="bg-base-300 px-1.5 py-0.5 rounded text-xs">{{ material.code }}</code>
+                      <code class="bg-base-300 px-1.5 py-0.5 rounded text-xs font-semibold text-base-content">{{ material.code }}</code>
                     </td>
                     <td class="px-1">
                       <input
@@ -87,7 +87,7 @@
                         [placeholder]="material.quantity"
                         formControlName="quantity"
                         (input)="updateMaterialInSignal(i, 'quantity', $any($event.target).value)"
-                        class="input input-xs input-bordered w-full max-w-[90px]"
+                        class="input input-xs input-bordered w-full max-w-[90px] font-semibold text-base-content placeholder:text-base-content/50"
                       />
                     </td>
                     <td class="px-1">
@@ -96,7 +96,7 @@
                         [placeholder]="material.unitOfMeasure"
                         formControlName="unitOfMeasure"
                         (input)="updateMaterialInSignal(i, 'unitOfMeasure', $any($event.target).value)"
-                        class="input input-xs input-bordered w-full max-w-[70px]"
+                        class="input input-xs input-bordered w-full max-w-[70px] font-semibold text-base-content placeholder:text-base-content/50"
                       />
                     </td>
                     <td class="px-1">
@@ -105,7 +105,7 @@
                         [placeholder]="material.characteristics"
                         formControlName="characteristics"
                         (input)="updateMaterialInSignal(i, 'characteristics', $any($event.target).value)"
-                        class="input input-xs input-bordered w-full"
+                        class="input input-xs input-bordered w-full font-medium text-base-content placeholder:text-base-content/50"
                       />
                     </td>
                     <td class="px-1">
@@ -113,8 +113,7 @@
                         type="date"
                         [value]="material.estimatedDateStock | date:'yyyy-MM-dd'"
                         (change)="updateMaterialInSignal(i, 'estimatedDateStock', $any($event.target).value)"
-                        class="input input-xs input-bordered w-full"
-                        formControlName="entryDate"
+                        class="input input-xs input-bordered w-full font-medium text-base-content"
                       />
                     </td>
                     <td class="px-1">
@@ -123,16 +122,16 @@
                         [placeholder]="material.observations"
                         formControlName="observations"
                         (input)="updateMaterialInSignal(i, 'observations', $any($event.target).value)"
-                        class="input input-xs input-bordered w-full"
+                        class="input input-xs input-bordered w-full font-medium text-base-content placeholder:text-base-content/50"
                       />
                     </td>
                     <td class="px-1">
                       @if(material.photo == null) {
-                        <div class="flex items-center gap-1 text-base-content/40">
+                        <div class="flex items-center gap-1 text-base-content/60">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
                           </svg>
-                          <span class="text-xs">Sin foto</span>
+                          <span class="text-xs font-medium">Sin foto</span>
                         </div>
                       } @else {
                         <a [href]="material.photo" target="_blank" class="btn btn-ghost btn-xs gap-1">
@@ -157,7 +156,7 @@
                     <td colspan="9" class="p-0">
                       <div class="collapse collapse-arrow border-l-4 border-primary">
                         <input type="checkbox" />
-                        <div class="collapse-title text-xs font-semibold flex items-center gap-2 py-2">
+                        <div class="collapse-title text-xs font-semibold flex items-center gap-2 py-2 text-base-content">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-primary" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                           </svg>
@@ -167,7 +166,7 @@
                           <div class="grid grid-cols-1 md:grid-cols-3 gap-3 p-3">
                             <div class="form-control">
                               <label class="label py-1">
-                                <span class="label-text text-xs font-semibold flex items-center gap-1">
+                                <span class="label-text text-xs font-semibold flex items-center gap-1 text-base-content">
                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
                                   </svg>
@@ -178,13 +177,13 @@
                                 type="text"
                                 placeholder="Ingrese descripción"
                                 formControlName="description"
-                                class="input input-xs input-bordered w-full"
+                                class="input input-xs input-bordered w-full font-medium text-base-content placeholder:text-base-content/50"
                               />
                             </div>
 
                             <div class="form-control">
                               <label class="label py-1">
-                                <span class="label-text text-xs font-semibold flex items-center gap-1">
+                                <span class="label-text text-xs font-semibold flex items-center gap-1 text-base-content">
                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
                                   </svg>
@@ -195,13 +194,13 @@
                                 type="text"
                                 placeholder="Mensaje adicional"
                                 formControlName="messageAccordingType"
-                                class="input input-xs input-bordered w-full"
+                                class="input input-xs input-bordered w-full font-medium text-base-content placeholder:text-base-content/50"
                               />
                             </div>
 
                             <div class="form-control">
                               <label class="label py-1">
-                                <span class="label-text text-xs font-semibold flex items-center gap-1">
+                                <span class="label-text text-xs font-semibold flex items-center gap-1 text-base-content">
                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                   </svg>
@@ -210,7 +209,7 @@
                               </label>
                               <select
                                 formControlName="accordingType"
-                                class="select select-xs select-bordered w-full">
+                                class="select select-xs select-bordered w-full font-medium text-base-content">
                                 <option value="SI">✓ Sí</option>
                                 <option value="NO">✗ No</option>
                               </select>
@@ -227,13 +226,13 @@
                     <td colspan="9" class="text-center py-12">
                       <div class="flex flex-col items-center gap-3">
                         <div class="w-16 h-16 rounded-full bg-base-200 flex items-center justify-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-base-content/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                           </svg>
                         </div>
                         <div class="text-center">
-                          <p class="font-semibold text-base-content/70 text-sm">No hay materiales</p>
-                          <p class="text-xs text-base-content/50">Agrega materiales con el botón "+"</p>
+                          <p class="font-semibold text-base-content/80 text-sm">No hay materiales</p>
+                          <p class="text-xs text-base-content/60">Agrega materiales con el botón "+"</p>
                         </div>
                       </div>
                     </td>
