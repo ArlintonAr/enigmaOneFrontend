@@ -70,10 +70,10 @@
                     </div>
                   </div>
                   <div>
-                    <div class="font-bold text-base">
+                    <div class="font-bold text-base text-base-content">
                       {{employee.firstName | toUpperCaseFirstLetter}} {{employee.lastName | toUpperCaseFirstLetter}}
                     </div>
-                    <div class="text-xs opacity-60 flex items-center gap-1 mt-1">
+                    <div class="text-xs text-base-content/60 flex items-center gap-1 mt-1">
                       <i class="fas fa-id-card text-info"></i>
                       DNI: {{employee.dni}}
                     </div>
@@ -101,7 +101,7 @@
               <td>
                 <div class="flex items-center gap-2">
                   <i class="fas fa-envelope text-info text-sm"></i>
-                  <span class="text-sm">{{employee.email}}</span>
+                  <span class="text-sm text-base-content">{{employee.email}}</span>
                 </div>
               </td>
 
@@ -109,7 +109,7 @@
               <td>
                 <div class="flex items-center gap-2">
                   <i class="fas fa-phone text-success text-sm"></i>
-                  <span class="text-sm font-mono">{{employee.cellphone}}</span>
+                  <span class="text-sm font-mono text-base-content">{{employee.cellphone}}</span>
                 </div>
               </td>
 
@@ -135,19 +135,19 @@
         <tfoot class="bg-base-200 sticky bottom-0">
           <tr>
             <td colspan="7" class="text-center py-3">
-              <div class="flex items-center justify-center gap-4 text-sm opacity-70 flex-wrap">
+              <div class="flex items-center justify-center gap-4 text-sm text-base-content/70 flex-wrap">
                 <div class="flex items-center gap-2">
                   <i class="fas fa-users"></i>
-                  <span>Total: <strong>{{employeesList().length}}</strong></span>
+                  <span>Total: <strong class="text-base-content">{{employeesList().length}}</strong></span>
                 </div>
                 <div class="divider divider-horizontal hidden sm:flex"></div>
                 <div class="flex items-center gap-2">
                   <i class="fas fa-check-circle text-success"></i>
-                 <!--  <span>Activos: <strong>{{getActiveEmployees()}}</strong></span> -->
+                 <!--  <span>Activos: <strong class="text-base-content">{{getActiveEmployees()}}</strong></span> -->
                 </div>
                 <div class="flex items-center gap-2">
                   <i class="fas fa-times-circle text-error"></i>
-                  <!-- <span>Inactivos: <strong>{{getInactiveEmployees()}}</strong></span> -->
+                  <!-- <span>Inactivos: <strong class="text-base-content">{{getInactiveEmployees()}}</strong></span> -->
                 </div>
               </div>
             </td>
@@ -159,13 +159,13 @@
     <!-- Estado vacío dentro de la tabla -->
     @if(employeesList().length === 0) {
       <div class="flex-1 flex flex-col items-center justify-center py-16">
-        <div class="avatar avatar-placeholder mb-4 flex justify-center items-center" >
+        <div class="avatar avatar-placeholder mb-4 flex justify-center items-center">
           <div class="bg-base-300 text-base-content rounded-full w-24">
             <i class="fas fa-users-slash text-5xl opacity-40"></i>
           </div>
         </div>
-        <h3 class="text-xl font-semibold mb-2">No hay empleados registrados</h3>
-        <p class="text-center opacity-60 max-w-md">
+        <h3 class="text-xl font-semibold mb-2 text-base-content">No hay empleados registrados</h3>
+        <p class="text-center text-base-content/60 max-w-md">
           Comienza agregando empleados a tu organización
         </p>
       </div>

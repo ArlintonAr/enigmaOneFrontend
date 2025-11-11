@@ -16,7 +16,7 @@
               Bienvenido de vuelta
             </span>
           </h1>
-          <p class="text-lg text-base-content/70 max-w-2xl">
+          <p class="text-lg text-base-content max-w-2xl">
             Gestiona tu inventario, órdenes y seguimiento de pedidos en tiempo real
           </p>
           <div class="flex flex-wrap gap-3 justify-center lg:justify-start pt-2">
@@ -39,9 +39,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
             </div>
-            <div class="stat-title">Stock Total</div>
+            <div class="stat-title text-base-content/80">Stock Total</div>
            <!--  <div class="stat-value text-primary">{{ totalStock || 0 }}</div> -->
-            <div class="stat-desc">↗︎ 12% este mes</div>
+            <div class="stat-desc text-base-content/70">↗︎ 12% este mes</div>
           </div>
 
           <div class="stat">
@@ -50,9 +50,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </div>
-            <div class="stat-title">Órdenes Activas</div>
+            <div class="stat-title text-base-content/80">Órdenes Activas</div>
             <!-- <div class="stat-value text-secondary">{{ activeOrders || 0 }}</div> -->
-            <div class="stat-desc">En proceso</div>
+            <div class="stat-desc text-base-content/70">En proceso</div>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
 
     <!-- Quick Actions -->
     <div class="mb-8">
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-3 text-base-content">
         <div class="w-1 h-8 bg-gradient-to-b from-primary to-secondary rounded-full"></div>
         Acciones Rápidas
       </h2>
@@ -78,7 +78,7 @@
               </svg>
             </div>
             <h3 class="card-title text-base">Nueva Entrada</h3>
-            <p class="text-xs opacity-80">Registrar productos</p>
+            <p class="text-xs opacity-90">Registrar productos</p>
           </div>
         </button>
 
@@ -91,7 +91,7 @@
               </svg>
             </div>
             <h3 class="card-title text-base">Ver Órdenes</h3>
-            <p class="text-xs opacity-80">Gestionar pedidos</p>
+            <p class="text-xs opacity-90">Gestionar pedidos</p>
           </div>
         </button>
 
@@ -104,7 +104,7 @@
                </svg>
              </div>
              <h3 class="card-title text-base">Inventario</h3>
-             <p class="text-xs opacity-80">Consultar stock</p>
+             <p class="text-xs opacity-90">Consultar stock</p>
            </div>
          </a>
 
@@ -119,7 +119,7 @@
               </svg>
             </div>
             <h3 class="card-title text-base">Reportes</h3>
-            <p class="text-xs opacity-80">Generar informes</p>
+            <p class="text-xs opacity-90">Generar informes</p>
           </div>
         </button>
       </div>
@@ -132,14 +132,14 @@
       <div class="lg:col-span-2 card bg-base-100 shadow-xl border border-base-content/5">
         <div class="card-body">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="card-title flex items-center gap-2">
+            <h2 class="card-title flex items-center gap-2 text-base-content">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                 <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
               </svg>
               Órdenes Recientes
             </h2>
-            <button class="btn btn-ghost btn-sm gap-2">
+            <button class="btn btn-ghost btn-sm gap-2 text-base-content">
               Ver todas
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -150,7 +150,7 @@
           <div class="overflow-x-auto">
             <table class="table table-zebra">
               <thead>
-                <tr>
+                <tr class="text-base-content">
                   <th>ID</th>
                   <th>Estado</th>
                   <th>Fecha</th>
@@ -158,7 +158,7 @@
                   <th>Acción</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="text-base-content/90">
                 <tr class="hover">
                   <td><span class="badge badge-ghost">#ORD-001</span></td>
                   <td><span class="badge badge-warning gap-1">
@@ -198,7 +198,7 @@
       <!-- Activity Timeline -->
       <div class="card bg-base-100 shadow-xl border border-base-content/5">
         <div class="card-body">
-          <h2 class="card-title flex items-center gap-2 mb-4">
+          <h2 class="card-title flex items-center gap-2 mb-4 text-base-content">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
             </svg>
@@ -209,7 +209,7 @@
             <li>
               <div class="timeline-start timeline-box bg-success/10 border-success/20">
                 <div class="text-xs font-semibold text-success">Hace 5 min</div>
-                <div class="text-sm">Entrada de stock completada</div>
+                <div class="text-sm text-base-content">Entrada de stock completada</div>
               </div>
               <div class="timeline-middle">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor">
@@ -222,7 +222,7 @@
               <hr class="bg-primary" />
               <div class="timeline-start timeline-box bg-primary/10 border-primary/20">
                 <div class="text-xs font-semibold text-primary">Hace 1 hora</div>
-                <div class="text-sm">Nueva orden creada #ORD-003</div>
+                <div class="text-sm text-base-content">Nueva orden creada #ORD-003</div>
               </div>
               <div class="timeline-middle">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
@@ -236,7 +236,7 @@
               <hr class="bg-warning" />
               <div class="timeline-start timeline-box bg-warning/10 border-warning/20">
                 <div class="text-xs font-semibold text-warning">Hace 3 horas</div>
-                <div class="text-sm">Orden #ORD-001 en ruta</div>
+                <div class="text-sm text-base-content">Orden #ORD-001 en ruta</div>
               </div>
               <div class="timeline-middle">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-warning" viewBox="0 0 20 20" fill="currentColor">
@@ -246,13 +246,13 @@
               </div>
               <hr />
             </li>
-            <li>
+              <li>
               <hr />
               <div class="timeline-start timeline-box bg-base-200">
-                <div class="text-xs font-semibold opacity-60">Hace 5 horas</div>
-                <div class="text-sm opacity-60">Reporte generado</div>
+                <div class="text-xs font-semibold text-base-content">Hace 5 horas</div>
+                <div class="text-sm text-base-content/80">Reporte generado</div>
               </div>
-              <div class="timeline-middle opacity-60">
+              <div class="timeline-middle text-base-content/60">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd" />
                 </svg>
@@ -272,9 +272,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
-          <div class="stat-title">Empleados</div>
+          <div class="stat-title text-base-content/80">Empleados</div>
         <!--   <div class="stat-value text-primary">{{ totalEmployees || 0 }}</div> -->
-          <div class="stat-desc">Activos en sistema</div>
+          <div class="stat-desc text-base-content/70">Activos en sistema</div>
         </div>
       </div>
 
@@ -285,9 +285,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <div class="stat-title">Completadas</div>
+          <div class="stat-title text-base-content/80">Completadas</div>
          <!--  <div class="stat-value text-secondary">{{ completedOrders || 0 }}</div> -->
-          <div class="stat-desc">↗︎ 8% vs mes anterior</div>
+          <div class="stat-desc text-base-content/70">↗︎ 8% vs mes anterior</div>
         </div>
       </div>
 
@@ -298,9 +298,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <div class="stat-title">Pendientes</div>
+          <div class="stat-title text-base-content/80">Pendientes</div>
          <!--  <div class="stat-value text-accent">{{ pendingOrders || 0 }}</div> -->
-          <div class="stat-desc">En proceso</div>
+          <div class="stat-desc text-base-content/70">En proceso</div>
         </div>
       </div>
 
@@ -311,9 +311,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <div class="stat-title">Productos</div>
+          <div class="stat-title text-base-content/80">Productos</div>
          <!--  <div class="stat-value text-info">{{ totalProducts || 0 }}</div> -->
-          <div class="stat-desc">En catálogo</div>
+          <div class="stat-desc text-base-content/70">En catálogo</div>
         </div>
       </div>
     </div>
@@ -322,7 +322,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="card bg-base-100 shadow-xl border border-base-content/5">
         <div class="card-body">
-          <h2 class="card-title flex items-center gap-2">
+          <h2 class="card-title flex items-center gap-2 text-base-content">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-warning" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
             </svg>
@@ -368,7 +368,7 @@
       <!-- Quick Stats Chart Placeholder -->
       <div class="card bg-base-100 shadow-xl border border-base-content/5">
         <div class="card-body">
-          <h2 class="card-title flex items-center gap-2">
+          <h2 class="card-title flex items-center gap-2 text-base-content">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-info" viewBox="0 0 20 20" fill="currentColor">
               <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
             </svg>
@@ -384,8 +384,8 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="font-semibold">Entradas</p>
-                  <p class="text-xs text-base-content/60">Esta semana</p>
+                  <p class="font-semibold text-base-content">Entradas</p>
+                  <p class="text-xs text-base-content/70">Esta semana</p>
                 </div>
               </div>
               <div class="text-right">
@@ -402,8 +402,8 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="font-semibold">Salidas</p>
-                  <p class="text-xs text-base-content/60">Esta semana</p>
+                  <p class="font-semibold text-base-content">Salidas</p>
+                  <p class="text-xs text-base-content/70">Esta semana</p>
                 </div>
               </div>
               <div class="text-right">
@@ -420,8 +420,8 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="font-semibold">Balance</p>
-                  <p class="text-xs text-base-content/60">Saldo actual</p>
+                  <p class="font-semibold text-base-content">Balance</p>
+                  <p class="text-xs text-base-content/70">Saldo actual</p>
                 </div>
               </div>
               <div class="text-right">
@@ -436,12 +436,10 @@
   </div>
 </div>
 
-  //Modal nueva entrada de productos
-
+  <!-- Modal nueva entrada de productos -->
   <order-entry />
 
-  //Lista de ordernes
-<!-- Modal Lista de Órdenes -->
+  <!-- Modal Lista de Órdenes -->
 <dialog #openListOrders class="modal">
   <div class="modal-box w-11/12 max-w-5xl p-0 max-h-[90vh] flex flex-col">
 
@@ -478,15 +476,15 @@
 
     <!-- Footer con botón -->
     <div class="px-6 py-4 bg-base-100 border-t flex justify-between items-center flex-shrink-0">
-      <div class="text-sm text-base-content/60 flex items-center gap-2">
+      <div class="text-sm text-base-content/80 flex items-center gap-2">
         <i class="fas fa-info-circle"></i>
         <span>Total de órdenes: <strong class="text-primary">{{ listOrders()!.length || 0 }}</strong></span>
       </div>
 
       <div class="modal-action m-0">
         <form method="dialog">
-          <button class="btn btn-primary gap-2">
-            <i class="fas fa-times" (click)="closeModalListOrders()" ></i>
+          <button class="btn btn-primary gap-2" (click)="closeModalListOrders()">
+            <i class="fas fa-times"></i>
             Cerrar
           </button>
         </form>
@@ -495,7 +493,6 @@
 
   </div>
 </dialog>
-
 
 <style>
   @keyframes float {
