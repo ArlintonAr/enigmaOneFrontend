@@ -60,7 +60,7 @@ export class CreateWarehouse {
       latitude,
       longitude
    }
-   console.log({warehouse})
+
     this.warehouseService.createWarehouse(warehouse)
     .subscribe({
       next:(response)=>{
