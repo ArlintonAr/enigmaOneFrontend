@@ -69,6 +69,7 @@ export class CreateWarehouse {
         this.formCreateWarehouse.reset()
         //Si se crea que se actualice la lista
         this.stockEventService.createWarehouse(true)
+        this.closeModal()
       },
       error:(err)=>{
         this.hasError.set(true)
