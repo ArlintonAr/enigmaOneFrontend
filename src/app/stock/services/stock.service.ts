@@ -58,6 +58,15 @@ export class StockService {
     )
   }
 
+  getStockByWarehouseId(warehouseId:number):Observable<APIResponseStock>{
+    const token = localStorage.getItem('token')
+
+    return this.http.get<APIResponseStock>(`${this.baseUrl}/stocks/findStockForWarehouseId/${warehouseId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      catchError(this.handleApiError())
+    )
+  }
 
   createStock(stock: Stock, photo?: File | null): Observable<APIResponseStockCreate> {
 

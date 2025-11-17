@@ -1,0 +1,113 @@
+<div class="text-center lg:text-left">
+  <h2 class="font-bold text-lg text-base-content">
+    ¿No encuentras el almacén?
+  </h2>
+  <p class="text-sm text-base-content/70">
+    Crea un nuevo almacén para gestionar tu inventario
+  </p>
+  <button class="btn btn-success btn-sm" (click)="openModal()">
+    Crear Almacen
+  </button>
+</div>
+
+<dialog #modalCreateWarehouse class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">CREA NUEVO ALMACEN</h3>
+    <div class="content-form">
+      <form [formGroup]="formCreateWarehouse" class="space-y-4">
+        <!-- Nombre del almacén -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span
+              class="label-text font-semibold text-base-content flex items-center gap-2"
+            >
+              <i class="fas fa-warehouse text-primary"></i>
+              Nombre del Almacén *
+            </span>
+          </label>
+          <input
+            type="text"
+            placeholder="Ej: Almacén Central Cajamarca"
+            class="input input-bordered w-full bg-base-100 text-base-content placeholder:text-base-content/50 focus:input-primary"
+            formControlName="locationName"
+          />
+        </div>
+
+        <!-- Dirección -->
+
+
+        <!-- Coordenadas geográficas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Latitud -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span
+                class="label-text font-semibold text-base-content flex items-center gap-2"
+              >
+                <i class="fas fa-location-arrow text-info"></i>
+                Latitud
+              </span>
+            </label>
+            <input
+              type="text"
+              placeholder="-6.7714"
+              class="input input-bordered w-full bg-base-100 text-base-content placeholder:text-base-content/50 focus:input-info"
+              formControlName="longitude"
+            />
+            <label class="label">
+              <span class="label-text-alt text-base-content/60">
+                <i class="fas fa-info-circle text-xs"></i>
+                Coordenada vertical
+              </span>
+            </label>
+          </div>
+
+          <!-- Longitud -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span
+                class="label-text font-semibold text-base-content flex items-center gap-2"
+              >
+                <i class="fas fa-compass text-warning"></i>
+                Longitud
+              </span>
+            </label>
+            <input
+              type="text"
+              placeholder="-79.8391"
+              class="input input-bordered w-full bg-base-100 text-base-content placeholder:text-base-content/50 focus:input-warning"
+              formControlName="latitude"
+            />
+            <label class="label">
+              <span class="label-text-alt text-base-content/60">
+                <i class="fas fa-info-circle text-xs"></i>
+                Coordenada horizontal
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Nota informativa -->
+        <div class="alert alert-info shadow-sm">
+          <i class="fas fa-lightbulb"></i>
+          <span class="text-sm text-base-content">
+            Puedes obtener las coordenadas desde Google Maps haciendo clic
+            derecho en la ubicación.
+          </span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-action flex justify-between items-center  ">
+      <button class="btn btn-ghost" (click)="closeModal()">Cerrar</button>
+      <button class="btn btn-success" (click)="createWarehouse()">Crear</button>
+    </div>
+  </div>
+  @if (hasError()) {
+    <error-alert [messageError] ='errorMessage()' (click)="hasError.set(false)" />
+  }
+  @if (hasSuccess()) {
+    <success-alert [messageSuccess] ='successMessage()' (click)="hasSuccess.set(false)" />
+  }
+</dialog>
+
+

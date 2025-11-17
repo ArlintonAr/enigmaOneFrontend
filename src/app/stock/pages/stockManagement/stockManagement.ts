@@ -6,20 +6,22 @@ import { StockEventService } from '../../services/stockEvent.service';
 import { Stock } from '../../interfaces/APIResponseStock.interface';
 import { ListStockComponent } from "../../components/listStock/listStock.component";
 import { SearchComponent } from "../../../shared/components/search/search.component";
+import { WarehousesList } from "../../components/warehousesList/warehousesList";
+import { CreateWarehouse } from "../../components/createWarehouse/createWarehouse";
 
 @Component({
   selector: 'app-stock-management',
-  imports: [OrderEntryComponent, ListStockComponent, ReactiveFormsModule, SearchComponent],
+  imports: [OrderEntryComponent, ListStockComponent, ReactiveFormsModule, SearchComponent, WarehousesList, CreateWarehouse],
   templateUrl: './stockManagement.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StockManagement {
-@ViewChild(OrderEntryComponent) orderEntryComponent!: OrderEntryComponent
+   @ViewChild(OrderEntryComponent) orderEntryComponent!: OrderEntryComponent
   private stockService = inject(StockService)
   private fb = inject(FormBuilder)
   private stockEventService = inject(StockEventService)
 
-
+  public idWarehouse = signal<number >(1)
   public stock = signal<Stock[]>([])
 
   public formValueOfFiler = this.fb.group({
@@ -45,6 +47,8 @@ constructor() {
         this.getAllStock()
         this.stockEventService.modifyValueToDeleteProduct(false)
       }
+
+
 
     })
 
@@ -123,5 +127,7 @@ constructor() {
         }
       })
   }
+
+
 
  }

@@ -1,0 +1,25 @@
+<div class="content p-6">
+  <div class="form-control max-w-md">
+    <label class="label">
+      <span class="label-text font-semibold text-base-content flex items-center gap-2">
+        <i class="fas fa-warehouse text-primary"></i>
+        Seleccionar Almacén
+      </span>
+    </label>
+    <select
+      formControlName="selectedWarehouse"
+      name="warehouse"
+      (change)="onSelectedWarehouse($any($event.target).value)"
+      class="select select-bordered select-primary bg-base-100 text-base-content w-full focus:outline-offset-0">
+      @for (warehouse of warehouses(); track $index) {
+        <option [value]="warehouse.id">{{ warehouse.locationName }}</option>
+      }
+    </select>
+    <label class="label">
+      <span class="label-text-alt text-base-content/60">
+        <i class="fas fa-info-circle"></i>
+        Selecciona el almacén donde deseas operar
+      </span>
+    </label>
+  </div>
+</div>
