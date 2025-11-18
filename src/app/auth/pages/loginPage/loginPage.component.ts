@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { ErrorAlertComponent } from '../../../shared/components/errorAlert/errorAlert.component';
 
 @Component({
   selector: 'auth-login-page',
-  imports: [RouterLink, ReactiveFormsModule,ErrorAlertComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, ErrorAlertComponent],
   templateUrl: './loginPage.component.html',
 
 })
@@ -20,6 +21,9 @@ export class LoginPageComponent {
   router = inject(Router);
 
   authService = inject(AuthService);
+
+
+  showPassword = signal<boolean>(false);
 
 
 
@@ -57,6 +61,11 @@ export class LoginPageComponent {
   closeAlert(){
     this.hasError.set(false);
     this.hasNameError.set('');
+  }
+
+
+  togglePassword(){
+    this.showPassword.set(!this.showPassword());
   }
 
 }
