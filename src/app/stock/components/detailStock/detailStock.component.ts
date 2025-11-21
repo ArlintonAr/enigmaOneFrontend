@@ -11,7 +11,7 @@ import { StockEventService } from '../../services/stockEvent.service';
 
 @Component({
   selector: 'detail-stock',
-  imports: [DatePipe,NoPhotoPipe,ReactiveFormsModule,ErrorAlertComponent,SuccessAlertComponent],
+  imports: [DatePipe, NoPhotoPipe, ReactiveFormsModule, ErrorAlertComponent, SuccessAlertComponent],
   templateUrl: './detailStock.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -23,7 +23,7 @@ export class DetailStockComponent {
   private stockService = inject(StockService);
   private stockEventService = inject(StockEventService);
 
- // Input para recibir el producto
+  // Input para recibir el producto
   product = signal<Stock | null>(null);
 
   //Variables de error y exito
@@ -35,15 +35,15 @@ export class DetailStockComponent {
   successMessage = signal<string>('');
 
   // Formulario reactivo
-   stockForm: FormGroup = this.fb.group({
-      quantity: [0, ],
-      unitOfMeasure: ['', ],
-      description: ['', ],
-      characteristics: [''],
-      entryDate: ['', ],
-      accordingType: ['SI', ],
-      messageAccordingType: ['']
-   });
+  stockForm: FormGroup = this.fb.group({
+    quantity: [0,],
+    unitOfMeasure: ['',],
+    description: ['',],
+    characteristics: [''],
+    entryDate: ['',],
+    accordingType: ['SI',],
+    messageAccordingType: ['']
+  });
 
   // Signals para manejo de foto
   selectedFile = signal<File | null>(null);
@@ -136,8 +136,8 @@ export class DetailStockComponent {
       // Aquí implementas la lógica para guardar
 
       this.stockService.updateStock(formData, this.product()!.id, this.selectedFile())
-      .subscribe({
-        next: (response) => {
+        .subscribe({
+          next: (response) => {
 
             this.hasSuccess.set(true);
             this.successMessage.set(`Stock con ID: ${response.data.id} actualizado con éxito.`);
@@ -146,17 +146,17 @@ export class DetailStockComponent {
             this.product.set(response.data);
             this.stockEventService.modifyValueToUpdatedProduct(true);
 
-          // Aquí puedes agregar lógica adicional, como cerrar el modal o mostrar un mensaje
-          this.closeModal();
-        },
-        error: (error) => {
-          if (error.status == 500) {
-            this.hasError.set(true)
-            this.errorMessage.set('Ha ocurrido un problema en el servidor, comuníquese con el Administrador.')
-          }
+            // Aquí puedes agregar lógica adicional, como cerrar el modal o mostrar un mensaje
+            this.closeModal();
+          },
+          error: (error) => {
+            if (error.status == 500) {
+              this.hasError.set(true)
+              this.errorMessage.set('Ha ocurrido un problema en el servidor, comuníquese con el Administrador.')
+            }
 
-        }
-      })
+          }
+        })
 
       // Emitir evento o llamar servicio
       // this.onSave.emit({ ...formData, photo: this.selectedFile() });
@@ -167,4 +167,4 @@ export class DetailStockComponent {
   }
 
 
- }
+}

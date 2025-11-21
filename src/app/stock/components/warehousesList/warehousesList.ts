@@ -17,38 +17,38 @@ export class WarehousesList {
 
   public warehouses = signal<Warehouse[]>([])
   public formSelectedWarehouse = this.fb.group({
-    selectedWarehouse: [,[]],
+    selectedWarehouse: [, []],
   })
 
 
 
 
-  constructor(){
+  constructor() {
     this.getAllWarehouses()
 
-    effect(()=>{
+    effect(() => {
       //Actualizar lista de almacenes si es que se crea uno nuevo
       const creationNeeded = this.estockEventService.isCreatedWarehouse();
-      if(creationNeeded){
+      if (creationNeeded) {
         this.getAllWarehouses()
         this.estockEventService.createWarehouse(false)
       }
     })
   }
 
-  getAllWarehouses(){
+  getAllWarehouses() {
     this.warehouseService.getAllWarehouses()
-    .subscribe({
-      next:(response)=>{
-        this.warehouses.set(response.data)
-      },
-      error:(err)=>{
-        console.log(err)
-      }
-    })
+      .subscribe({
+        next: (response) => {
+          this.warehouses.set(response.data)
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
   }
 
-  onSelectedWarehouse(value?: any){
+  onSelectedWarehouse(value?: any) {
     // value comes from the <select> change event (or can be read from the form)
     const raw = value ?? this.formSelectedWarehouse.get('selectedWarehouse')!.value
     const selectedWarehouse = raw == null ? null : Number(raw)

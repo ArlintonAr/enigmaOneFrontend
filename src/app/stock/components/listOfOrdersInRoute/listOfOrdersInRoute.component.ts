@@ -20,14 +20,13 @@ export class ListOfOrdersInRouteComponent {
   ordersListInRoute = signal<Order[]>([])
 
 
-  constructor(){
+  constructor() {
     // cerrar el modal
     effect(() => {
       const shouldClose = this.orderEventsService.requestCloseListModal();
-      if (shouldClose && this.modalListOrders) {
-        try {
-          this.modalListOrders.nativeElement.close();
-        } catch (e) {}
+      if (shouldClose) {
+
+        this.modalListOrders.nativeElement.close();
         // reset el valor de la variable
         this.orderEventsService.requestCloseListModal.set(false);
       }
@@ -41,20 +40,21 @@ export class ListOfOrdersInRouteComponent {
 
   }
   closeModal(): void {
-      this.modalListOrders.nativeElement.close();
+    this.modalListOrders.nativeElement.close();
   }
 
 
-  getAllOrdersInRoute(){
+  getAllOrdersInRoute() {
     this.orderService.getOrdersByTrackingState('RUTA')
-    .subscribe({
-      next:(response)=>{
-        this.ordersListInRoute.set(response.data)
-      },
-      error:(err)=>{
-        console.log(err)
-      }
-    })
+      .subscribe({
+        next: (response) => {
+
+          this.ordersListInRoute.set(response.data.filter((order: Order) => order.materialOrders.length > 0))
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
   }
 
 

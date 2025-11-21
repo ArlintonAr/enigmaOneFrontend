@@ -16,6 +16,9 @@ import { ErrorAlertComponent } from '../../../shared/components/errorAlert/error
 import { Order } from '../../../orders/interfaces/order.interface';
 import { SuccessAlertComponent } from '../../../shared/components/exitAlert/successAlert.component';
 import { OrderService } from '../../../orders/services/orders.service';
+import { WarehouseService } from '../../services/warehouse.service';
+import { Warehouse } from '../../interfaces/APIResponseWarehouse';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'order-entry',
@@ -26,6 +29,7 @@ import { OrderService } from '../../../orders/services/orders.service';
     ReactiveFormsModule,
     ErrorAlertComponent,
     SuccessAlertComponent,
+    LoaderComponent,
   ],
   templateUrl: './orderEntry.component.html',
 })
@@ -37,6 +41,10 @@ export class OrderEntryComponent {
   private stockService = inject(StockService);
   private orderService = inject(OrderService);
   private orderEvents = inject(OrderEventService);
+  private warehouseService = inject(WarehouseService);
+
+  warehouses = signal<Warehouse[]>([]);
+  selectedWarehouseId = signal<number | null>(null); // Almacén seleccionado globalmente
 
   materialsOrderEvent = signal<MaterialOrder[]>([]);
 
@@ -56,13 +64,17 @@ export class OrderEntryComponent {
   hasSuccess = signal<boolean>(false);
   hasSuccessMessage = signal<string>('');
 
+  //Variables para manejar estados de carga
+  isLoadingWarehouses = signal<boolean>(false);
+  isSaving = signal<boolean>(false);
+
   constructor() {
+    // Cargar almacenes
+    this.loadWarehouses();
 
     effect(() => {
       const order = this.orderEvents.orderForWarehouse();
-      console.log(order)
       if (!order) return;
-
 
       const materials = (order.materialOrders ?? []).map((m: any) => ({
         orderId: order.id,
@@ -75,12 +87,16 @@ export class OrderEntryComponent {
         photo: m.photo ?? null,
       })) as MaterialOrder[];
 
+
+
       this.materialsOrderEvent.set(materials);
 
       this.syncFormWithMaterials();
 
+
+      //TODO: Verificar si esto causa algun problema
       Promise.resolve().then(() => {
-        try { this.orderEntryDialog.nativeElement.showModal(); } catch (e) {}
+        try { this.orderEntryDialog.nativeElement.showModal(); } catch (e) { }
       });
 
 
@@ -93,6 +109,20 @@ export class OrderEntryComponent {
   }
   closeHasError(isClose: boolean) {
     this.hasError.set(isClose);
+  }
+
+  loadWarehouses(): void {
+    this.isLoadingWarehouses.set(true);
+    this.warehouseService.getAllWarehouses().subscribe({
+      next: (response) => {
+        this.warehouses.set(response.data);
+        this.isLoadingWarehouses.set(false);
+      },
+      error: (err) => {
+        console.error('Error cargando almacenes:', err);
+        this.isLoadingWarehouses.set(false);
+      }
+    });
   }
 
   get materialsFormArray() {
@@ -108,13 +138,22 @@ export class OrderEntryComponent {
   }
 
   openModalListOrders(): void {
-    // Ensure we load any saved order before opening the list modal
+
 
     this.listOfOrdersInRouteComponent.openModal();
   }
 
   closeModalListOrders(): void {
     this.listOfOrdersInRouteComponent.closeModal();
+  }
+
+  // Asigna el almacén seleccionado a todos los materiales
+  assignWarehouseToAll(warehouseId: string): void {
+    const id = warehouseId ? Number(warehouseId) : null;
+    this.selectedWarehouseId.set(id); // Guardar selección
+    this.materialsFormArray.controls.forEach(control => {
+      control.patchValue({ warehouseId: id });
+    });
   }
 
   // Agrega un nuevo material vacío
@@ -134,12 +173,12 @@ export class OrderEntryComponent {
     const currentMaterials = this.materialsOrderEvent();
     this.materialsOrderEvent.set([...currentMaterials, newMaterial]);
 
-    // Sincroniza el formulario
+    // Sincroniza el formulario (ahora incluye asignación de almacén automáticamente)
     this.syncFormWithMaterials();
-    // force change detection in case OnPush or template didn't update
+
     try {
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) { }
   }
   // Elimina un material por su índice
   removeMaterial(index: number): void {
@@ -151,6 +190,12 @@ export class OrderEntryComponent {
 
   // Sincroniza el formulario con materialsOrderEvent
   syncFormWithMaterials(): void {
+    // Guardar los archivos PDF existentes antes de limpiar
+    const existingFiles = this.materialsFormArray.controls.map(control => ({
+      orderGuides: control.get('orderGuides')?.value,
+      photo: control.get('photo')?.value
+    }));
+
     // Limpia el FormArray
     while (this.materialsFormArray.length > 0) {
       this.materialsFormArray.removeAt(0);
@@ -158,30 +203,36 @@ export class OrderEntryComponent {
 
     // Agrega los controles según materialsOrderEvent
     const materials = this.materialsOrderEvent();
+    const selectedWarehouse = this.selectedWarehouseId(); // Obtener almacén seleccionado
 
-    materials.forEach((material) => {
+    materials.forEach((material, index) => {
+      // Recuperar archivos existentes si los hay
+      const existingFile = existingFiles[index];
+
       this.materialsFormArray.push(
         this.fb.group({
           orderId: [material.orderId ?? ''],
-          code: [material.code ?? '', [Validators.required]],
-          quantity: [material.quantity ?? '', [Validators.required]],
+          code: [material.code ?? '', []],
+          quantity: [material.quantity ?? 0, [Validators.required]],
           unitOfMeasure: [material.unitOfMeasure ?? ''],
           characteristics: [material.characteristics ?? ''],
           observations: [material.observations ?? ''],
           entryDate: [
             material.estimatedDateStock ? material.estimatedDateStock : '',
           ],
+          photo: [existingFile?.photo || material.photo],
+          orderGuides: [existingFile?.orderGuides || null], // Preservar archivo existente
           description: [''],
           messageAccordingType: [''],
           accordingType: ['SI'],
-          photo: [material.photo],
+          warehouseId: [selectedWarehouse, [Validators.required]], // Asignar almacén seleccionado
         })
       );
     });
 
     try {
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // Actualiza el signal cuando cambia un valor del formulario
@@ -194,71 +245,148 @@ export class OrderEntryComponent {
     this.materialsOrderEvent.set(materials);
   }
 
+  // Maneja la carga del archivo PDF de guías
+  onOrderGuidesChange(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+      console.log(`📄 PDF cargado para material ${index}:`, file.name);
+      // Solo actualizar el campo orderGuides sin afectar otros campos
+      this.materialsFormArray.at(index).patchValue(
+        { orderGuides: file },
+        { emitEvent: false } // No emitir evento para evitar efectos secundarios
+      );
+      console.log(`✅ PDF asignado al FormControl ${index}`);
+    }
+  }
+
   createStockEntry(): void {
-    const materialsToEntry = this.stockFormGroup.value.materials!.map(
-      (material: any) => ({
-        orderId: material.orderId,
-        code: material.code,
-        quantity: material.quantity,
-        unitOfMeasure: material.unitOfMeasure,
-        characteristics: material.characteristics,
-        observations: material.observations,
-        entryDate: material.entryDate,
-        photo: material.photo,
-        description: material.description,
-        messageAccordingType: material.messageAccordingType,
-        accordingType: material.accordingType,
-      })
-    );
+    // Validar formulario
+    if (!this.stockFormGroup.valid) {
+      console.log('❌ Formulario inválido');
+      console.log('Estado del formulario:', this.stockFormGroup.value);
+      console.log('Errores por material:');
+      this.materialsFormArray.controls.forEach((control, index) => {
+        if (control.invalid) {
+          console.log(`Material ${index}:`, {
+            value: control.value,
+            errors: control.errors,
+            invalidFields: Object.keys(control.value).filter(key => {
+              const field = control.get(key);
+              return field?.invalid;
+            })
+          });
+        }
+      });
+
+      this.hasError.set(true);
+      this.hasNameError.set('El formulario no es válido. Debe llenar los campos requeridos');
+      return;
+    }
+
+    // Activar loader
+    this.isSaving.set(true);
+
+    // Preparar materiales para guardar
+    const materialsToEntry = this.stockFormGroup.value.materials!.map((material: any) => ({
+      orderId: material.orderId,
+      code: material.code,
+      quantity: material.quantity,
+      unitOfMeasure: material.unitOfMeasure,
+      characteristics: material.characteristics,
+      entryDate: material.entryDate,
+      description: material.description,
+      messageAccordingType: material.messageAccordingType,
+      accordingType: material.accordingType,
+      warehouseId: material.warehouseId,
+      photo: material.photo,
+      orderGuides: material.orderGuides,
+    }))
 
     materialsToEntry.forEach((material: any, index: number) => {
+      console.log(`Material ${index + 1}:`, {
+        code: material.code,
+        hasPDF: material.orderGuides instanceof File,
+        pdfName: material.orderGuides instanceof File ? material.orderGuides.name : 'Sin PDF',
+        hasPhoto: material.photo instanceof File,
+        photoName: material.photo instanceof File ? material.photo.name : 'Sin foto'
+      });
+    });
+
+    // Guardar cada material
+    let completedRequests = 0;
+    const totalRequests = materialsToEntry.length;
+
+    materialsToEntry.forEach((material: any) => {
+      // Extraer archivos
       const photoFile = material.photo instanceof File ? material.photo : null;
-      const { photo, observations, ...stockData } = material;
+      const guidesFile = material.orderGuides instanceof File ? material.orderGuides : null;
 
-      this.stockService.createStock(stockData, photoFile).subscribe({
+      // Preparar datos sin los archivos
+      const { photo, orderGuides, ...stockData } = material;
+
+      // Llamar al servicio
+      this.stockService.createStock(stockData, photoFile, guidesFile).subscribe({
         next: (response) => {
+          completedRequests++;
+
           if (response.status === 200) {
+            // Cambiar estado de la orden a ALMACEN
+            if (response.data.orderId != null) {
+              this.changeOrderOfRouteToWarehouse(material.orderId, material.messageAccordingType);
+            }
 
-            //Despues de guardar el material, cambiar estado de la orden a ALMACEN
-            this.changeOrderOfRouteToWarehouse(material.orderId,material.messageAccordingType)
+            // Limpiar formulario
+            this.materialsOrderEvent.set([]);
+            this.syncFormWithMaterials();
 
+            // Mostrar éxito
             this.hasSuccess.set(true);
             this.hasSuccessMessage.set(
-              `El material con código ${material.code} ha sido ingresado correctamente en stock.`
+              `Material ${material.code} ingresado correctamente en stock.`
             );
+          }
+
+          // Desactivar loader cuando todas las peticiones terminen
+          if (completedRequests === totalRequests) {
+            this.isSaving.set(false);
           }
         },
         error: (error) => {
+          completedRequests++;
+          this.hasError.set(true);
+
           if (error.status === 409) {
-            this.hasError.set(true);
-            this.hasNameError.set(
-              `El material con código ${material.code} ya existe en stock.`
-            );
+            this.hasNameError.set(`El material ${material.code} ya existe en stock.`);
+          } else if (error.status === 500) {
+            this.hasNameError.set('Ha ocurrido un problema en el servidor');
+          } else if (error.status === 403) {
+            this.hasNameError.set('Petición incorrecta. Comuníquese con el administrador.');
+          } else {
+            this.hasNameError.set('Error al guardar el material');
           }
-          if (error.status === 500) {
-            this.hasError.set(true);
-            this.hasNameError.set(`Ha ocurrido un problema en el servidor`);
+
+          // Desactivar loader cuando todas las peticiones terminen
+          if (completedRequests === totalRequests) {
+            this.isSaving.set(false);
           }
         },
       });
     });
-
-    this.materialsOrderEvent.set([]);
-    this.syncFormWithMaterials();
   }
 
   //cambiar estado de seguimiento a ALMACEN
-  changeOrderOfRouteToWarehouse(orderId:number,note:string): void {
-    this.orderService.updateTracking(orderId,{state:'ALMACEN',note:note})
-    .subscribe({
-      next: (response) => {
+  changeOrderOfRouteToWarehouse(orderId: number, note: string): void {
+    this.orderService.updateTracking(orderId, { state: 'ALMACEN', note: note })
+      .subscribe({
+        next: (response) => {
 
-        console.log("Orden actualizada a ALMACEN");
-      },
-      error: (err) => {
+          console.log("Orden actualizada a ALMACEN");
+        },
+        error: (err) => {
 
-      }
-    })
+        }
+      })
   }
 
 

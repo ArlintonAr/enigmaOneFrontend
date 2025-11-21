@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, ViewChild } from '@angular/core';
 import { Order } from '../../../orders/interfaces/order.interface';
 import { OrderEventService } from '../../../orders/services/orderEvent.service';
 
@@ -17,6 +17,7 @@ export class ActiveButtonToWarehouse {
   onClick() {
     const order = this.order();
     if (!order) return;
+    console.log(order)
     this.orderEvents.sendOrderToWarehouse(order);
   }
 }

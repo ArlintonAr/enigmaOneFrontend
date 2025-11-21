@@ -58,7 +58,7 @@ export class StockService {
     )
   }
 
-  getStockByWarehouseId(warehouseId:number):Observable<APIResponseStock>{
+  getStockByWarehouseId(warehouseId: number): Observable<APIResponseStock> {
     const token = localStorage.getItem('token')
 
     return this.http.get<APIResponseStock>(`${this.baseUrl}/stocks/findStockForWarehouseId/${warehouseId}`, {
@@ -68,7 +68,7 @@ export class StockService {
     )
   }
 
-  createStock(stock: Stock, photo?: File | null): Observable<APIResponseStockCreate> {
+  createStock(stock: Stock, photo?: File | null, orderGuides?: File | null): Observable<APIResponseStockCreate> {
 
     const token = localStorage.getItem('token')
     const formData = new FormData()
@@ -76,6 +76,9 @@ export class StockService {
 
     if (photo) {
       formData.append('photo', photo)
+    }
+    if (orderGuides) {
+      formData.append('orderGuides', orderGuides)
     }
 
     return this.http.post<APIResponseStockCreate>(`${this.baseUrl}/stocks/createStock`,
@@ -88,7 +91,7 @@ export class StockService {
 
   }
 
-  updateStock(stock: Stock, id:number, photo?: File | null): Observable<StockUpdatedResponse> {
+  updateStock(stock: Stock, id: number, photo?: File | null, orderGuides?: File | null): Observable<StockUpdatedResponse> {
     const token = localStorage.getItem('token')
     const formData = new FormData()
     formData.append('stock', new Blob([JSON.stringify(stock)], { type: 'application/json' }))
@@ -97,6 +100,9 @@ export class StockService {
       formData.append('photo', photo)
     }
 
+    if (orderGuides) {
+      formData.append('orderGuides', orderGuides)
+    }
     return this.http.patch<StockUpdatedResponse>(`${this.baseUrl}/stocks/updateStock/${id}`,
       formData,
       {
@@ -107,13 +113,13 @@ export class StockService {
 
   }
 
-  deleteStock(id:number):Observable<StockDeletedResponse>{
+  deleteStock(id: number): Observable<StockDeletedResponse> {
     const token = localStorage.getItem('token')
 
     return this.http.delete<StockDeletedResponse>(`${this.baseUrl}/stocks/deleteStock/${id}`,
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    }).pipe(
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }).pipe(
 
     )
 

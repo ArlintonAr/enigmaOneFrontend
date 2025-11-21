@@ -1,0 +1,19 @@
+@if (isLoading()) {
+<div class="loader-overlay" [class.full-overlay]="overlay() === 'full'" [class.inline-overlay]="overlay() === 'inline'">
+    <div class="loader-container">
+        <div class="spinner" [class.spinner-small]="size() === 'small'" [class.spinner-medium]="size() === 'medium'"
+            [class.spinner-large]="size() === 'large'">
+            <div class="spinner-circle"></div>
+            <div class="spinner-circle"></div>
+            <div class="spinner-circle"></div>
+            <div class="spinner-circle"></div>
+        </div>
+        @if (message()) {
+        <p class="loader-message" [class.message-small]="size() === 'small'"
+            [class.message-medium]="size() === 'medium'" [class.message-large]="size() === 'large'">
+            {{ message() }}
+        </p>
+        }
+    </div>
+</div>
+}
