@@ -107,7 +107,8 @@ hover:scale-105 rounded-full px-2" (click)="openModal()">
                     </span>
                     <span class="label-text-alt badge badge-ghost badge-xs">No editable</span>
                   </label>
-                  <div class="input input-bordered input-sm bg-base-200 cursor-not-allowed select-text text-base-content">
+                  <div
+                    class="input input-bordered input-sm bg-base-200 cursor-not-allowed select-text text-base-content">
                     {{ employee()?.id }}
                   </div>
                 </div>
@@ -120,7 +121,8 @@ hover:scale-105 rounded-full px-2" (click)="openModal()">
                       DNI
                     </span>
                   </label>
-                  <input type="text" formControlName="dni" class="input input-bordered input-sm focus:input-info text-base-content"
+                  <input type="text" formControlName="dni"
+                    class="input input-bordered input-sm focus:input-info text-base-content"
                     [placeholder]="employee()?.dni" />
                 </div>
 
@@ -132,10 +134,11 @@ hover:scale-105 rounded-full px-2" (click)="openModal()">
                       Cargo: <span class="text-success">{{employee()?.positionName | removeHyphen}}</span>
                     </span>
                   </label>
-                  <select formControlName="positionId" class="select select-bordered select-sm focus:select-accent text-base-content">
-                    @for(position of positions; track $index) {
-                    <option [value]="position.id" [defaultSelected]="employee()?.positionName">
-                      {{ position.name | removeHyphen }}
+                  <select formControlName="positionId"
+                    class="select select-bordered select-sm focus:select-accent text-base-content">
+                    @for(position of positions(); track position.id) {
+                    <option [value]="position.id">
+                      {{ position.positionName | removeHyphen }}
                     </option>
                     }
                   </select>
@@ -149,10 +152,11 @@ hover:scale-105 rounded-full px-2" (click)="openModal()">
                       Departamento: <span class="text-success">{{employee()?.departmentName | removeHyphen}}</span>
                     </span>
                   </label>
-                  <select formControlName="departmentId" class="select select-bordered select-sm focus:select-warning text-base-content">
+                  <select formControlName="departmentId"
+                    class="select select-bordered select-sm focus:select-warning text-base-content">
                     <option value="" disabled>Seleccionar departamento</option>
-                    @for(department of departments; track $index) {
-                    <option [value]="department.id" [defaultSelected]="employee()?.departmentName">
+                    @for(department of departments(); track department.id) {
+                    <option [value]="department.id">
                       {{ department.name }}
                     </option>
                     }
@@ -179,6 +183,24 @@ hover:scale-105 rounded-full px-2" (click)="openModal()">
                       Solo completa si deseas cambiar la contraseña
                     </span>
                   </label>
+                </div>
+
+                <!-- Rol -->
+                <div class="form-control mt-3">
+                  <label class="label">
+                    <span class="label-text font-semibold text-base-content">
+                      <i class="fas fa-user-shield text-secondary mr-2"></i>
+                      Rol: <span class="text-success">{{employee()?.role}}</span>
+                    </span>
+                  </label>
+                  <select formControlName="role"
+                    class="select select-bordered select-sm focus:select-secondary text-base-content">
+                    @for(role of roles; track role.value) {
+                    <option [value]="role.value">
+                      {{ role.label }}
+                    </option>
+                    }
+                  </select>
                 </div>
               </div>
             </div>

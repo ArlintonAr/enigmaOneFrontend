@@ -19,8 +19,8 @@ interface Item {
 })
 export class ItemDashboardComponent {
 
-   authService = inject(AuthService);
-   router = inject(Router)
+  authService = inject(AuthService);
+  router = inject(Router)
 
   items: Item[] = [
     {
@@ -55,21 +55,28 @@ export class ItemDashboardComponent {
       route: '/dashboard/seguimientos'
     },
     {
-      title: 'Reportes',
-      description: 'Seguimiento de pedidos',
-      icon: `fa-solid fa-print`,
-      route: '/dashboard/reportes'
-    }
-
+      title: 'Configuración',
+      description: 'Configuración de la aplicación',
+      icon: `fa-solid fa-gear`,
+      route: '/dashboard/configuracion'
+    },
+    /*   
+      {
+        title: 'Reportes',
+        description: 'Seguimiento de pedidos',
+        icon: `fa-solid fa-print`,
+        route: '/dashboard/reportes'
+      }
+   */
 
   ];
 
 
 
   logout() {
-      this.authService.logout();
-      //window.location.reload();
-      this.router.navigateByUrl('/inicio');
+    this.authService.logout();
+    //window.location.reload();
+    this.router.navigateByUrl('/inicio');
   }
 
 

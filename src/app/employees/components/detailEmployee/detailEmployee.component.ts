@@ -8,29 +8,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SuccessAlertComponent } from '../../../shared/components/exitAlert/successAlert.component';
 import { ErrorAlertComponent } from '../../../shared/components/errorAlert/errorAlert.component';
 import { EmployeeEventService } from '../../services/employeeEvent.service';
+import { ConfigurationService } from '../../../configuration/services/configuration.service';
+import { Position } from '../../../configuration/interfaces/APIResponsePosition';
+import { Department } from '../../../configuration/interfaces/APIResponseDepartments';
 
-const positionArray = [
-  { name: 'gerente general', code: '01gg', id: 1 },
-  { name: 'jefe de proyecto', code: '02gp', id: 2 },
-  { name: 'residente de obra', code: '03ro', id: 3 },
-  { name: 'administrador', code: '04aa', id: 4 },
-  { name: 'tesoreria', code: '05tt', id: 5 },
-  { name: 'almacenero', code: '05al', id: 6 },
 
-]
-const departmentArray = [
-  { name: 'logistica', code: '01lo', id: 1 },
-  { name: 'administracion', code: '02ad', id: 2 },
-  { name: 'recursos humanos', code: '03rh', id: 3 },
-  { name: 'control de calidad', code: '04cc', id: 4 },
-  { name: 'mantenimiento de planta', code: '05mp', id: 5 },
-  { name: 'seguridad y medio ambiente', code: '06sm', id: 6 },
-  { name: 'produccion', code: '07pr', id: 7 },
-  { name: 'oficina tecnica', code: '08ot', id: 8 },
-]
 @Component({
   selector: 'detail-employee',
-  imports: [NoPhotoPipe, RemoveHyphenPipe, ReactiveFormsModule,DatePipe,SuccessAlertComponent,ErrorAlertComponent],
+  imports: [NoPhotoPipe, RemoveHyphenPipe, ReactiveFormsModule, DatePipe, SuccessAlertComponent, ErrorAlertComponent],
   templateUrl: './detailEmployee.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -42,6 +27,7 @@ export class DetailEmployeeComponent {
   private employeeService = inject(EmployeesService)
   private fb = inject(FormBuilder);
   private employeeEventService = inject(EmployeeEventService)
+  private configurationService = inject(ConfigurationService)
 
   employee = input.required<EmployeeResponse | null>();
 
@@ -49,23 +35,60 @@ export class DetailEmployeeComponent {
 
 
   //Variables de exito y error
-  hasError= signal<boolean>(false)
+  hasError = signal<boolean>(false)
   hasNameError = signal<string>('')
 
   hasSuccess = signal<boolean>(false)
-  hasNameSuccess= signal<string>('')
+  hasNameSuccess = signal<string>('')
 
-  //arreglos para departamento y position
-  public positions = positionArray
-  public departments = departmentArray
+  //Signals para departamentos y posiciones desde el backend
+  positions = signal<Position[]>([]);
+  departments = signal<Department[]>([]);
+
+  // Roles disponibles
+  roles = [
+    { value: 'SUPER_ADMIN', label: 'Super Administrador' },
+    { value: 'ADMIN', label: 'Administrador' },
+    { value: 'GERENTE', label: 'Gerente' },
+    { value: 'RECURSOS_HUMANOS', label: 'Recursos Humanos' },
+    { value: 'LIDER_DE_EQUIPO', label: 'Líder de Equipo' },
+    { value: 'EMPLEADO', label: 'Empleado' },
+    { value: 'CONTRATISTA', label: 'Contratista' },
+    { value: 'INVITADO', label: 'Invitado' }
+  ];
 
   namedSelectPhoto = signal<string>('')
   selectedPhotoFile = signal<File | null>(null)
 
 
 
-  constructor(){
+  constructor() {
+    this.loadPositions();
+    this.loadDepartments();
+  }
 
+  // Cargar posiciones desde el backend
+  loadPositions(): void {
+    this.configurationService.getAllPositions().subscribe({
+      next: (response) => {
+        this.positions.set(response.data || []);
+      },
+      error: (error) => {
+        console.error('Error loading positions:', error);
+      }
+    });
+  }
+
+  // Cargar departamentos desde el backend
+  loadDepartments(): void {
+    this.configurationService.getAllDepartments().subscribe({
+      next: (response) => {
+        this.departments.set(response.data || []);
+      },
+      error: (error) => {
+        console.error('Error loading departments:', error);
+      }
+    });
   }
 
   // Formulario reactivo - TODOS los campos son opcionales
@@ -84,6 +107,7 @@ export class DetailEmployeeComponent {
     bankAccountNumber: [],
     address: [],
     active: [true],
+    role: [], // Campo role agregado
   });
 
   // Inicializar el formulario con los datos del empleado
@@ -136,8 +160,8 @@ export class DetailEmployeeComponent {
     this.selectedPhotoFile.set(file);
     this.namedSelectPhoto.set(file.name)
 
-     // Marca el formulario como dirty
-  this.updateEmployeeForm.markAsDirty();
+    // Marca el formulario como dirty
+    this.updateEmployeeForm.markAsDirty();
   }
 
 
@@ -151,8 +175,8 @@ export class DetailEmployeeComponent {
   }
 
 
-  updateEmployee(employeeId:number ) {
-    if(!this.updateEmployeeForm.valid){
+  updateEmployee(employeeId: number) {
+    if (!this.updateEmployeeForm.valid) {
 
       this.hasError.set(true)
       this.hasNameError.set('El Formulario no es válido.')
@@ -161,35 +185,35 @@ export class DetailEmployeeComponent {
 
     const newEmployee = this.updateEmployeeForm.value
 
-    this.employeeService.updateEmployee(newEmployee,employeeId, this.selectedPhotoFile())
-    .subscribe({
-      next: (resp) => {
-        if (resp.status ==200) {
-          this.hasSuccess.set(true)
-          this.hasNameSuccess.set('Empleado actualizado con éxito.')
+    this.employeeService.updateEmployee(newEmployee, employeeId, this.selectedPhotoFile())
+      .subscribe({
+        next: (resp) => {
+          if (resp.status == 200) {
+            this.hasSuccess.set(true)
+            this.hasNameSuccess.set('Empleado actualizado con éxito.')
+          }
+
+          this.employeeEventService.employeeUpdated(true);
+
+        },
+        error: (err) => {
+
+          if (err.status == 403) {
+            this.hasError.set(true)
+            this.hasNameError.set('No tiene permisos para actualizar empleados.')
+          }
+
+          if (err.status == 409) {
+            this.hasError.set(true)
+            this.hasNameError.set('El DNI o correo ya existe en otro empleado.')
+          }
+          if (err.status == 500) {
+            this.hasError.set(true)
+            this.hasNameError.set('Error del servidor, intente más tarde.')
+          }
         }
 
-        this.employeeEventService.employeeUpdated(true);
-
-      },
-      error: (err) => {
-
-        if(err.status==403){
-          this.hasError.set(true)
-          this.hasNameError.set('No tiene permisos para actualizar empleados.')
-        }
-
-        if (err.status==409) {
-          this.hasError.set(true)
-          this.hasNameError.set('El DNI o correo ya existe en otro empleado.')
-        }
-        if (err.status==500) {
-          this.hasError.set(true)
-          this.hasNameError.set('Error del servidor, intente más tarde.')
-        }
-      }
-
-    })
+      })
 
   }
   deleteEmployee() {

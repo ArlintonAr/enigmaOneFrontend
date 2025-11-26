@@ -44,7 +44,7 @@ export interface StockCreate {
   accordingType: string;
   messageAccordingType: string;
   photo?: File | null;
-
+  orderGuides?: string
   orderId: string
 
 

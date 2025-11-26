@@ -33,9 +33,9 @@ export class ApprovedOrder {
   //Llamar al usuario autenticado para obtener su rol
   userAuthenticated = computed(() => {
     const user = localStorage.getItem('user')
-    return !user? null: JSON.parse(user)
+    return !user ? null : JSON.parse(user)
   })
-  user:User = this.userAuthenticated()
+  user: User = this.userAuthenticated()
   positionUser = signal<string>('')
 
   //Variables de error y acierto
@@ -43,7 +43,7 @@ export class ApprovedOrder {
   nameError = signal<string>('')
 
   hasSuccess = signal<boolean>(false)
-  nameSuccess= signal<string>('')
+  nameSuccess = signal<string>('')
 
   constructor() {
 
@@ -51,12 +51,12 @@ export class ApprovedOrder {
   }
 
   //Formulario para actualizar
-  formUpdateApproved:FormGroup = this.fb.group({
-    status:['APROBADO',Validators.required],
-    comments:['',Validators.required]
+  formUpdateApproved: FormGroup = this.fb.group({
+    status: ['APROBADO', Validators.required],
+    comments: ['', Validators.required]
   })
 
-  openModal(orderId:number) {
+  openModal(orderId: number) {
     this.getOrdersApprovalForOrderId(orderId)
     this.getEmployeeForId()
     this.modalApproved.nativeElement.showModal()
@@ -66,77 +66,78 @@ export class ApprovedOrder {
   }
 
 
-  getOrdersApprovalForOrderId(id:number){
+  getOrdersApprovalForOrderId(id: number) {
     this.orderService.getOrdersApprovalsForOrderId(id)
-    .subscribe({
-      next: (response) => {
-        this.ordersApproval.set(response.data);
-      },
-      error: (error) => {
+      .subscribe({
+        next: (response) => {
+          this.ordersApproval.set(response.data);
 
-      }
-    })
+        },
+        error: (error) => {
+
+        }
+      })
   }
 
-  updatedStatusApproval(){
+  updatedStatusApproval() {
     if (!this.formUpdateApproved.valid) {
-        this.hasError.set(true)
-        this.nameError.set("Formulario inválido, llene el campo de mensaje")
-        return
+      this.hasError.set(true)
+      this.nameError.set("Formulario inválido, llene el campo de mensaje")
+      return
     }
 
-    const {status,comments}=this.formUpdateApproved.value
-    const approvalAction:ApprovalActionDTO = {comments}
+    const { status, comments } = this.formUpdateApproved.value
+    const approvalAction: ApprovalActionDTO = { comments }
 
-    if (status==='RECHAZADO') {
+    if (status === 'RECHAZADO') {
       //llamar servicio para rechazar
-      this.orderService.rejectOrder(this.orderId(),this.positionUser(),approvalAction)
-      .subscribe({
-        next:(data)=>{
-          console.log("Rechazadooo: ",data)
-          this.hasSuccess.set(true)
-          this.nameSuccess.set(`Orden Rechazada por: ${this.positionUser()}`)
+      this.orderService.rejectOrder(this.orderId(), this.positionUser(), approvalAction)
+        .subscribe({
+          next: (data) => {
+            console.log("Rechazadooo: ", data)
+            this.hasSuccess.set(true)
+            this.nameSuccess.set(`Orden Rechazada por: ${this.positionUser()}`)
 
-          //Actualizar variable para que detecte cambios cuando se ha actualizado
-          this.orderEventService.updatedStatusOrder(true);
+            //Actualizar variable para que detecte cambios cuando se ha actualizado
+            this.orderEventService.updatedStatusOrder(true);
 
-          //resetear valores
-          this.formUpdateApproved.reset()
-          this.closeModal()
-        },
-        error:(err)=>{
-          this.hasError.set(true)
-          this.nameError.set(`${err.error.message} `)
+            //resetear valores
+            this.formUpdateApproved.reset()
+            this.closeModal()
+          },
+          error: (err) => {
+            this.hasError.set(true)
+            this.nameError.set(`${err.error.message} `)
 
 
-          this.formUpdateApproved.reset()
-          this.closeModal()
-        }
-      })
-    }else{
-      if (status==='APROBADO') {
+            this.formUpdateApproved.reset()
+            this.closeModal()
+          }
+        })
+    } else {
+      if (status === 'APROBADO') {
         //Llamar servicio para aprobar
-      this.orderService.approveOrder(this.orderId(),this.positionUser(),approvalAction)
-      .subscribe({
-       next:(data)=>{
+        this.orderService.approveOrder(this.orderId(), this.positionUser(), approvalAction)
+          .subscribe({
+            next: (data) => {
 
-          this.hasSuccess.set(true)
-          this.nameSuccess.set(`Orden Aprobada por: ${this.positionUser()}`)
+              this.hasSuccess.set(true)
+              this.nameSuccess.set(`Orden Aprobada por: ${this.positionUser()}`)
 
-           //Actualizar variable para que detecte cambios cuando se ha actualizado
-          this.orderEventService.updatedStatusOrder(true);
+              //Actualizar variable para que detecte cambios cuando se ha actualizado
+              this.orderEventService.updatedStatusOrder(true);
 
-          this.formUpdateApproved.reset()
-          this.closeModal()
-        },
-        error:(err)=>{
-          this.hasError.set(true)
-          this.nameError.set(`${err.error.message} `)
+              this.formUpdateApproved.reset()
+              this.closeModal()
+            },
+            error: (err) => {
+              this.hasError.set(true)
+              this.nameError.set(`${err.error.message} `)
 
-          this.formUpdateApproved.reset()
-          this.closeModal()
-        }
-      })
+              this.formUpdateApproved.reset()
+              this.closeModal()
+            }
+          })
       }
 
     }
@@ -144,16 +145,17 @@ export class ApprovedOrder {
   }
 
 
-  getEmployeeForId(){
-       this.employeeService.searchEmployeeForId(Number(this.user.id))
-        .subscribe({
-         next: (data)=>{
-           this.positionUser.set(data.positionName)
-         },
-         error:(error)=>{
-           console.log(error)
-         }
-        })
+  getEmployeeForId() {
+    this.employeeService.searchEmployeeForId(Number(this.user.id))
+      .subscribe({
+        next: (data) => {
+          this.positionUser.set(data.role)
+
+        },
+        error: (error) => {
+          console.log(error)
+        }
+      })
   }
 
 
@@ -161,5 +163,5 @@ export class ApprovedOrder {
 
 
 
- }
+}
 

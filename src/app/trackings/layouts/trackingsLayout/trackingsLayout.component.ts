@@ -5,33 +5,31 @@ import { SubMenuForModulesComponent } from '../../../shared/components/SubmenuFo
 
 @Component({
   selector: 'app-trackings-layout',
-  imports: [RouterOutlet,SubMenuForModulesComponent],
+  imports: [RouterOutlet, SubMenuForModulesComponent],
   templateUrl: './trackingsLayout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackingsLayoutComponent {
 
 
-
-
-    subMenu: SubMenu[] = [
-      {
-        name: 'Seguimientos pedidos',
-        icon: 'fa-solid fa-users',
-        description: '+1',
-        route: '/dashboard/seguimientos/seguimientos-pedidos'
-      },
-      {
-        name: 'Seguimientos en Ruta',
-        icon: 'fa-solid fa-arrow-up-right-from-square',
-        description: '+3',
-        route: '/dashboard/seguimientos/seguimientos-en-ruta'
-      },
-      {
-        name: 'Seguimientos en almacen',
-        icon: 'fa-solid fa-rectangle-list',
-        description: '+1',
-        route: '/dashboard/seguimientos/seguimientos-en-almacen'
-      }
-    ]
- }
+  subMenu: SubMenu[] = [
+    {
+      name: 'Seguimientos pedidos',
+      icon: 'fa-solid fa-users',
+      description: '+1',
+      route: '/dashboard/seguimientos/seguimientos-pedidos'
+    },
+    {
+      name: 'Seguimientos en Ruta',
+      icon: 'fa-solid fa-arrow-up-right-from-square',
+      description: '+3',
+      route: '/dashboard/seguimientos/seguimientos-en-ruta'
+    },
+    {
+      name: 'Seguimientos en almacen',
+      icon: 'fa-solid fa-rectangle-list',
+      description: '+1',
+      route: '/dashboard/seguimientos/seguimientos-en-almacen'
+    }
+  ]
+}

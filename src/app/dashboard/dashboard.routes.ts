@@ -1,11 +1,6 @@
 import { Routes } from "@angular/router";
 import { DashboardLayoutComponent } from "./layouts/dashboardLayout/dashboardLayout.component";
 import { PricipalPageComponent } from "./pages/pricipalPage/pricipalPage.component";
-import { EmployeesLayoutComponent } from "../employees/layouts/employeesLayout/employeesLayout.component";
-import { StockLayoutComponent } from "../stock/layouts/stockLayout/stockLayout.component";
-import { OrdersLayoutComponent } from "../orders/layouts/ordersLayout/ordersLayout.component";
-import { TrackingsLayoutComponent } from "../trackings/layouts/trackingsLayout/trackingsLayout.component";
-import { MovementsLayoutComponent } from "../movements/layouts/movementsLayout/movementsLayout.component";
 
 
 
@@ -34,9 +29,13 @@ export const dashboardRoutes: Routes = [
         path: 'seguimientos',
         loadChildren: () => import('../trackings/trackings.routes')
       },
-      {
+      /* {
         path: 'reportes',
         loadChildren: () => import('../orders/orders.routes')
+      }, */
+      {
+        path: 'configuracion',
+        loadChildren: () => import('../configuration/configuration.routes')
       },
 
       {

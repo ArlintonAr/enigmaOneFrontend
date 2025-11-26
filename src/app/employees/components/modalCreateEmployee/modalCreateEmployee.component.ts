@@ -5,31 +5,12 @@ import { ErrorAlertComponent } from '../../../shared/components/errorAlert/error
 import { FormUtils } from '../../../utils/formUtils';
 import { EmployeesService } from '../../services/employees.service';
 import { CreateNewEmploye } from '../../interfaces/employeeNewCreate.interface';
-
 import { SuccessAlertComponent } from '../../../shared/components/exitAlert/successAlert.component';
+import { ConfigurationService } from '../../../configuration/services/configuration.service';
+import { Position } from '../../../configuration/interfaces/APIResponsePosition';
+import { Department } from '../../../configuration/interfaces/APIResponseDepartments';
 
-const positionsArray = [
 
-  { name: 'Gerente General', id: 1 },
-  { name: 'Jefe de Proyecto', id: 2 },
-  { name: 'Residente de Obra', id: 3 },
-  { name: 'Administrativo', id: 4 },
-  { name: 'Tesorero', id: 5 },
-  { name: 'Almacenero', id: 6 },
-
-]
-
-const departmentsArray = [
-
-  { name: 'Logistica', id: 1 },
-  { name: 'Administracion', id: 2 },
-  { name: 'Recursos Humanos', id: 3 },
-  { name: 'Control de Calidad', id: 4 },
-  { name: 'Mantenimiento de Planta', id: 5 },
-  { name: 'Seguridad y Medio Ambiente', id: 6 },
-  { name: 'Produccion', id: 7 },
-  { name: 'Oficina Tecnica', id: 8 },
-]
 
 
 @Component({
@@ -41,9 +22,23 @@ const departmentsArray = [
 export class ModalCreateEmployeeComponent {
   private employeeService = inject(EmployeesService)
   private fb = inject(FormBuilder)
+  private configurationService = inject(ConfigurationService)
+
   formUtils = FormUtils
-  positions = positionsArray;
-  departments = departmentsArray;
+  positions = signal<Position[]>([]);
+  departments = signal<Department[]>([]);
+
+  // Roles disponibles
+  roles = [
+    { value: 'SUPER_ADMIN', label: 'Super Administrador' },
+    { value: 'ADMIN', label: 'Administrador' },
+    { value: 'GERENTE', label: 'Gerente' },
+    { value: 'RECURSOS_HUMANOS', label: 'Recursos Humanos' },
+    { value: 'LIDER_DE_EQUIPO', label: 'Líder de Equipo' },
+    { value: 'EMPLEADO', label: 'Empleado' },
+    { value: 'CONTRATISTA', label: 'Contratista' },
+    { value: 'INVITADO', label: 'Invitado' }
+  ];
 
   //Errores
   hasError = signal<boolean>(false)
@@ -72,10 +67,47 @@ export class ModalCreateEmployeeComponent {
     salary: ['', Validators.required,],
     birthday: [''],
 
-
-    positionId: [this.positions[0].id, Validators.required],
-    departmentId: [this.departments[0].id, Validators.required]
+    positionId: [undefined as number | undefined, Validators.required],
+    departmentId: [undefined as number | undefined, Validators.required],
+    role: ['EMPLEADO', Validators.required] // Campo role agregado con valor por defecto 'EMPLEADO'
   })
+
+  constructor() {
+    this.loadPositions();
+    this.loadDepartments();
+  }
+
+  // Cargar posiciones desde el backend
+  loadPositions(): void {
+    this.configurationService.getAllPositions().subscribe({
+      next: (response) => {
+        this.positions.set(response.data || []);
+        // Establecer el primer valor si existe
+        if (response.data && response.data.length > 0) {
+          this.createEmployeeForm.patchValue({ positionId: response.data[0].id });
+        }
+      },
+      error: (error) => {
+        console.error('Error loading positions:', error);
+      }
+    });
+  }
+
+  // Cargar departamentos desde el backend
+  loadDepartments(): void {
+    this.configurationService.getAllDepartments().subscribe({
+      next: (response) => {
+        this.departments.set(response.data || []);
+        // Establecer el primer valor si existe
+        if (response.data && response.data.length > 0) {
+          this.createEmployeeForm.patchValue({ departmentId: response.data[0].id });
+        }
+      },
+      error: (error) => {
+        console.error('Error loading departments:', error);
+      }
+    });
+  }
 
   @ViewChild('createEmployee') createEmployee!: ElementRef<HTMLDialogElement>;
 
@@ -84,6 +116,7 @@ export class ModalCreateEmployeeComponent {
   }
 
   clouseModal(): void {
+    this.createEmployee.nativeElement.close();
     this.resetValuesOfForm()
   }
 
@@ -125,7 +158,7 @@ export class ModalCreateEmployeeComponent {
             this.errorName.set(err.error.message)
             return
           }
-          if (err.status==403) {
+          if (err.status == 403) {
             this.hasError.set(true)
             this.errorName.set('No tiene permisos para crear empleados.')
             return

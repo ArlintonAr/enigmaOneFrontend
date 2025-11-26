@@ -49,6 +49,10 @@ export class DetailStockComponent {
   selectedFile = signal<File | null>(null);
   photoPreview = signal<string | null>(null);
 
+  // Signals para manejo de PDF de guías
+  selectedPdfFile = signal<File | null>(null);
+  pdfFileName = signal<string>('');
+
   constructor() {
     this.stockForm = this.fb.group({
       quantity: [0],
@@ -124,9 +128,41 @@ export class DetailStockComponent {
     this.photoPreview.set(null);
   }
 
+  // Manejo de PDF
+  onPdfSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+
+      // Validar que sea un PDF
+      if (file.type === 'application/pdf') {
+        this.selectedPdfFile.set(file);
+        this.pdfFileName.set(file.name);
+        this.stockForm.markAsDirty();
+      } else {
+        this.hasError.set(true);
+        this.errorMessage.set('Solo se permiten archivos PDF');
+      }
+    }
+  }
+
+  clearPdf() {
+    this.selectedPdfFile.set(null);
+    this.pdfFileName.set('');
+  }
+
+  downloadPdf() {
+    const pdfUrl = this.product()?.orderGuides;
+    if (pdfUrl) {
+      window.open(pdfUrl, '_blank');
+    }
+  }
+
   resetForm() {
     this.initializeForm();
     this.clearPhoto();
+    this.clearPdf();
   }
 
   saveChanges() {
@@ -135,7 +171,7 @@ export class DetailStockComponent {
 
       // Aquí implementas la lógica para guardar
 
-      this.stockService.updateStock(formData, this.product()!.id, this.selectedFile())
+      this.stockService.updateStock(formData, this.product()!.id, this.selectedFile(), this.selectedPdfFile())
         .subscribe({
           next: (response) => {
 
@@ -145,6 +181,10 @@ export class DetailStockComponent {
             // Actualizar la señal del producto con los nuevos datos
             this.product.set(response.data);
             this.stockEventService.modifyValueToUpdatedProduct(true);
+
+            // Limpiar archivos seleccionados
+            this.clearPhoto();
+            this.clearPdf();
 
             // Aquí puedes agregar lógica adicional, como cerrar el modal o mostrar un mensaje
             this.closeModal();

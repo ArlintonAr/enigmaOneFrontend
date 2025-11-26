@@ -11,17 +11,17 @@ import { CreateWarehouse } from "../../components/createWarehouse/createWarehous
 
 @Component({
   selector: 'app-stock-management',
-  imports: [OrderEntryComponent, ListStockComponent, ReactiveFormsModule, SearchComponent, WarehousesList, CreateWarehouse],
+  imports: [OrderEntryComponent, ListStockComponent, ReactiveFormsModule, SearchComponent, WarehousesList],
   templateUrl: './stockManagement.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StockManagement {
-   @ViewChild(OrderEntryComponent) orderEntryComponent!: OrderEntryComponent
+  @ViewChild(OrderEntryComponent) orderEntryComponent!: OrderEntryComponent
   private stockService = inject(StockService)
   private fb = inject(FormBuilder)
   private stockEventService = inject(StockEventService)
 
-  public idWarehouse = signal<number >(1)
+  public idWarehouse = signal<number>(1)
   public stock = signal<Stock[]>([])
 
   public formValueOfFiler = this.fb.group({
@@ -30,20 +30,20 @@ export class StockManagement {
   })
 
 
-constructor() {
+  constructor() {
     this.getAllStock()
 
-    effect(()=>{
+    effect(() => {
       //Actualizar lista de stock si es que hay una actualizacion
       const refreshNeeded = this.stockEventService.isUpdatedProduct();
-      if(refreshNeeded){
+      if (refreshNeeded) {
         this.getAllStock()
         this.stockEventService.modifyValueToUpdatedProduct(false)
       }
 
       //Actualizar lista de stock si es que hay una eliminacion
       const deleteNeeded = this.stockEventService.isDeleteProduct();
-      if(deleteNeeded){
+      if (deleteNeeded) {
         this.getAllStock()
         this.stockEventService.modifyValueToDeleteProduct(false)
       }
@@ -103,7 +103,7 @@ constructor() {
             return
           }
           this.stock.set(Array.isArray(response?.data) ? response.data : [])
-      })
+        })
   }
 
   searchStockForCode(code: string) {
@@ -130,4 +130,4 @@ constructor() {
 
 
 
- }
+}

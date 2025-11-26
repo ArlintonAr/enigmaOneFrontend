@@ -12,6 +12,10 @@ import { StockEventService } from '../../services/stockEvent.service';
   templateUrl: './createWarehouse.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * @deprecated Este componente ha sido migrado al módulo de configuración (src/app/configuration/pages/warehouses).
+ * Se mantiene temporalmente por compatibilidad pero no debe usarse para nuevos desarrollos.
+ */
 export class CreateWarehouse {
   @ViewChild('modalCreateWarehouse') createWarehouseModal!: ElementRef<HTMLDialogElement>;
 
@@ -21,7 +25,7 @@ export class CreateWarehouse {
   private fb = inject(FormBuilder)
 
 
-  public formCreateWarehouse:FormGroup = this.fb.group({
+  public formCreateWarehouse: FormGroup = this.fb.group({
     locationName: ['', [Validators.required, Validators.minLength(3)]],
     latitude: [''],
     longitude: ['']
@@ -35,48 +39,48 @@ export class CreateWarehouse {
   public successMessage = signal<string>('')
 
 
-  constructor(){}
+  constructor() { }
 
 
 
-  openModal():void{
+  openModal(): void {
     this.createWarehouseModal.nativeElement.showModal();
   }
-  closeModal():void{
+  closeModal(): void {
     this.createWarehouseModal.nativeElement.close();
   }
 
 
 
-  createWarehouse(){
-   if(!this.formCreateWarehouse.valid){
+  createWarehouse() {
+    if (!this.formCreateWarehouse.valid) {
       this.hasError.set(true)
       this.errorMessage.set('Formulario inválido. El nombre del almacén es obligatorio, debe tener al menos 3 letras.')
       return
-   }
-   const {locationName,latitude,longitude} = this.formCreateWarehouse.value
-   const warehouse:WarehouseCreateDTO ={
+    }
+    const { locationName, latitude, longitude } = this.formCreateWarehouse.value
+    const warehouse: WarehouseCreateDTO = {
       locationName,
       latitude,
       longitude
-   }
+    }
 
     this.warehouseService.createWarehouse(warehouse)
-    .subscribe({
-      next:(response)=>{
-        this.hasSuccess.set(true)
-        this.successMessage.set('Almacén creado exitosamente.')
-        this.formCreateWarehouse.reset()
-        //Si se crea que se actualice la lista
-        this.stockEventService.createWarehouse(true)
-        this.closeModal()
-      },
-      error:(err)=>{
-        this.hasError.set(true)
-        this.errorMessage.set(`Error al crear el almacén. ${err}`)
+      .subscribe({
+        next: (response) => {
+          this.hasSuccess.set(true)
+          this.successMessage.set('Almacén creado exitosamente.')
+          this.formCreateWarehouse.reset()
+          //Si se crea que se actualice la lista
+          this.stockEventService.createWarehouse(true)
+          this.closeModal()
+        },
+        error: (err) => {
+          this.hasError.set(true)
+          this.errorMessage.set(`Error al crear el almacén. ${err}`)
 
-      }
-    })
+        }
+      })
 
   }
 
