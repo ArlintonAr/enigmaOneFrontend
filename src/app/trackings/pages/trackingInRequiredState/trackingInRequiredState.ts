@@ -21,6 +21,7 @@ export class TrackingInRequiredState {
   private trackingService = inject(TrackingService)
 
   listTrackings = signal<Tracking[]>([])
+  isLoading = signal<boolean>(false)
 
   constructor() {
     this.getAllTrackings()
@@ -28,25 +29,29 @@ export class TrackingInRequiredState {
   }
 
   getAllTrackings(): void {
+    this.isLoading.set(true);
     this.trackingService.getAllTrackings('PEDIDO').subscribe({
       next: (resp) => {
 
         this.listTrackings.set(resp.data || []);
+        this.isLoading.set(false);
 
       },
       error: (err) => {
         console.error('Error trackings:', err);
+        this.isLoading.set(false);
       },
     });
   }
 
 
   searchTrackingForId(term: string): void {
-    if (term === '' ){
+    if (term === '') {
       this.getAllTrackings()
       return;
     }
     const id = Number(term);
+    this.isLoading.set(true);
     this.trackingService.getTrackingById(id).subscribe({
       next: (resp) => {
         if (resp.data && resp.data.trackingState === 'PEDIDO') {
@@ -54,10 +59,12 @@ export class TrackingInRequiredState {
         } else {
           this.listTrackings.set([]);
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error fetching tracking by ID:', err);
         this.listTrackings.set([]);
+        this.isLoading.set(false);
       },
     });
 

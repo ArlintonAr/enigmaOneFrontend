@@ -1,18 +1,18 @@
-<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+<div class="min-h-screen bg-base-200">
     <!-- Header Section -->
-    <div class="bg-gradient-to-r from-purple-600 to-pink-600 shadow-xl">
-        <div class="max-w-7xl mx-auto px-6 py-12">
-            <h1 class="text-4xl font-bold text-white mb-2">Gestión de Almacenes</h1>
-            <p class="text-purple-100">Administra los almacenes e inventarios de tu organización</p>
+    <div class="bg-gradient-to-r from-primary to-secondary shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1">Gestión de Almacenes</h1>
+            <p class="text-sm sm:text-base text-primary-content/80">Administra los almacenes e inventarios de tu
+                organización</p>
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="container mx-auto px-4 sm:px-6 py-4 sm:py-6 lg:py-8">
         <!-- Error Message -->
         @if (errorMessage()) {
-        <div
-            class="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg backdrop-blur-sm flex items-start gap-3">
-            <svg class="h-5 w-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+        <div class="alert alert-error mb-4">
+            <svg class="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                     clip-rule="evenodd" />
@@ -22,102 +22,74 @@
         }
 
         <!-- Search and Create Section -->
-        <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-300 mb-2">Buscar almacén</label>
-                <div class="relative group">
-                    <svg class="absolute left-4 top-3.5 h-5 w-5 text-gray-500 group-focus-within:text-purple-400 transition-colors"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+            <div class="flex-1">
+                <label class="label">
+                    <span class="label-text font-medium">Buscar almacén</span>
+                </label>
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-base-content/40" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input type="text" #searchInput (input)="searchWarehouseById(searchInput.value)"
-                        placeholder="Buscar por ID..."
-                        class="w-full pl-11 pr-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all backdrop-blur-sm" />
+                        placeholder="Buscar por ID..." class="input input-bordered w-full pl-10" />
                 </div>
             </div>
-            <button (click)="openCreateModal()"
-                class="px-6 py-3 bg-gradient-to-r cursor-pointer from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all font-semibold flex items-center justify-center gap-2 group hover:scale-105">
-                <svg class="h-5 w-5 group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Nuevo Almacén
-            </button>
+            <div class="sm:pt-8">
+                <button (click)="openCreateModal()" class="btn btn-primary w-full sm:w-auto gap-2">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Nuevo Almacén
+                </button>
+            </div>
         </div>
 
         <!-- Loading State -->
         @if (isLoading()) {
-        <div class="flex justify-center items-center py-24">
-            <div class="relative">
-                <div
-                    class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-xl opacity-75 animate-pulse">
-                </div>
-                <div class="relative w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center">
-                    <div class="animate-spin rounded-full h-12 w-12 border-2 border-slate-700 border-t-purple-500">
-                    </div>
-                </div>
-            </div>
+        <div class="flex justify-center items-center py-20">
+            <span class="loading loading-spinner loading-lg text-primary"></span>
         </div>
         }
 
-        <!-- Warehouses Table -->
+        <!-- Warehouses Display -->
         @if (!isLoading()) {
-        <div class="bg-slate-700/30 backdrop-blur-xl rounded-xl shadow-2xl border border-slate-600/50 overflow-hidden">
+        <div class="card bg-base-100 shadow-xl">
             @if (listWarehouses().length > 0) {
-            <div class="overflow-x-auto">
-                <table class="w-full">
+            <!-- Vista de tabla para pantallas grandes -->
+            <div class="hidden lg:block overflow-x-auto">
+                <table class="table table-zebra">
                     <thead>
-                        <tr class="bg-gradient-to-r from-slate-700 to-slate-600 border-b border-slate-600">
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                                ID</th>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                                Nombre</th>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                                Latitud</th>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                                Longitud</th>
-                            <th
-                                class="px-6 py-4 text-right text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                                Acciones</th>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Latitud</th>
+                            <th>Longitud</th>
+                            <th class="text-right">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-600/30">
+                    <tbody>
                         @for (warehouse of listWarehouses(); track warehouse.id) {
-                        <tr class="hover:bg-slate-600/30 transition-colors duration-200 group">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
-                                <span
-                                    class="inline-block px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-semibold">
-                                    #{{ warehouse.id }}
-                                </span>
+                        <tr class="hover">
+                            <td>
+                                <div class="badge badge-primary badge-sm">{{ warehouse.id }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-white">
-                                {{ warehouse.locationName }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                                {{ warehouse.latitude || 'N/A' }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                                {{ warehouse.longitude || 'N/A' }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button (click)="openEditModal(warehouse)"
-                                    class="px-3 py-1.5 text-purple-400 cursor-pointer hover:bg-purple-500/20 rounded-lg transition-colors mr-2 hover:text-purple-300">
-                                    <svg class="h-4 w-4 inline mr-1" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                            <td class="font-semibold">{{ warehouse.locationName }}</td>
+                            <td class="text-base-content/60">{{ warehouse.latitude || 'N/A' }}</td>
+                            <td class="text-base-content/60">{{ warehouse.longitude || 'N/A' }}</td>
+                            <td class="text-right space-x-2">
+                                <button (click)="openEditModal(warehouse)" class="btn btn-ghost btn-sm gap-1">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                     Editar
                                 </button>
                                 <button (click)="openDeleteModal(warehouse)"
-                                    class="px-3 py-1.5 text-red-400 cursor-pointer hover:bg-red-500/20 rounded-lg transition-colors hover:text-red-300">
-                                    <svg class="h-4 w-4 inline mr-1" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    class="btn btn-ghost btn-sm text-error gap-1">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -129,19 +101,53 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Vista de cards para móviles y tablets -->
+            <div class="lg:hidden divide-y divide-base-300">
+                @for (warehouse of listWarehouses(); track warehouse.id) {
+                <div class="p-4 hover:bg-base-200 transition-colors">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <div class="badge badge-primary badge-sm mb-2">{{ warehouse.id }}</div>
+                            <h3 class="font-semibold text-lg">{{ warehouse.locationName }}</h3>
+                            <div class="text-sm text-base-content/60 mt-1 grid grid-cols-2 gap-2">
+                                <div>Lat: {{ warehouse.latitude || 'N/A' }}</div>
+                                <div>Long: {{ warehouse.longitude || 'N/A' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button (click)="openEditModal(warehouse)" class="btn btn-sm btn-ghost flex-1 gap-1">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Editar
+                        </button>
+                        <button (click)="openDeleteModal(warehouse)"
+                            class="btn btn-sm btn-ghost text-error flex-1 gap-1">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
             } @else {
-            <div class="text-center py-16">
-                <div class="inline-block p-4 bg-purple-500/10 rounded-full mb-4">
-                    <svg class="h-12 w-12 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="card-body items-center text-center py-12">
+                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                 </div>
-                <h3 class="text-lg font-semibold text-white mb-1">Sin almacenes registrados</h3>
-                <p class="text-gray-400 mb-4">Comienza creando un nuevo almacén para tu organización</p>
-                <button (click)="openCreateModal()"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 class="text-xl font-bold mb-2">Sin almacenes registrados</h3>
+                <p class="text-base-content/60 mb-4">Comienza creando un nuevo almacén</p>
+                <button (click)="openCreateModal()" class="btn btn-primary gap-2">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Crear primer almacén
@@ -154,176 +160,137 @@
 
     <!-- Modal for Create/Edit Warehouse -->
     @if (showModal()) {
-    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-        (click)="closeModal()">
-        <div class="bg-slate-800 rounded-xl shadow-2xl border border-slate-700 w-full max-w-md transform transition-all"
-            (click)="$event.stopPropagation()">
-            <!-- Modal Header -->
-            <div
-                class="flex items-center justify-between p-6 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-700">
+    <div class="modal modal-open">
+        <div class="modal-box w-11/12 max-w-md">
+            <div class="flex items-start justify-between mb-4">
                 <div>
-                    <h3 class="text-xl font-bold text-white">
-                        {{ isEditMode() ? '✏️ Editar Almacén' : '➕ Nuevo Almacén' }}
+                    <h3 class="font-bold text-xl">
+                        {{ isEditMode() ? 'Editar Almacén' : 'Nuevo Almacén' }}
                     </h3>
-                    <p class="text-sm text-gray-400 mt-1">{{ isEditMode() ? 'Modifica los datos del almacén' :
-                        'Crea un nuevo almacén en tu organización' }}</p>
+                    <p class="text-sm text-base-content/60 mt-1">
+                        {{ isEditMode() ? 'Modifica los datos' : 'Completa la información' }}
+                    </p>
                 </div>
-                <button (click)="closeModal()"
-                    class="text-gray-400 hover:text-white transition-colors p-2 hover:bg-slate-700 rounded-lg">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button (click)="closeModal()" class="btn btn-sm btn-circle btn-ghost">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
 
-            <!-- Modal Form -->
-            <form [formGroup]="warehouseForm" (ngSubmit)="onSubmit()" class="p-6">
-                <div class="mb-6">
-                    <label for="locationName" class="block text-sm font-semibold text-white mb-2">
-                        Nombre del Almacén <span class="text-red-400">*</span>
+            <form [formGroup]="warehouseForm" (ngSubmit)="onSubmit()">
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text font-medium">Nombre del Almacén <span class="text-error">*</span></span>
                     </label>
-                    <input type="text" id="locationName" formControlName="locationName"
-                        class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    <input type="text" id="locationName" formControlName="locationName" class="input input-bordered"
                         placeholder="Ej: Almacén Central" />
                     @if (warehouseForm.get('locationName')?.invalid && warehouseForm.get('locationName')?.touched) {
-                    <div class="mt-2 flex items-center gap-2 text-red-400 text-sm">
-                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        El nombre debe tener al menos 3 caracteres
-                    </div>
+                    <label class="label">
+                        <span class="label-text-alt text-error">El nombre debe tener al menos 3 caracteres</span>
+                    </label>
                     }
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label for="latitude" class="block text-sm font-semibold text-white mb-2">
-                            Latitud
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Latitud</span>
                         </label>
-                        <input type="text" id="latitude" formControlName="latitude"
-                            class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                        <input type="text" id="latitude" formControlName="latitude" class="input input-bordered"
                             placeholder="Ej: -6.7714" />
                     </div>
-                    <div>
-                        <label for="longitude" class="block text-sm font-semibold text-white mb-2">
-                            Longitud
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Longitud</span>
                         </label>
-                        <input type="text" id="longitude" formControlName="longitude"
-                            class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                        <input type="text" id="longitude" formControlName="longitude" class="input input-bordered"
                             placeholder="Ej: -79.8391" />
                     </div>
                 </div>
 
-                <!-- Modal Actions -->
-                <div class="flex gap-3 justify-end pt-4 border-t border-slate-700">
-                    <button type="button" (click)="closeModal()"
-                        class="px-4 py-2.5 bg-slate-700 text-gray-300 rounded-lg hover:bg-slate-600 transition-colors font-medium">
+                <div class="modal-action">
+                    <button type="button" (click)="closeModal()" class="btn btn-ghost">
                         Cancelar
                     </button>
-                    <button type="submit" [disabled]="warehouseForm.invalid || isLoading()"
-                        class="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none">
-                        {{ isLoading() ? '⏳ Guardando...' : (isEditMode() ? '✓ Actualizar' : '✓ Crear') }}
+                    <button type="submit" [disabled]="warehouseForm.invalid || isLoading()" class="btn btn-primary">
+                        {{ isLoading() ? 'Guardando...' : (isEditMode() ? 'Actualizar' : 'Crear') }}
                     </button>
                 </div>
             </form>
         </div>
+        <div class="modal-backdrop bg-black/50" (click)="closeModal()"></div>
     </div>
     }
-</div>
 
-<!-- Delete Confirmation Modal -->
-@if (showDeleteModal()) {
-<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-    (click)="closeDeleteModal()">
-    <div class="bg-slate-800 rounded-xl shadow-2xl border border-slate-700 w-full max-w-md transform transition-all scale-100 animate-in"
-        (click)="$event.stopPropagation()">
-        <!-- Modal Header -->
-        <div class="p-6 border-b border-slate-700">
-            <div class="flex items-center gap-4">
-                <div class="flex-shrink-0">
-                    <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">
-                        <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                    </div>
+    <!-- Delete Confirmation Modal -->
+    @if (showDeleteModal()) {
+    <div class="modal modal-open">
+        <div class="modal-box w-11/12 max-w-md">
+            <div class="flex items-start gap-4 mb-4">
+                <div class="w-12 h-12 rounded-full bg-error/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="h-6 w-6 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
                 </div>
                 <div class="flex-1">
-                    <h3 class="text-xl font-bold text-white">Confirmar eliminación</h3>
-                    <p class="text-sm text-gray-400 mt-1">Esta acción no se puede deshacer</p>
+                    <h3 class="font-bold text-xl">Confirmar eliminación</h3>
+                    <p class="text-sm text-base-content/60 mt-1">Esta acción no se puede deshacer</p>
                 </div>
-                <button (click)="closeDeleteModal()"
-                    class="text-gray-400 hover:text-white transition-colors p-2 hover:bg-slate-700 rounded-lg">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button (click)="closeDeleteModal()" class="btn btn-sm btn-circle btn-ghost">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
-        </div>
 
-        <!-- Modal Body -->
-        <div class="p-6">
             @if (warehouseToDelete()) {
-            <div class="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-                <p class="text-gray-300 mb-3">¿Estás seguro de que deseas eliminar el siguiente almacén?</p>
-                <div class="space-y-2">
+            <div class="bg-base-200 rounded-lg p-4 mb-4">
+                <p class="text-sm mb-3">¿Deseas eliminar este almacén?</p>
+                <div class="space-y-2 text-sm">
                     <div class="flex items-center gap-2">
-                        <span class="text-gray-400 text-sm">ID:</span>
-                        <span
-                            class="inline-block px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-semibold">
-                            #{{ warehouseToDelete()!.id }}
-                        </span>
+                        <span class="text-base-content/60">ID:</span>
+                        <div class="badge badge-primary badge-sm">{{ warehouseToDelete()!.id }}</div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-gray-400 text-sm">Nombre:</span>
-                        <span class="text-white font-semibold">{{ warehouseToDelete()!.locationName }}</span>
+                        <span class="text-base-content/60">Nombre:</span>
+                        <span class="font-semibold">{{ warehouseToDelete()!.locationName }}</span>
                     </div>
                 </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <svg class="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm">Se eliminará permanentemente del sistema</span>
             </div>
             }
 
-            <div class="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                <div class="flex gap-2">
-                    <svg class="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                            clip-rule="evenodd" />
+            <div class="modal-action">
+                <button type="button" (click)="closeDeleteModal()" class="btn btn-ghost">
+                    Cancelar
+                </button>
+                <button type="button" (click)="confirmDelete()" [disabled]="isLoading()" class="btn btn-error gap-2">
+                    @if (isLoading()) {
+                    <span class="loading loading-spinner loading-sm"></span>
+                    Eliminando...
+                    } @else {
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    <p class="text-sm text-red-300">Esta acción eliminará permanentemente el almacén del sistema.
-                    </p>
-                </div>
+                    Sí, eliminar
+                    }
+                </button>
             </div>
         </div>
-
-        <!-- Modal Actions -->
-        <div class="flex gap-3 justify-end p-6 border-t border-slate-700 bg-slate-800/50">
-            <button type="button" (click)="closeDeleteModal()"
-                class="px-5 py-2.5 bg-slate-700 text-gray-300 rounded-lg hover:bg-slate-600 transition-colors font-medium">
-                Cancelar
-            </button>
-            <button type="button" (click)="confirmDelete()" [disabled]="isLoading()"
-                class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:shadow-lg hover:shadow-red-500/50 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none flex items-center gap-2">
-                @if (isLoading()) {
-                <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                </svg>
-                Eliminando...
-                } @else {
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                Sí, eliminar
-                }
-            </button>
-        </div>
+        <div class="modal-backdrop bg-black/50" (click)="closeDeleteModal()"></div>
     </div>
+    }
 </div>
-}

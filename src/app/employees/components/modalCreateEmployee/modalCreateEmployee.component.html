@@ -26,7 +26,17 @@
     </div>
 
     <!-- Contenido con scroll -->
-    <div class="flex-1 overflow-y-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+    <div class="flex-1 overflow-y-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 relative">
+      <!-- Loading Overlay -->
+      @if (isLoading() && positions().length === 0 && departments().length === 0) {
+      <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="text-center">
+          <span class="loading loading-spinner loading-lg text-primary"></span>
+          <p class="text-white mt-4">Cargando datos...</p>
+        </div>
+      </div>
+      }
+
       <form [formGroup]="createEmployeeForm">
         <div class="space-y-8">
 
@@ -426,9 +436,14 @@
 
           <button
             class="btn btn-success gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all bg-gradient-to-r from-indigo-600 to-purple-600 border-none text-white"
-            (click)="createNewEmployee()">
+            [disabled]="isLoading()" (click)="createNewEmployee()">
+            @if (isLoading()) {
+            <span class="loading loading-spinner loading-sm"></span>
+            Guardando...
+            } @else {
             <i class="fas fa-save"></i>
             Registrar Empleado
+            }
           </button>
         </div>
       </div>

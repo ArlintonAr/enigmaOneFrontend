@@ -16,6 +16,7 @@ export class AuthorizationOrdersComponent {
   orderService = inject(OrderService);
   orderEventsService = inject(OrderEventService)
   listOrderForAproved = signal<Order[]>([]);
+  isLoading = signal<boolean>(false);
 
 
   //Variables de error y acierto
@@ -29,8 +30,8 @@ export class AuthorizationOrdersComponent {
   constructor() {
     this.getOrdersForAproved();
 
-    effect(()=>{
-      if(this.orderEventsService.isUpdatedStatusOrder()){
+    effect(() => {
+      if (this.orderEventsService.isUpdatedStatusOrder()) {
         this.getOrdersForAproved()
         //Devolver la variable a falso despues del proceso
         this.orderEventsService.updatedStatusOrder(false)
@@ -41,22 +42,25 @@ export class AuthorizationOrdersComponent {
 
 
   getOrdersForAproved() {
+    this.isLoading.set(true);
     this.orderService.getOrdersByApprovalStatus('PENDIENTE')
-    .subscribe({
-      next: ({ data }) => {
-        this.hasSuccess.set(true)
-        this.listOrderForAproved.set(data);
-      },
-      error: (err) => {
-        if (err.status ===403) {
-          this.hasError.set(true);
-          this.errorMessage.set('No tiene permiso para ver las órdenes pendientes de aprobación.');
-          this.listOrderForAproved.set([]);
-          return;
+      .subscribe({
+        next: ({ data }) => {
+          this.hasSuccess.set(true)
+          this.listOrderForAproved.set(data);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          if (err.status === 403) {
+            this.hasError.set(true);
+            this.errorMessage.set('No tiene permiso para ver las órdenes pendientes de aprobación.');
+            this.listOrderForAproved.set([]);
+            return;
+          }
+          console.error('Error loading orders for approval:', err);
         }
-
-      }
-    })
+      })
   }
 
 

@@ -1,5 +1,6 @@
 <dialog #createOrder closedby="none" id="my_modal_4" class="modal ">
-  <div class="modal-box w-screen max-w-7xl h-screen flex flex-col gap-2 bg-base-100 shadow-2xl border border-base-content/10 p-6">
+  <div
+    class="modal-box w-screen max-w-7xl h-screen flex flex-col gap-2 bg-base-100 shadow-2xl border border-base-content/10 p-6">
 
     <!-- Header con gradiente -->
     <div class="flex items-center justify-between pb-2 border-b border-base-content/10">
@@ -10,7 +11,8 @@
           </div>
         </div>
         <div>
-          <h3 class="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h3
+            class="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Crear Solicitud de Pedido
           </h3>
           <p class="text-sm text-base-content/70 mt-1">Complete los datos para generar una nueva orden</p>
@@ -24,7 +26,8 @@
     </div>
 
     <!-- Form Principal - MEJORADO -->
-    <form [formGroup]="formCreateOrder" class="bg-gradient-to-br from-base-200/30 to-base-300/20 rounded-xl p-2 border border-base-content/5 shadow-md">
+    <form [formGroup]="formCreateOrder"
+      class="bg-gradient-to-br from-base-200/30 to-base-300/20 rounded-xl p-2 border border-base-content/5 shadow-md">
       <div class="grid grid-cols-1 gap-1 sm:grid-cols-12">
 
         <!-- ID Empleado -->
@@ -63,7 +66,7 @@
           <select formControlName="type"
             class="select select-xs select-bordered w-full bg-base-100 focus:select-primary transition-all font-medium text-base-content">
             @for (type of typeOrderArr; track $index) {
-              <option [value]="type.value">{{type.value}}</option>
+            <option [value]="type.value">{{type.value}}</option>
             }
           </select>
         </div>
@@ -83,9 +86,15 @@
 
         <!-- Botón Generar -->
         <div class="sm:col-span-2 flex items-end">
-          <button type="button" class="btn btn-success btn-xs gap-2 shadow-md hover:shadow-lg transition-all w-full" (click)="createNewOrder()">
+          <button type="button" class="btn btn-success btn-xs gap-2 shadow-md hover:shadow-lg transition-all w-full"
+            [disabled]="isLoadingOrder()" (click)="createNewOrder()">
+            @if (isLoadingOrder()) {
+            <span class="loading loading-spinner loading-xs"></span>
+            Generando...
+            } @else {
             <i class="fas fa-check-circle"></i>
             Generar
+            }
           </button>
         </div>
       </div>
@@ -95,11 +104,13 @@
     <div class="content-material-service flex-1 overflow-y-auto space-y-6">
 
       <!-- Sección Material -->
-      <form [formGroup]="formCreateMaterial" class="card bg-gradient-to-br from-info/5 to-info/10 shadow-xl border border-info/20">
+      <form [formGroup]="formCreateMaterial"
+        class="card bg-gradient-to-br from-info/5 to-info/10 shadow-xl border border-info/20">
         <div class="card-body ">
 
           <div class="flex items-center gap-1 mb-4">
-            <div class="w-6 h-6 bg-gradient-to-br from-info to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+            <div
+              class="w-6 h-6 bg-gradient-to-br from-info to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
               <i class="fas fa-box text-2xl text-white"></i>
             </div>
             <div>
@@ -135,7 +146,7 @@
               <select formControlName="typeMaterial"
                 class="select select-bordered select-xs w-full bg-base-100 focus:select-info transition-all font-medium text-base-content">
                 @for (typeMaterial of typeMaterialOrderArr; track $index) {
-                  <option [value]="typeMaterial.value">{{typeMaterial.value}}</option>
+                <option [value]="typeMaterial.value">{{typeMaterial.value}}</option>
                 }
               </select>
             </div>
@@ -172,7 +183,8 @@
 
             <!-- Botón Generar Material -->
             <div class="sm:col-span-2 flex items-end">
-              <button type="button" class="btn btn-info btn-xs w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListMaterials()">
+              <button type="button" class="btn btn-info btn-xs w-full gap-2 shadow-md hover:shadow-lg transition-all"
+                (click)="generateListMaterials()">
                 <i class="fas fa-plus-circle"></i>
                 Agregar
               </button>
@@ -199,53 +211,43 @@
                     </thead>
                     <tbody>
                       @for (material of materialsList(); track $index) {
-                        <tr class="hover">
-                          <th>
-                            <div class="badge badge-info badge-sm font-semibold">{{$index + 1}}</div>
-                          </th>
-                          <td>
-                            <input
-                              type="text"
-                              class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
-                              [value]="material.characteristics"
-                              (input)="updateMaterial($index, 'characteristics', $any($event.target).value)"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="text"
-                              class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
-                              [value]="material.observations"
-                              (input)="updateMaterial($index, 'observations', $any($event.target).value)"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="number"
-                              class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
-                              [value]="material.quantity"
-                              (input)="updateMaterial($index, 'quantity', +$any($event.target).value)"
-                            />
-                          </td>
-                           <td>
-                            <button
-                              type="button"
-                              class="btn btn-error btn-xs"
-                              (click)="removeMaterial($index)"
-                              aria-label="Eliminar material"
-                            >
-                              <i class="fas fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
+                      <tr class="hover">
+                        <th>
+                          <div class="badge badge-info badge-sm font-semibold">{{$index + 1}}</div>
+                        </th>
+                        <td>
+                          <input type="text"
+                            class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
+                            [value]="material.characteristics"
+                            (input)="updateMaterial($index, 'characteristics', $any($event.target).value)" />
+                        </td>
+                        <td>
+                          <input type="text"
+                            class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
+                            [value]="material.observations"
+                            (input)="updateMaterial($index, 'observations', $any($event.target).value)" />
+                        </td>
+                        <td>
+                          <input type="number"
+                            class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
+                            [value]="material.quantity"
+                            (input)="updateMaterial($index, 'quantity', +$any($event.target).value)" />
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-error btn-xs" (click)="removeMaterial($index)"
+                            aria-label="Eliminar material">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
                       }
                       @if(materialsList().length === 0) {
-                        <tr>
-                          <td colspan="5" class="text-center py-8 text-base-content/60">
-                            <i class="fas fa-inbox text-3xl mb-2"></i>
-                            <p class="font-medium">No hay materiales agregados</p>
-                          </td>
-                        </tr>
+                      <tr>
+                        <td colspan="5" class="text-center py-8 text-base-content/60">
+                          <i class="fas fa-inbox text-3xl mb-2"></i>
+                          <p class="font-medium">No hay materiales agregados</p>
+                        </td>
+                      </tr>
                       }
                     </tbody>
                   </table>
@@ -254,9 +256,15 @@
             </div>
 
             <!-- Botón Guardar Material -->
-            <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all" (click)="createNewMaterialOrder()">
+            <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all"
+              [disabled]="isLoadingMaterial()" (click)="createNewMaterialOrder()">
+              @if (isLoadingMaterial()) {
+              <span class="loading loading-spinner loading-sm"></span>
+              Guardando...
+              } @else {
               <i class="fas fa-save"></i>
               Guardar Orden de Material
+              }
             </button>
           </div>
 
@@ -264,10 +272,12 @@
       </form>
 
       <!-- Sección Servicio -->
-      <form [formGroup]="formCreateService" class="card bg-gradient-to-br from-secondary/5 to-secondary/10 shadow-xl border border-secondary/20">
+      <form [formGroup]="formCreateService"
+        class="card bg-gradient-to-br from-secondary/5 to-secondary/10 shadow-xl border border-secondary/20">
         <div class="card-body">
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-6 h-6 bg-gradient-to-br from-secondary to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+            <div
+              class="w-6 h-6 bg-gradient-to-br from-secondary to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
               <i class="fas fa-tools text-md text-white"></i>
             </div>
             <div>
@@ -288,7 +298,9 @@
 
             <!-- Botón Generar Servicio -->
             <div class="sm:col-span-2 flex items-end">
-              <button type="button" class="btn btn-secondary btn-xs w-full gap-2 shadow-md hover:shadow-lg transition-all" (click)="generateListServices()">
+              <button type="button"
+                class="btn btn-secondary btn-xs w-full gap-2 shadow-md hover:shadow-lg transition-all"
+                (click)="generateListServices()">
                 <i class="fas fa-plus-circle"></i>
                 Agregar
               </button>
@@ -314,37 +326,31 @@
                     </thead>
                     <tbody>
                       @for (service of servicesList(); track $index) {
-                        <tr class="hover">
-                          <th>
-                            <div class="badge badge-secondary badge-sm font-semibold">{{$index + 1}}</div>
-                          </th>
-                          <td>
-                            <input
-                              type="text"
-                              class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
-                              [value]="service.characteristics"
-                              (input)="updateService($index, 'characteristics', $any($event.target).value)"
-                            />
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-error btn-xs"
-                              (click)="removeService($index)"
-                              aria-label="Eliminar servicio"
-                            >
-                              <i class="fas fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
+                      <tr class="hover">
+                        <th>
+                          <div class="badge badge-secondary badge-sm font-semibold">{{$index + 1}}</div>
+                        </th>
+                        <td>
+                          <input type="text"
+                            class="input input-bordered input-xs w-full font-medium text-base-content placeholder:text-base-content/50"
+                            [value]="service.characteristics"
+                            (input)="updateService($index, 'characteristics', $any($event.target).value)" />
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-error btn-xs" (click)="removeService($index)"
+                            aria-label="Eliminar servicio">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
                       }
                       @if(servicesList().length === 0) {
-                        <tr>
-                          <td colspan="3" class="text-center py-8 text-base-content/60">
-                            <i class="fas fa-inbox text-3xl mb-2"></i>
-                            <p class="font-medium">No hay servicios agregados</p>
-                          </td>
-                        </tr>
+                      <tr>
+                        <td colspan="3" class="text-center py-8 text-base-content/60">
+                          <i class="fas fa-inbox text-3xl mb-2"></i>
+                          <p class="font-medium">No hay servicios agregados</p>
+                        </td>
+                      </tr>
                       }
                     </tbody>
                   </table>
@@ -353,9 +359,15 @@
             </div>
 
             <!-- Botón Guardar Servicio -->
-            <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all" (click)="createNewServiceOrder()">
+            <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all"
+              [disabled]="isLoadingService()" (click)="createNewServiceOrder()">
+              @if (isLoadingService()) {
+              <span class="loading loading-spinner loading-sm"></span>
+              Guardando...
+              } @else {
               <i class="fas fa-save"></i>
               Guardar Orden de Servicio
+              }
             </button>
           </div>
         </div>
@@ -364,11 +376,13 @@
 
     <!-- Footer con botones -->
     <div class="content-buttons flex justify-between pt-4 border-t border-base-content/10">
-      <button type="button" class="btn btn-warning gap-2 shadow-lg hover:shadow-xl transition-all" (click)="clouseModal()">
+      <button type="button" class="btn btn-warning gap-2 shadow-lg hover:shadow-xl transition-all"
+        (click)="clouseModal()">
         <i class="fas fa-times-circle"></i>
         Cerrar
       </button>
-      <button type="button" class="btn btn-error gap-2 shadow-lg hover:shadow-xl transition-all" (click)="cancelCreateOrderAndMaterialOrder()">
+      <button type="button" class="btn btn-error gap-2 shadow-lg hover:shadow-xl transition-all"
+        (click)="cancelCreateOrderAndMaterialOrder()">
         <i class="fas fa-ban"></i>
         Cancelar Todo
       </button>
@@ -377,17 +391,17 @@
 
   <!-- Error Alerts -->
   @if(hasErrorMaterialOrder()) {
-      <error-alert (close)="hasErrorMaterialOrder.set(false)" [messageError]="errorNameMaterialOrder()" />
+  <error-alert (close)="hasErrorMaterialOrder.set(false)" [messageError]="errorNameMaterialOrder()" />
   }
   @if(hasErrorOrder()) {
-      <error-alert (close)="hasErrorOrder.set(false)" [messageError]="errorNameOrder()" />
+  <error-alert (close)="hasErrorOrder.set(false)" [messageError]="errorNameOrder()" />
   }
 
   @if(hasSuccessMaterialOrder()){
-    <success-alert (close)="hasSuccessMaterialOrder.set(false)" [messageSuccess]="successNameMaterialOrder()" />
+  <success-alert (close)="hasSuccessMaterialOrder.set(false)" [messageSuccess]="successNameMaterialOrder()" />
   }
   @if (hasSuccessOrder()) {
-    <success-alert (close)="hasSuccessOrder.set(false)" [messageSuccess]="successNameOrder()" />
+  <success-alert (close)="hasSuccessOrder.set(false)" [messageSuccess]="successNameOrder()" />
 
   }
 </dialog>
@@ -399,6 +413,7 @@
       opacity: 0;
       transform: translateY(-20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -429,13 +444,18 @@
   }
 
   /* Efecto hover en inputs */
-  .input:focus, .select:focus, .file-input:focus {
+  .input:focus,
+  .select:focus,
+  .file-input:focus {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   /* Transiciones suaves */
-  .input, .select, .file-input, .btn {
+  .input,
+  .select,
+  .file-input,
+  .btn {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -456,9 +476,12 @@
 
   /* Badge pulse animation */
   @keyframes pulse-glow {
-    0%, 100% {
+
+    0%,
+    100% {
       box-shadow: 0 0 5px currentColor;
     }
+
     50% {
       box-shadow: 0 0 15px currentColor;
     }

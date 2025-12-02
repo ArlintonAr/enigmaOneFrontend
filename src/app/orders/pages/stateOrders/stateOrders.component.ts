@@ -18,39 +18,47 @@ export class StateOrdersComponent {
   //Variables globales
   listOfApprovedOrders = signal<Order[]>([]);
   listOfRejectedOrders = signal<Order[]>([]);
+  isLoadingApproved = signal<boolean>(false);
+  isLoadingRejected = signal<boolean>(false);
 
   constructor() {
     this.getApprovedOrders()
     this.getRejectedOrders()
 
-    effect(()=>{
-        if (this.orderEventService.isUpdatedToRoute()) {
-          this.getApprovedOrders()
+    effect(() => {
+      if (this.orderEventService.isUpdatedToRoute()) {
+        this.getApprovedOrders()
 
-          //volver variable a falso
-          this.orderEventService.updatedToRoute(false)
-        }
+        //volver variable a falso
+        this.orderEventService.updatedToRoute(false)
+      }
     })
   }
 
   getApprovedOrders() {
+    this.isLoadingApproved.set(true);
     this.orderService.getOrdersByApprovalStatus('APROBADO').subscribe({
       next: (response) => {
         this.listOfApprovedOrders.set(response.data);
+        this.isLoadingApproved.set(false);
       },
       error: (err) => {
-        console.log(err);
+        console.error('Error loading approved orders:', err);
+        this.isLoadingApproved.set(false);
       },
     });
   }
 
   getRejectedOrders() {
+    this.isLoadingRejected.set(true);
     this.orderService.getOrdersByApprovalStatus('RECHAZADO').subscribe({
       next: (response) => {
         this.listOfRejectedOrders.set(response.data);
+        this.isLoadingRejected.set(false);
       },
       error: (err) => {
-        console.log(err);
+        console.error('Error loading rejected orders:', err);
+        this.isLoadingRejected.set(false);
       },
     });
   }

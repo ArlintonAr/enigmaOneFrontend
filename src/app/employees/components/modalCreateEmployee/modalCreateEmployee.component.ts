@@ -9,6 +9,7 @@ import { SuccessAlertComponent } from '../../../shared/components/exitAlert/succ
 import { ConfigurationService } from '../../../configuration/services/configuration.service';
 import { Position } from '../../../configuration/interfaces/APIResponsePosition';
 import { Department } from '../../../configuration/interfaces/APIResponseDepartments';
+import { EmployeeEventService } from '../../services/employeeEvent.service';
 
 
 
@@ -23,10 +24,12 @@ export class ModalCreateEmployeeComponent {
   private employeeService = inject(EmployeesService)
   private fb = inject(FormBuilder)
   private configurationService = inject(ConfigurationService)
+  private employeeEventService = inject(EmployeeEventService)
 
   formUtils = FormUtils
   positions = signal<Position[]>([]);
   departments = signal<Department[]>([]);
+  isLoading = signal<boolean>(false);
 
   // Roles disponibles
   roles = [
@@ -79,6 +82,7 @@ export class ModalCreateEmployeeComponent {
 
   // Cargar posiciones desde el backend
   loadPositions(): void {
+    this.isLoading.set(true);
     this.configurationService.getAllPositions().subscribe({
       next: (response) => {
         this.positions.set(response.data || []);
@@ -86,15 +90,18 @@ export class ModalCreateEmployeeComponent {
         if (response.data && response.data.length > 0) {
           this.createEmployeeForm.patchValue({ positionId: response.data[0].id });
         }
+        this.isLoading.set(false);
       },
       error: (error) => {
         console.error('Error loading positions:', error);
+        this.isLoading.set(false);
       }
     });
   }
 
   // Cargar departamentos desde el backend
   loadDepartments(): void {
+    this.isLoading.set(true);
     this.configurationService.getAllDepartments().subscribe({
       next: (response) => {
         this.departments.set(response.data || []);
@@ -102,9 +109,11 @@ export class ModalCreateEmployeeComponent {
         if (response.data && response.data.length > 0) {
           this.createEmployeeForm.patchValue({ departmentId: response.data[0].id });
         }
+        this.isLoading.set(false);
       },
       error: (error) => {
         console.error('Error loading departments:', error);
+        this.isLoading.set(false);
       }
     });
   }
@@ -142,6 +151,7 @@ export class ModalCreateEmployeeComponent {
       ...(formValue as any),
     }
 
+    this.isLoading.set(true);
     this.employeeService.createNewEmployee(employeeLike, this.selectedPhoto!)
       .subscribe({
         next: (response) => {
@@ -150,9 +160,13 @@ export class ModalCreateEmployeeComponent {
             this.success.set(true)
             this.successMessage.set(response.message)
             this.resetValuesOfForm()
+            // Notificar que se creó un empleado para actualizar la lista
+            this.employeeEventService.employeeUpdated(true);
           }
+          this.isLoading.set(false);
         },
         error: (err) => {
+          this.isLoading.set(false);
           if (err.status == 409 || err.status == 500) {
             this.hasError.set(true)
             this.errorName.set(err.error.message)

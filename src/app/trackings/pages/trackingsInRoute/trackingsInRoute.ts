@@ -12,38 +12,43 @@ import { SearchComponent } from "../../../shared/components/search/search.compon
 })
 export class TrackingsInRoute {
 
-   private trackingService = inject(TrackingService)
+  private trackingService = inject(TrackingService)
 
-    listTrackings = signal<Tracking[]>([])
+  listTrackings = signal<Tracking[]>([])
+  isLoading = signal<boolean>(false)
 
 
 
-   constructor(){
+  constructor() {
     this.getAllTrackings()
-   }
+  }
 
-   getAllTrackings():void {
+  getAllTrackings(): void {
 
+    this.isLoading.set(true);
     this.trackingService.getAllTrackings('RUTA')
-    .subscribe({
-      next: (resp) => {
+      .subscribe({
+        next: (resp) => {
 
-        this.listTrackings.set(resp.data || [])
-      },
-      error: (err) => {
-        console.error('Error trackings:', err);
-      }
-    })
+          this.listTrackings.set(resp.data || [])
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Error trackings:', err);
+          this.isLoading.set(false);
+        }
+      })
 
   }
 
 
   searchTrackingForId(term: string): void {
-    if (term === '' ){
+    if (term === '') {
       this.getAllTrackings()
       return;
     }
     const id = Number(term);
+    this.isLoading.set(true);
     this.trackingService.getTrackingById(id).subscribe({
       next: (resp) => {
         if (resp.data && resp.data.trackingState === 'RUTA') {
@@ -51,14 +56,16 @@ export class TrackingsInRoute {
         } else {
           this.listTrackings.set([]);
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error fetching tracking by ID:', err);
         this.listTrackings.set([]);
+        this.isLoading.set(false);
       },
     });
 
   }
 
 
- }
+}

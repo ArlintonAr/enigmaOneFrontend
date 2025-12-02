@@ -366,10 +366,15 @@ hover:scale-105 rounded-full px-2" (click)="openModal()">
                   </button>
                   }
                   <button type="button" class="btn btn-success gap-2 shadow-lg hover:shadow-xl transition-all"
-                    [disabled]="(updateEmployeeForm.pristine && selectedPhotoFile() == null) || updateEmployeeForm.invalid"
+                    [disabled]="(updateEmployeeForm.pristine && selectedPhotoFile() == null) || updateEmployeeForm.invalid || isLoading()"
                     (click)="updateEmployee(employee()!.id)">
+                    @if (isLoading()) {
+                    <span class="loading loading-spinner loading-sm"></span>
+                    Actualizando...
+                    } @else {
                     <i class="fas fa-save"></i>
                     Guardar Cambios
+                    }
                   </button>
                 </div>
 

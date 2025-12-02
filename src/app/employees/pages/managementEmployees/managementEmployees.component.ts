@@ -18,47 +18,62 @@ export class ManagementEmployeesComponent {
   private employeesService = inject(EmployeesService);
   private employeeEventService = inject(EmployeeEventService);
   public employeesList = signal<EmployeeResponse[]>([]);
+  public isLoading = signal<boolean>(false);
 
-  @ViewChild(ModalCreateEmployeeComponent) modalCreateEmployee!:ModalCreateEmployeeComponent
+  @ViewChild(ModalCreateEmployeeComponent) modalCreateEmployee!: ModalCreateEmployeeComponent
 
   constructor() {
     this.getAllEmployees();
 
     //Efecto para recargar la lista de empleados cuando se crea uno nuevo
     effect(() => {
-      const isUpdatedEmployee =  this.employeeEventService.isEmployeeUpdated()
-      if(isUpdatedEmployee){
+      const isUpdatedEmployee = this.employeeEventService.isEmployeeUpdated()
+      if (isUpdatedEmployee) {
         this.getAllEmployees();
-
+        // Resetear el estado después de recargar
+        this.employeeEventService.employeeUpdated(false);
       }
     })
 
   }
 
-  openModal(){
+  openModal() {
     this.modalCreateEmployee.openModal();
   }
 
 
   getAllEmployees() {
+    this.isLoading.set(true);
     this.employeesService.getAllEmployees()
-      .subscribe(
-        (response) => this.employeesList.set(response)
-      )
+      .subscribe({
+        next: (response) => {
+          this.employeesList.set(response);
+          this.isLoading.set(false);
+        },
+        error: (error) => {
+          console.error('Error loading employees:', error);
+          this.isLoading.set(false);
+        }
+      })
   }
 
-  searchEmployeeForName(term:string){
-    if(term ===''){
+  searchEmployeeForName(term: string) {
+    if (term === '') {
       this.getAllEmployees();
       return;
     }
+    this.isLoading.set(true);
     this.employeesService.searchEmployeeForName(term)
-    .subscribe(
-      (response) => {
-        this.employeesList.set(response.data)
-        console.log(this.employeesList())
-      }
-    )
+      .subscribe({
+        next: (response) => {
+          this.employeesList.set(response.data);
+          this.isLoading.set(false);
+        },
+        error: (error) => {
+          console.error('Error searching employees:', error);
+          this.isLoading.set(false);
+        }
+      })
   }
 
 

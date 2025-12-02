@@ -13,37 +13,52 @@ import { SearchComponent } from "../../../shared/components/search/search.compon
 })
 export class OrdersComponent {
   private orderService = inject(OrderService)
-  public orders = signal<Order[]| null>([])
+  public orders = signal<Order[] | null>([])
+  public isLoading = signal<boolean>(false)
 
 
   @ViewChild(CreateOrderComponent) createOrderModal!: CreateOrderComponent
 
-  constructor(){
+  constructor() {
     this.getAllOrders()
   }
 
-  openModal():void{
+  openModal(): void {
     this.createOrderModal.openModal()
   }
 
-  getAllOrders(){
+  getAllOrders() {
+    this.isLoading.set(true);
     this.orderService.getAllOrders()
-    .subscribe((response)=>{
-      this.orders.set(response.data)
-      console.log(this.orders())
-    })
+      .subscribe({
+        next: (response) => {
+          this.orders.set(response.data)
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Error loading orders:', err);
+          this.isLoading.set(false);
+        }
+      })
   }
 
-  findOrderById(id:string){
-    if(id===''){
+  findOrderById(id: string) {
+    if (id === '') {
       this.getAllOrders()
       return
     }
+    this.isLoading.set(true);
     this.orderService.getOrderById(Number(id))
-    .subscribe((response)=>{
-      this.orders.set([response.data])
-
-    })
+      .subscribe({
+        next: (response) => {
+          this.orders.set([response.data])
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Error finding order:', err);
+          this.isLoading.set(false);
+        }
+      })
 
   }
 

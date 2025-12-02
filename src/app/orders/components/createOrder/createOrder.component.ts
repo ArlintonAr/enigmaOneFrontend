@@ -75,6 +75,11 @@ export class CreateOrderComponent {
   typeOrderArr = typeOrder;
   typeMaterialOrderArr = typeMaterialOrder;
 
+  //Loading states - separados para cada acción
+  isLoadingOrder = signal<boolean>(false);
+  isLoadingMaterial = signal<boolean>(false);
+  isLoadingService = signal<boolean>(false);
+
   //Errores Material
   hasSuccessMaterialOrder = signal<boolean>(false);
   successNameMaterialOrder = signal<string>('');
@@ -162,35 +167,59 @@ export class CreateOrderComponent {
       ...(formValue as any),
     };
 
+    this.isLoadingOrder.set(true);
     this.orderSerive.createOrder(orderLike)
-    .subscribe((response) => {
-      this.newOrder.set(response.data);
-      this.idNewOrder.set(response.data.id.toString());
-      if (formValue.type === 'MATERIAL') {
-        this.formCreateMaterial.enable();
-      } else if (formValue.type === 'SERVICIO') {
-        this.formCreateService.enable();
-      }
-      this.hasSuccessOrder.set(true);
-      this.successNameOrder.set('Orden de Material creada con éxito.');
-    });
+      .subscribe({
+        next: (response) => {
+          this.newOrder.set(response.data);
+          this.idNewOrder.set(response.data.id.toString());
+          if (formValue.type === 'MATERIAL') {
+            this.formCreateMaterial.enable();
+          } else if (formValue.type === 'SERVICIO') {
+            this.formCreateService.enable();
+          }
+          this.hasSuccessOrder.set(true);
+          this.successNameOrder.set('Orden de Material creada con éxito.');
+          this.isLoadingOrder.set(false);
+        },
+        error: (err) => {
+          console.error('Error creating order:', err);
+          this.hasErrorOrder.set(true);
+          this.errorNameOrder.set('Error al crear la orden');
+          this.isLoadingOrder.set(false);
+        }
+      });
   }
 
   createNewMaterialOrder(): void {
     const materials = this.materialsList();
 
     if (materials.length > 0) {
+      this.isLoadingMaterial.set(true);
+      let completed = 0;
       for (let i = 0; i < materials.length; i++) {
         const material = materials[i];
         const photo = this.selectedPhoto() ? this.selectedPhoto()![i] : null;
         this.orderSerive
           .createMaterialOrder(material, photo)
-          .subscribe((response) => {
-            this.resetValuesForMaterialForm();
-            this.resetValuesForms();
-            this.materialsList.set([]);
-
-
+          .subscribe({
+            next: (response) => {
+              completed++;
+              if (completed === materials.length) {
+                this.resetValuesForMaterialForm();
+                this.resetValuesForms();
+                this.materialsList.set([]);
+                this.hasSuccessMaterialOrder.set(true);
+                this.successNameMaterialOrder.set('Orden de Material guardada con éxito.');
+                this.isLoadingMaterial.set(false);
+              }
+            },
+            error: (err) => {
+              console.error('Error creating material order:', err);
+              this.hasErrorMaterialOrder.set(true);
+              this.errorNameMaterialOrder.set('Error al guardar material');
+              this.isLoadingMaterial.set(false);
+            }
           });
       }
     } else {
@@ -370,12 +399,28 @@ export class CreateOrderComponent {
     const services = this.servicesList();
 
     if (services.length > 0) {
+      this.isLoadingService.set(true);
+      let completed = 0;
       for (let i = 0; i < services.length; i++) {
         const service = services[i];
-        this.orderSerive.createServiceOrder(service).subscribe((response) => {
-          this.resetValuesForServiceForm();
-          this.resetValuesForms();
-          this.servicesList.set([]);
+        this.orderSerive.createServiceOrder(service).subscribe({
+          next: (response) => {
+            completed++;
+            if (completed === services.length) {
+              this.resetValuesForServiceForm();
+              this.resetValuesForms();
+              this.servicesList.set([]);
+              this.hasSuccessMaterialOrder.set(true);
+              this.successNameMaterialOrder.set('Orden de Servicio guardada con éxito.');
+              this.isLoadingService.set(false);
+            }
+          },
+          error: (err) => {
+            console.error('Error creating service order:', err);
+            this.hasErrorMaterialOrder.set(true);
+            this.errorNameMaterialOrder.set('Error al guardar servicio');
+            this.isLoadingService.set(false);
+          }
         });
       }
     } else {

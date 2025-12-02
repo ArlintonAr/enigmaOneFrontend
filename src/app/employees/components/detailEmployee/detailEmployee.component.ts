@@ -44,6 +44,7 @@ export class DetailEmployeeComponent {
   //Signals para departamentos y posiciones desde el backend
   positions = signal<Position[]>([]);
   departments = signal<Department[]>([]);
+  isLoading = signal<boolean>(false);
 
   // Roles disponibles
   roles = [
@@ -69,24 +70,30 @@ export class DetailEmployeeComponent {
 
   // Cargar posiciones desde el backend
   loadPositions(): void {
+    this.isLoading.set(true);
     this.configurationService.getAllPositions().subscribe({
       next: (response) => {
         this.positions.set(response.data || []);
+        this.isLoading.set(false);
       },
       error: (error) => {
         console.error('Error loading positions:', error);
+        this.isLoading.set(false);
       }
     });
   }
 
   // Cargar departamentos desde el backend
   loadDepartments(): void {
+    this.isLoading.set(true);
     this.configurationService.getAllDepartments().subscribe({
       next: (response) => {
         this.departments.set(response.data || []);
+        this.isLoading.set(false);
       },
       error: (error) => {
         console.error('Error loading departments:', error);
+        this.isLoading.set(false);
       }
     });
   }
@@ -185,6 +192,7 @@ export class DetailEmployeeComponent {
 
     const newEmployee = this.updateEmployeeForm.value
 
+    this.isLoading.set(true);
     this.employeeService.updateEmployee(newEmployee, employeeId, this.selectedPhotoFile())
       .subscribe({
         next: (resp) => {
@@ -194,9 +202,11 @@ export class DetailEmployeeComponent {
           }
 
           this.employeeEventService.employeeUpdated(true);
+          this.isLoading.set(false);
 
         },
         error: (err) => {
+          this.isLoading.set(false);
 
           if (err.status == 403) {
             this.hasError.set(true)

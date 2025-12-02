@@ -4,7 +4,7 @@
   <div class="content-buttons-search flex justify-between items-center gap-4">
     <div class="buttons ">
       <button class="btn btn-success" (click)="openModal()">Solicitar nuevo pedido</button>
-      <create-order  />
+      <create-order />
     </div>
     <div class="search flex-1">
       <app-search (onValue)="findOrderById($event)" />
@@ -14,7 +14,18 @@
 
 
   <div class="content-list-orders ">
+    @if (isLoading()) {
+    <div class="flex justify-center items-center py-20">
+      <div class="card bg-base-100 shadow-xl border border-base-300 max-w-md">
+        <div class="card-body items-center text-center p-8">
+          <span class="loading loading-spinner loading-lg text-primary"></span>
+          <p class="text-base-content/60 mt-4">Cargando órdenes...</p>
+        </div>
+      </div>
+    </div>
+    } @else {
     <list-orders [orderList]="orders()" />
+    }
   </div>
 
 

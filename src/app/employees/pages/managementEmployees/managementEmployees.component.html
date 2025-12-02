@@ -35,12 +35,22 @@
 
   <!-- Lista de empleados con altura completa -->
   <div class="flex-1 overflow-hidden">
-    @if (employeesList().length > 0) {
+    <!-- Loading State -->
+    @if (isLoading()) {
+    <div class="card bg-base-100 shadow-xl border border-base-300 h-full">
+      <div class="card-body flex justify-center items-center">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <p class="text-base-content/60 mt-4">Cargando empleados...</p>
+      </div>
+    </div>
+    }
+
+    @if (!isLoading() && employeesList().length > 0) {
     <!-- Contenedor con altura completa -->
     <div class="h-full">
       <list-employees [employeesList]="employeesList()" />
     </div>
-    } @else {
+    } @else if (!isLoading() && employeesList().length === 0) {
     <!-- Estado vacío mejorado -->
     <div class="card bg-base-100 shadow-xl border border-base-300 h-full">
       <div class="card-body flex flex-col justify-center items-center gap-6">

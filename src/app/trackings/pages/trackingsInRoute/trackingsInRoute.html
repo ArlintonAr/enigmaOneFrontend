@@ -8,10 +8,21 @@
     <p class="text-slate-400">Monitorea el estado de todos tus envíos</p>
   </div>
 
- <div class="search mb-8 text-center">
+  <div class="search mb-8 text-center">
     <app-search (onValue)="searchTrackingForId($event)" />
   </div>
   <div class="space-y-4">
+    @if (isLoading()) {
+    <div class="flex justify-center items-center py-20">
+      <div class="card bg-base-100 shadow-xl border border-base-300 max-w-md">
+        <div class="card-body items-center text-center p-8">
+          <span class="loading loading-spinner loading-lg text-primary"></span>
+          <p class="text-base-content/60 mt-4">Cargando seguimientos en ruta...</p>
+        </div>
+      </div>
+    </div>
+    } @else {
     <list-trackings [listTrackings]="listTrackings()" />
+    }
   </div>
 </div>
