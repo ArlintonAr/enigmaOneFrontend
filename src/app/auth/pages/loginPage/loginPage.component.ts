@@ -33,7 +33,7 @@ export class LoginPageComponent {
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
-  clouseAlert(){
+  clouseAlert() {
     this.hasError.set(false);
   }
 
@@ -46,25 +46,32 @@ export class LoginPageComponent {
     const { email, password } = this.loginForm.value;
 
 
-    this.authService.login(email!, password!).subscribe(
-      (isAuthenticated) => {
+    this.isPosting.set(true);
+    this.authService.login(email!, password!).subscribe({
+      next: (isAuthenticated) => {
+        this.isPosting.set(false);
         if (isAuthenticated) {
           this.router.navigateByUrl('/dashboard');
           return;
         }
         this.hasError.set(true);
         this.hasNameError.set('Credenciales incorrectas!');
+      },
+      error: () => {
+        this.isPosting.set(false);
+        this.hasError.set(true);
+        this.hasNameError.set('Error en el servidor');
       }
-    )
+    })
   }
 
-  closeAlert(){
+  closeAlert() {
     this.hasError.set(false);
     this.hasNameError.set('');
   }
 
 
-  togglePassword(){
+  togglePassword() {
     this.showPassword.set(!this.showPassword());
   }
 
